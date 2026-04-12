@@ -1,0 +1,22 @@
+{
+  "name": "成之於語｜成語地圖探險",
+  "short_name": "成之於語",
+  "description": "成語地圖探險遊戲",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fde8ec",
+  "theme_color": "#c2506a",
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

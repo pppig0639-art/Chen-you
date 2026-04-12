@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="成之於語">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>成之於語｜成語地圖探險</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink: #f4a0b0;
+  --pink-light: #fde8ec;
+  --pink-dark: #c2506a;
+  --orange: #f4a055;
+  --blue: #6aabf7;
+  --green: #7bc97e;
+  --purple: #b48ef4;
+  --yellow: #f4d460;
+  --cream: #fff8f0;
+  --brown: #5a2d2d;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--pink-light);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── 標題畫面 ─── */
+#screen-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fde8ec 0%, #fdf0e0 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+#screen-title::before {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(244,160,176,0.3) 0%, transparent 70%);
+  top: -100px; right: -100px;
+  border-radius: 50%;
+}
+
+.title-logo {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 900;
+  color: var(--pink-dark);
+  text-shadow: 4px 4px 0px rgba(194,80,106,0.2);
+  letter-spacing: 0.2em;
+  animation: titlePop 0.8s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative;
+  z-index: 1;
+}
+
+.title-sub {
+  font-size: 1.2rem;
+  color: #a06070;
+  margin: 0.5rem 0 3rem;
+  letter-spacing: 0.3em;
+}
+
+.score-board-home {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem 2.5rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 8px 30px rgba(194,80,106,0.15);
+  text-align: center;
+  min-width: 280px;
+}
+
+.score-board-home h3 {
+  font-size: 0.85rem;
+  color: #a06070;
+  letter-spacing: 0.2em;
+  margin-bottom: 1rem;
+}
+
+.team-scores {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.team-score-item {
+  text-align: center;
+}
+
+.team-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  margin: 0 auto 0.4rem;
+}
+
+.team-score-item span {
+  display: block;
+  font-size: 0.8rem;
+  color: #a06070;
+  margin-bottom: 0.2rem;
+}
+
+.team-score-item strong {
+  font-size: 2rem;
+  font-family: 'Noto Serif TC', serif;
+  color: var(--brown);
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-main {
+  background: linear-gradient(135deg, var(--pink-dark), #e87090);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.15em;
+  box-shadow: 0 6px 20px rgba(194,80,106,0.4);
+  transition: all 0.2s;
+}
+
+.btn-main:active { transform: scale(0.96); }
+
+.btn-secondary {
+  background: white;
+  color: var(--pink-dark);
+  border: 2px solid var(--pink);
+  border-radius: 50px;
+  padding: 0.7rem 2rem;
+  font-size: 1rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+}
+
+.btn-secondary:active { transform: scale(0.96); }
+
+/* ─── 地圖畫面 ─── */
+#screen-map {
+  display: none;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #fff3e0 0%, #fde8ec 100%);
+}
+
+.map-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.map-header h1 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1.3rem;
+  color: var(--pink-dark);
+  font-weight: 900;
+}
+
+.score-strip {
+  display: flex;
+  gap: 1rem;
+}
+
+.score-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--pink-light);
+  border-radius: 20px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--brown);
+}
+
+.score-chip-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+
+.map-container {
+  position: relative;
+  width: 100%;
+  overflow: auto;
+  padding: 1.5rem;
+}
+
+.map-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  min-width: 600px;
+  max-width: 900px;
+  margin: 0 auto;
+  aspect-ratio: 2360/1640;
+}
+
+.map-cell {
+  aspect-ratio: 1;
+  border: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.6rem, 1.5vw, 0.85rem);
+  color: #bbb;
+  font-weight: 500;
+  position: relative;
+  background: #fafafa;
+  transition: background 0.2s;
+}
+
+/* 關卡區塊著色 */
+.zone-animal { background: rgba(123,201,126,0.15) !important; }
+.zone-number { background: rgba(106,171,247,0.15) !important; }
+.zone-color  { background: rgba(180,142,244,0.15) !important; }
+.zone-body   { background: rgba(244,160,85,0.15) !important; }
+.zone-boss   { background: rgba(244,80,106,0.12) !important; }
+
+.zone-label {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.zone-label .icon { font-size: clamp(1.2rem, 3vw, 2rem); display: block; }
+.zone-label .name { font-size: clamp(0.5rem, 1.2vw, 0.75rem); color: #888; display: block; margin-top: 0.1rem; white-space: nowrap; }
+
+/* 關卡按鈕 */
+.zone-btn {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  border: none;
+  border-radius: 50%;
+  width: clamp(44px, 8vw, 72px);
+  height: clamp(44px, 8vw, 72px);
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zone-btn:active { transform: translate(-50%, -50%) scale(0.9); }
+
+.zone-btn.cleared {
+  opacity: 0.5;
+  filter: grayscale(0.5);
+}
+
+.zone-btn.cleared::after {
+  content: '✓';
+  position: absolute;
+  bottom: -2px; right: -2px;
+  background: #4caf50;
+  color: white;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── 關卡畫面 ─── */
+#screen-quest {
+  display: none;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.quest-header {
+  background: white;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.btn-back {
+  background: var(--pink-light);
+  border: none;
+  border-radius: 50%;
+  width: 40px; height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.quest-header h2 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1.2rem;
+  color: var(--brown);
+  flex: 1;
+}
+
+.quest-body {
+  padding: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.question-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  animation: cardIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.question-num {
+  font-size: 0.8rem;
+  color: #bbb;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.5rem;
+}
+
+.question-text {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 900;
+  color: var(--brown);
+  letter-spacing: 0.3em;
+  margin: 1rem 0;
+  line-height: 1.4;
+}
+
+.question-hint {
+  font-size: 0.9rem;
+  color: #a0a0a0;
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.choice-btn {
+  background: white;
+  border: 2px solid #eee;
+  border-radius: 16px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 500;
+  color: var(--brown);
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1.4;
+}
+
+.choice-btn:active { transform: scale(0.97); }
+.choice-btn.correct { background: #e8f5e9; border-color: #66bb6a; color: #2e7d32; }
+.choice-btn.wrong   { background: #ffebee; border-color: #ef5350; color: #c62828; }
+
+/* 加分面板 */
+.score-panel {
+  background: white;
+  border-radius: 16px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 0.8rem;
+}
+
+.team-score-btn {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  padding: 0.8rem;
+  font-size: 0.9rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.team-score-btn:active { transform: scale(0.95); }
+.team-score-btn span { font-size: 1.5rem; font-family: 'Noto Serif TC', serif; }
+
+/* 結果彈窗 */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay.show { display: flex; }
+
+.result-card {
+  background: white;
+  border-radius: 24px;
+  padding: 2.5rem;
+  text-align: center;
+  max-width: 360px;
+  width: 90%;
+  animation: cardIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.result-emoji { font-size: 4rem; display: block; margin-bottom: 1rem; }
+.result-text { font-family: 'Noto Serif TC', serif; font-size: 1.5rem; font-weight: 900; color: var(--brown); margin-bottom: 0.5rem; }
+.result-sub { font-size: 0.9rem; color: #a0a0a0; margin-bottom: 2rem; }
+
+/* 清零確認 */
+.confirm-card {
+  background: white;
+  border-radius: 24px;
+  padding: 2rem;
+  text-align: center;
+  max-width: 320px;
+  width: 90%;
+}
+
+.confirm-card h3 { font-size: 1.2rem; color: var(--brown); margin-bottom: 0.5rem; }
+.confirm-card p { font-size: 0.9rem; color: #a0a0a0; margin-bottom: 1.5rem; }
+.confirm-btns { display: flex; gap: 0.8rem; }
+.btn-danger { flex: 1; background: #ef5350; color: white; border: none; border-radius: 12px; padding: 0.8rem; font-size: 1rem; cursor: pointer; font-family: 'Noto Sans TC', sans-serif; font-weight: 700; }
+.btn-cancel { flex: 1; background: #f5f5f5; color: #666; border: none; border-radius: 12px; padding: 0.8rem; font-size: 1rem; cursor: pointer; font-family: 'Noto Sans TC', sans-serif; }
+
+@keyframes titlePop {
+  from { opacity: 0; transform: scale(0.8) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* cell number label */
+.cell-num {
+  position: absolute;
+  top: 3px; left: 5px;
+  font-size: clamp(0.4rem, 1vw, 0.6rem);
+  color: #ccc;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<!-- ════ 標題畫面 ════ -->
+<div id="screen-title">
+  <div class="title-logo">成之於語</div>
+  <div class="title-sub">成語地圖探險</div>
+
+  <div class="score-board-home">
+    <h3>📊 當前分數</h3>
+    <div class="team-scores">
+      <div class="team-score-item">
+        <div class="team-dot" style="background:#f4a0b0"></div>
+        <span id="home-name-a">隊伍 A</span>
+        <strong id="home-score-a">0</strong>
+      </div>
+      <div class="team-score-item">
+        <div class="team-dot" style="background:#6aabf7"></div>
+        <span id="home-name-b">隊伍 B</span>
+        <strong id="home-score-b">0</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn-main" onclick="goMap()">🗺️ 開始探險</button>
+    <button class="btn-secondary" onclick="showConfirmReset()">🔄 清零分數</button>
+  </div>
+</div>
+
+<!-- ════ 地圖畫面 ════ -->
+<div id="screen-map">
+  <div class="map-header">
+    <button class="btn-back" onclick="goTitle()">←</button>
+    <h1>🗺️ 成語大地圖</h1>
+    <div class="score-strip">
+      <div class="score-chip">
+        <div class="score-chip-dot" style="background:#f4a0b0"></div>
+        <span id="map-score-a">0</span>
+      </div>
+      <div class="score-chip">
+        <div class="score-chip-dot" style="background:#6aabf7"></div>
+        <span id="map-score-b">0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="map-container">
+    <div class="map-grid" id="mapGrid"></div>
+  </div>
+</div>
+
+<!-- ════ 關卡畫面 ════ -->
+<div id="screen-quest">
+  <div class="quest-header">
+    <button class="btn-back" onclick="goMap()">←</button>
+    <h2 id="quest-title">關卡</h2>
+    <div class="score-strip">
+      <div class="score-chip">
+        <div class="score-chip-dot" style="background:#f4a0b0"></div>
+        <span id="quest-score-a">0</span>
+      </div>
+      <div class="score-chip">
+        <div class="score-chip-dot" style="background:#6aabf7"></div>
+        <span id="quest-score-b">0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="quest-body">
+    <div class="question-card" id="questionCard">
+      <div class="question-num" id="questionNum">第 1 題 / 共 3 題</div>
+      <div class="question-text" id="questionText"></div>
+      <div class="question-hint" id="questionHint"></div>
+    </div>
+
+    <div class="choices" id="choicesContainer"></div>
+
+    <div class="score-panel">
+      <button class="team-score-btn" id="addA" style="background:#fff0f3; color:#c2506a;" onclick="addScore('A')">
+        <span id="qs-a">0</span>
+        隊伍 A ＋1
+      </button>
+      <button class="team-score-btn" id="addB" style="background:#f0f6ff; color:#3a7fd5;" onclick="addScore('B')">
+        <span id="qs-b">0</span>
+        隊伍 B ＋1
+      </button>
+    </div>
+
+    <div style="text-align:center;">
+      <button class="btn-main" id="nextBtn" onclick="nextQuestion()" style="display:none;">下一題 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- 結果彈窗 -->
+<div class="overlay" id="overlayResult">
+  <div class="result-card">
+    <span class="result-emoji" id="resultEmoji">🎉</span>
+    <div class="result-text" id="resultText">答對了！</div>
+    <div class="result-sub" id="resultSub">選擇隊伍加分</div>
+    <button class="btn-main" onclick="closeResult()">繼續</button>
+  </div>
+</div>
+
+<!-- 清零確認 -->
+<div class="overlay" id="overlayReset">
+  <div class="confirm-card">
+    <h3>確定要清零嗎？</h3>
+    <p>所有分數與通關紀錄將歸零</p>
+    <div class="confirm-btns">
+      <button class="btn-danger" onclick="resetAll()">確定清零</button>
+      <button class="btn-cancel" onclick="closeReset()">取消</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// 資料定義
+// ══════════════════════════════════════════
+
+const ZONES = [
+  {
+    id: 'animal',
+    name: '動物村',
+    icon: '🐾',
+    color: '#7bc97e',
+    cells: [3, 4, 11, 12],      // 佔這些格子
+    btnCell: 7,                   // 按鈕放在第幾格（以1開始）
+    questions: [
+      {
+        text: '狐假虎威',
+        hint: '下列哪個解釋正確？',
+        choices: ['借助他人威勢嚇人', '老虎和狐狸是好朋友', '狐狸比老虎強', '假裝是老虎'],
+        answer: 0
+      },
+      {
+        text: '守株待兔',
+        hint: '這個成語比喻什麼？',
+        choices: ['農夫很努力', '坐等好事降臨', '耐心等待', '守護樹木'],
+        answer: 1
+      },
+      {
+        text: '井底之蛙',
+        hint: '比喻什麼樣的人？',
+        choices: ['住在井裡的蛙', '見識狹隘的人', '膽子很小的人', '很會跳的人'],
+        answer: 1
+      }
+    ]
+  },
+  {
+    id: 'number',
+    name: '數字街',
+    icon: '🔢',
+    color: '#6aabf7',
+    cells: [21, 22, 29, 30],
+    btnCell: 25,
+    questions: [
+      {
+        text: '一__反三',
+        hint: '空格填入的數字是？',
+        choices: ['二', '三', '四', '五'],
+        answer: 0
+      },
+      {
+        text: '火冒__丈',
+        hint: '空格填入的數字是？',
+        choices: ['一', '二', '三', '四'],
+        answer: 2
+      },
+      {
+        text: '__言為定',
+        hint: '空格填入的數字是？',
+        choices: ['一', '二', '三', '四'],
+        answer: 0
+      }
+    ]
+  },
+  {
+    id: 'color',
+    name: '顏色坊',
+    icon: '🎨',
+    color: '#b48ef4',
+    cells: [35, 36, 43, 44],
+    btnCell: 39,
+    questions: [
+      {
+        text: '青出於藍',
+        hint: '這個成語的意思是？',
+        choices: ['顏色很漂亮', '後來居上超越師長', '天空很藍', '出外旅行'],
+        answer: 1
+      },
+      {
+        text: '黑白不分',
+        hint: '比喻什麼？',
+        choices: ['眼睛看不清楚', '是非不分、糊塗', '沒有顏色', '夜晚和白天'],
+        answer: 1
+      },
+      {
+        text: '萬紫千紅',
+        hint: '形容什麼景象？',
+        choices: ['很多種顏色、百花盛開', '只有紅色和紫色', '天上的彩虹', '畫畫的顏料'],
+        answer: 0
+      }
+    ]
+  },
+  {
+    id: 'body',
+    name: '身體道',
+    icon: '💪',
+    color: '#f4a055',
+    cells: [53, 54, 61, 62],
+    btnCell: 57,
+    questions: [
+      {
+        text: '七__八臂',
+        hint: '空格填入身體部位',
+        choices: ['手', '頭', '腳', '眼'],
+        answer: 1
+      },
+      {
+        text: '__心__用',
+        hint: '形容同時做兩件事',
+        choices: ['一心二用', '二心三用', '一心一用', '三心兩用'],
+        answer: 0
+      },
+      {
+        text: '呆若木雞',
+        hint: '這個成語現代通常形容什麼？',
+        choices: ['像木頭一樣呆立、發愣', '很厲害的雞', '木工師傅', '很安靜'],
+        answer: 0
+      }
+    ]
+  },
+  {
+    id: 'boss',
+    name: '挑戰塔',
+    icon: '⭐',
+    color: '#f4506a',
+    cells: [47, 48, 55, 56],
+    btnCell: 51,
+    questions: [
+      {
+        text: '一箭雙鵰',
+        hint: '這個成語的意思是？',
+        choices: ['射箭技術很好', '一舉兩得', '兩隻老鷹打架', '雙倍的獎勵'],
+        answer: 1
+      },
+      {
+        text: '虎頭蛇尾',
+        hint: '比喻什麼？',
+        choices: ['老虎和蛇是朋友', '做事虎頭虎腦', '開始認真、結果草率', '長得像動物'],
+        answer: 2
+      },
+      {
+        text: '鶴立雞群',
+        hint: '形容什麼樣的人？',
+        choices: ['喜歡鳥類的人', '在人群中特別出眾', '養很多雞的農夫', '跑步很快'],
+        answer: 1
+      }
+    ]
+  }
+];
+
+// 格子對應區域
+const cellZone = {};
+ZONES.forEach(z => z.cells.forEach(c => { cellZone[c] = z.id; }));
+
+// ══════════════════════════════════════════
+// 狀態
+// ══════════════════════════════════════════
+
+let state = JSON.parse(localStorage.getItem('chengyu_state') || 'null') || {
+  scoreA: 0,
+  scoreB: 0,
+  cleared: []
+};
+
+let currentZone = null;
+let currentQIdx = 0;
+let answered = false;
+
+// ══════════════════════════════════════════
+// 建構地圖
+// ══════════════════════════════════════════
+
+function buildMap() {
+  const grid = document.getElementById('mapGrid');
+  grid.innerHTML = '';
+
+  for (let i = 1; i <= 64; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'map-cell';
+    cell.dataset.cell = i;
+
+    const numLabel = document.createElement('span');
+    numLabel.className = 'cell-num';
+    numLabel.textContent = i;
+    cell.appendChild(numLabel);
+
+    const zoneId = cellZone[i];
+    if (zoneId) {
+      cell.classList.add('zone-' + zoneId);
+    }
+
+    grid.appendChild(cell);
+  }
+
+  // 放按鈕
+  ZONES.forEach(zone => {
+    const targetCell = grid.querySelector(`[data-cell="${zone.btnCell}"]`);
+    if (!targetCell) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'zone-btn' + (state.cleared.includes(zone.id) ? ' cleared' : '');
+    btn.style.background = `linear-gradient(135deg, ${zone.color}, ${zone.color}cc)`;
+    btn.textContent = zone.icon;
+    btn.title = zone.name;
+    btn.onclick = () => startQuest(zone.id);
+
+    targetCell.style.position = 'relative';
+    targetCell.appendChild(btn);
+  });
+}
+
+// ══════════════════════════════════════════
+// 畫面切換
+// ══════════════════════════════════════════
+
+function goTitle() {
+  document.getElementById('screen-title').style.display = 'flex';
+  document.getElementById('screen-map').style.display = 'none';
+  document.getElementById('screen-quest').style.display = 'none';
+  updateAllScores();
+}
+
+function goMap() {
+  document.getElementById('screen-title').style.display = 'none';
+  document.getElementById('screen-map').style.display = 'block';
+  document.getElementById('screen-quest').style.display = 'none';
+  buildMap();
+  updateAllScores();
+}
+
+// ══════════════════════════════════════════
+// 關卡邏輯
+// ══════════════════════════════════════════
+
+function startQuest(zoneId) {
+  currentZone = ZONES.find(z => z.id === zoneId);
+  currentQIdx = 0;
+  document.getElementById('screen-map').style.display = 'none';
+  document.getElementById('screen-quest').style.display = 'block';
+  document.getElementById('quest-title').textContent = currentZone.icon + ' ' + currentZone.name;
+  renderQuestion();
+  updateAllScores();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = currentZone.questions[currentQIdx];
+  document.getElementById('questionNum').textContent = `第 ${currentQIdx + 1} 題 ／ 共 ${currentZone.questions.length} 題`;
+  document.getElementById('questionText').textContent = q.text;
+  document.getElementById('questionHint').textContent = q.hint;
+  document.getElementById('nextBtn').style.display = 'none';
+
+  const container = document.getElementById('choicesContainer');
+  container.innerHTML = '';
+  q.choices.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = c;
+    btn.onclick = () => selectChoice(i, btn, q.answer);
+    container.appendChild(btn);
+  });
+}
+
+function selectChoice(idx, btn, answer) {
+  if (answered) return;
+  answered = true;
+
+  const allBtns = document.querySelectorAll('.choice-btn');
+  allBtns.forEach((b, i) => {
+    if (i === answer) b.classList.add('correct');
+    else if (i === idx && idx !== answer) b.classList.add('wrong');
+  });
+
+  document.getElementById('nextBtn').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  currentQIdx++;
+  if (currentQIdx >= currentZone.questions.length) {
+    // 關卡完成
+    if (!state.cleared.includes(currentZone.id)) {
+      state.cleared.push(currentZone.id);
+      saveState();
+    }
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function addScore(team) {
+  if (team === 'A') state.scoreA++;
+  else state.scoreB++;
+  saveState();
+  updateAllScores();
+}
+
+// ══════════════════════════════════════════
+// 彈窗
+// ══════════════════════════════════════════
+
+function showResult() {
+  document.getElementById('overlayResult').classList.add('show');
+  document.getElementById('resultEmoji').textContent = '🎊';
+  document.getElementById('resultText').textContent = currentZone.name + ' 完成！';
+  document.getElementById('resultSub').textContent = '答對的隊伍請加分 ↑';
+}
+
+function closeResult() {
+  document.getElementById('overlayResult').classList.remove('show');
+  goMap();
+}
+
+function showConfirmReset() {
+  document.getElementById('overlayReset').classList.add('show');
+}
+
+function closeReset() {
+  document.getElementById('overlayReset').classList.remove('show');
+}
+
+function resetAll() {
+  state = { scoreA: 0, scoreB: 0, cleared: [] };
+  saveState();
+  updateAllScores();
+  closeReset();
+}
+
+// ══════════════════════════════════════════
+// 工具
+// ══════════════════════════════════════════
+
+function saveState() {
+  localStorage.setItem('chengyu_state', JSON.stringify(state));
+}
+
+function updateAllScores() {
+  const ids = ['home-score-a','map-score-a','quest-score-a','qs-a'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = state.scoreA;
+  });
+  const ids2 = ['home-score-b','map-score-b','quest-score-b','qs-b'];
+  ids2.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = state.scoreB;
+  });
+}
+
+// ══════════════════════════════════════════
+// 初始化
+// ══════════════════════════════════════════
+
+updateAllScores();
+</script>
+<script>
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("./sw.js").then(()=>console.log("SW registered"));
+}
+</script>
+</body>
+</html>
