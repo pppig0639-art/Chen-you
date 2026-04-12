@@ -11,954 +11,483 @@
 <title>成之於語｜成語地圖探險</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --pink: #f4a0b0;
-  --pink-light: #fde8ec;
-  --pink-dark: #c2506a;
-  --orange: #f4a055;
-  --blue: #6aabf7;
-  --green: #7bc97e;
-  --purple: #b48ef4;
-  --yellow: #f4d460;
-  --cream: #fff8f0;
-  --brown: #5a2d2d;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: 'Noto Sans TC', sans-serif;
-  background: var(--pink-light);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ─── 標題畫面 ─── */
-#screen-title {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #fde8ec 0%, #fdf0e0 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-#screen-title::before {
-  content: '';
-  position: absolute;
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(244,160,176,0.3) 0%, transparent 70%);
-  top: -100px; right: -100px;
-  border-radius: 50%;
-}
-
-.title-logo {
-  font-family: 'Noto Serif TC', serif;
-  font-size: clamp(3rem, 10vw, 6rem);
-  font-weight: 900;
-  color: var(--pink-dark);
-  text-shadow: 4px 4px 0px rgba(194,80,106,0.2);
-  letter-spacing: 0.2em;
-  animation: titlePop 0.8s cubic-bezier(0.34,1.56,0.64,1);
-  position: relative;
-  z-index: 1;
-}
-
-.title-sub {
-  font-size: 1.2rem;
-  color: #a06070;
-  margin: 0.5rem 0 3rem;
-  letter-spacing: 0.3em;
-}
-
-.score-board-home {
-  background: white;
-  border-radius: 20px;
-  padding: 1.5rem 2.5rem;
-  margin-bottom: 2.5rem;
-  box-shadow: 0 8px 30px rgba(194,80,106,0.15);
-  text-align: center;
-  min-width: 280px;
-}
-
-.score-board-home h3 {
-  font-size: 0.85rem;
-  color: #a06070;
-  letter-spacing: 0.2em;
-  margin-bottom: 1rem;
-}
-
-.team-scores {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-}
-
-.team-score-item {
-  text-align: center;
-}
-
-.team-dot {
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  margin: 0 auto 0.4rem;
-}
-
-.team-score-item span {
-  display: block;
-  font-size: 0.8rem;
-  color: #a06070;
-  margin-bottom: 0.2rem;
-}
-
-.team-score-item strong {
-  font-size: 2rem;
-  font-family: 'Noto Serif TC', serif;
-  color: var(--brown);
-}
-
-.btn-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-}
-
-.btn-main {
-  background: linear-gradient(135deg, var(--pink-dark), #e87090);
-  color: white;
-  border: none;
-  border-radius: 50px;
-  padding: 1rem 3rem;
-  font-size: 1.2rem;
-  font-family: 'Noto Sans TC', sans-serif;
-  font-weight: 700;
-  cursor: pointer;
-  letter-spacing: 0.15em;
-  box-shadow: 0 6px 20px rgba(194,80,106,0.4);
-  transition: all 0.2s;
-}
-
-.btn-main:active { transform: scale(0.96); }
-
-.btn-secondary {
-  background: white;
-  color: var(--pink-dark);
-  border: 2px solid var(--pink);
-  border-radius: 50px;
-  padding: 0.7rem 2rem;
-  font-size: 1rem;
-  font-family: 'Noto Sans TC', sans-serif;
-  cursor: pointer;
-  letter-spacing: 0.1em;
-  transition: all 0.2s;
-}
-
-.btn-secondary:active { transform: scale(0.96); }
-
-/* ─── 地圖畫面 ─── */
-#screen-map {
-  display: none;
-  min-height: 100vh;
-  background: linear-gradient(160deg, #fff3e0 0%, #fde8ec 100%);
-}
-
-.map-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 1.5rem;
-  background: white;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-}
-
-.map-header h1 {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 1.3rem;
-  color: var(--pink-dark);
-  font-weight: 900;
-}
-
-.score-strip {
-  display: flex;
-  gap: 1rem;
-}
-
-.score-chip {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: var(--pink-light);
-  border-radius: 20px;
-  padding: 0.3rem 0.8rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--brown);
-}
-
-.score-chip-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-}
-
-.map-container {
-  position: relative;
-  width: 100%;
-  overflow: auto;
-  padding: 1.5rem;
-}
-
-.map-grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 0;
-  background: white;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-  min-width: 600px;
-  max-width: 900px;
-  margin: 0 auto;
-  aspect-ratio: 2360/1640;
-}
-
-.map-cell {
-  aspect-ratio: 1;
-  border: 1px solid rgba(0,0,0,0.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(0.6rem, 1.5vw, 0.85rem);
-  color: #bbb;
-  font-weight: 500;
-  position: relative;
-  background: #fafafa;
-  transition: background 0.2s;
-}
-
-/* 關卡區塊著色 */
-.zone-animal { background: rgba(123,201,126,0.15) !important; }
-.zone-number { background: rgba(106,171,247,0.15) !important; }
-.zone-color  { background: rgba(180,142,244,0.15) !important; }
-.zone-body   { background: rgba(244,160,85,0.15) !important; }
-.zone-boss   { background: rgba(244,80,106,0.12) !important; }
-
-.zone-label {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.zone-label .icon { font-size: clamp(1.2rem, 3vw, 2rem); display: block; }
-.zone-label .name { font-size: clamp(0.5rem, 1.2vw, 0.75rem); color: #888; display: block; margin-top: 0.1rem; white-space: nowrap; }
-
-/* 關卡按鈕 */
-.zone-btn {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  border: none;
-  border-radius: 50%;
-  width: clamp(44px, 8vw, 72px);
-  height: clamp(44px, 8vw, 72px);
-  font-size: clamp(1rem, 2vw, 1.6rem);
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-  transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.zone-btn:active { transform: translate(-50%, -50%) scale(0.9); }
-
-.zone-btn.cleared {
-  opacity: 0.5;
-  filter: grayscale(0.5);
-}
-
-.zone-btn.cleared::after {
-  content: '✓';
-  position: absolute;
-  bottom: -2px; right: -2px;
-  background: #4caf50;
-  color: white;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  font-size: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ─── 關卡畫面 ─── */
-#screen-quest {
-  display: none;
-  min-height: 100vh;
-  padding: 0;
-}
-
-.quest-header {
-  background: white;
-  padding: 1rem 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-}
-
-.btn-back {
-  background: var(--pink-light);
-  border: none;
-  border-radius: 50%;
-  width: 40px; height: 40px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-}
-
-.quest-header h2 {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 1.2rem;
-  color: var(--brown);
-  flex: 1;
-}
-
-.quest-body {
-  padding: 1.5rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.question-card {
-  background: white;
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-  margin-bottom: 1.5rem;
-  text-align: center;
-  animation: cardIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
-}
-
-.question-num {
-  font-size: 0.8rem;
-  color: #bbb;
-  letter-spacing: 0.2em;
-  margin-bottom: 0.5rem;
-}
-
-.question-text {
-  font-family: 'Noto Serif TC', serif;
-  font-size: clamp(1.8rem, 5vw, 3rem);
-  font-weight: 900;
-  color: var(--brown);
-  letter-spacing: 0.3em;
-  margin: 1rem 0;
-  line-height: 1.4;
-}
-
-.question-hint {
-  font-size: 0.9rem;
-  color: #a0a0a0;
-}
-
-.choices {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.8rem;
-  margin-bottom: 1.5rem;
-}
-
-.choice-btn {
-  background: white;
-  border: 2px solid #eee;
-  border-radius: 16px;
-  padding: 1rem;
-  font-size: 1rem;
-  font-family: 'Noto Sans TC', sans-serif;
-  font-weight: 500;
-  color: var(--brown);
-  cursor: pointer;
-  transition: all 0.2s;
-  line-height: 1.4;
-}
-
-.choice-btn:active { transform: scale(0.97); }
-.choice-btn.correct { background: #e8f5e9; border-color: #66bb6a; color: #2e7d32; }
-.choice-btn.wrong   { background: #ffebee; border-color: #ef5350; color: #c62828; }
-
-/* 加分面板 */
-.score-panel {
-  background: white;
-  border-radius: 16px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  gap: 0.8rem;
-}
-
-.team-score-btn {
-  flex: 1;
-  border: none;
-  border-radius: 12px;
-  padding: 0.8rem;
-  font-size: 0.9rem;
-  font-family: 'Noto Sans TC', sans-serif;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.team-score-btn:active { transform: scale(0.95); }
-.team-score-btn span { font-size: 1.5rem; font-family: 'Noto Serif TC', serif; }
-
-/* 結果彈窗 */
-.overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 100;
-  align-items: center;
-  justify-content: center;
-}
-
-.overlay.show { display: flex; }
-
-.result-card {
-  background: white;
-  border-radius: 24px;
-  padding: 2.5rem;
-  text-align: center;
-  max-width: 360px;
-  width: 90%;
-  animation: cardIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
-}
-
-.result-emoji { font-size: 4rem; display: block; margin-bottom: 1rem; }
-.result-text { font-family: 'Noto Serif TC', serif; font-size: 1.5rem; font-weight: 900; color: var(--brown); margin-bottom: 0.5rem; }
-.result-sub { font-size: 0.9rem; color: #a0a0a0; margin-bottom: 2rem; }
-
-/* 清零確認 */
-.confirm-card {
-  background: white;
-  border-radius: 24px;
-  padding: 2rem;
-  text-align: center;
-  max-width: 320px;
-  width: 90%;
-}
-
-.confirm-card h3 { font-size: 1.2rem; color: var(--brown); margin-bottom: 0.5rem; }
-.confirm-card p { font-size: 0.9rem; color: #a0a0a0; margin-bottom: 1.5rem; }
-.confirm-btns { display: flex; gap: 0.8rem; }
-.btn-danger { flex: 1; background: #ef5350; color: white; border: none; border-radius: 12px; padding: 0.8rem; font-size: 1rem; cursor: pointer; font-family: 'Noto Sans TC', sans-serif; font-weight: 700; }
-.btn-cancel { flex: 1; background: #f5f5f5; color: #666; border: none; border-radius: 12px; padding: 0.8rem; font-size: 1rem; cursor: pointer; font-family: 'Noto Sans TC', sans-serif; }
-
-@keyframes titlePop {
-  from { opacity: 0; transform: scale(0.8) translateY(20px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-@keyframes cardIn {
-  from { opacity: 0; transform: scale(0.9) translateY(20px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-/* cell number label */
-.cell-num {
-  position: absolute;
-  top: 3px; left: 5px;
-  font-size: clamp(0.4rem, 1vw, 0.6rem);
-  color: #ccc;
-  pointer-events: none;
-}
+:root{--pd:#c2506a;--pl:#fde8ec;--brown:#5a2d2d}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh}
+/* 共用按鈕 */
+.bm{background:linear-gradient(135deg,var(--pd),#e87090);color:white;border:none;border-radius:50px;padding:1rem 3rem;font-size:1.2rem;font-family:'Noto Sans TC',sans-serif;font-weight:700;cursor:pointer;letter-spacing:.15em;box-shadow:0 6px 20px rgba(194,80,106,.4);transition:all .2s;width:100%}
+.bm:active{transform:scale(.96)}
+.bs{background:white;color:var(--pd);border:2px solid #f4a0b0;border-radius:50px;padding:.7rem 2rem;font-size:1rem;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .2s;width:100%}
+.bs:active{transform:scale(.96)}
+.bb{background:#fde8ec;border:none;border-radius:50%;width:44px;height:44px;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.2rem;background:white;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.hdr-title{font-family:'Noto Serif TC',serif;font-size:1.2rem;color:var(--pd);font-weight:900;flex:1;padding:0 .5rem}
+.sstrip{display:flex;gap:.8rem}
+.schip{display:flex;align-items:center;gap:.4rem;background:#fde8ec;border-radius:20px;padding:.3rem .8rem;font-size:1rem;font-weight:700;color:var(--brown)}
+.sdot{width:10px;height:10px;border-radius:50%}
+/* 標題 */
+#s-title{display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#fde8ec,#fdf0e0);padding:2rem}
+.logo{font-family:'Noto Serif TC',serif;font-size:clamp(3rem,10vw,7rem);font-weight:900;color:var(--pd);text-shadow:4px 4px 0 rgba(194,80,106,.2);letter-spacing:.2em;margin-bottom:.3rem}
+.sub{font-size:1.1rem;color:#a06070;letter-spacing:.3em;margin-bottom:1.8rem}
+.card{background:white;border-radius:20px;padding:1.5rem 2rem;margin-bottom:1.2rem;box-shadow:0 8px 30px rgba(194,80,106,.12);width:100%;max-width:440px}
+.card h3{font-size:.85rem;color:#a06070;letter-spacing:.2em;margin-bottom:1rem;text-align:center}
+.irow{display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem}
+.d16{width:16px;height:16px;border-radius:50%;flex-shrink:0}
+.ni{flex:1;border:2px solid #f0d0d8;border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-family:'Noto Sans TC',sans-serif;color:var(--brown);outline:none;transition:border-color .2s}
+.ni:focus{border-color:var(--pd)}
+.scores{display:flex;gap:2rem;justify-content:center}
+.si{text-align:center}
+.sid{width:14px;height:14px;border-radius:50%;margin:0 auto .4rem}
+.si span{display:block;font-size:.85rem;color:#a06070;margin-bottom:.2rem}
+.si strong{font-size:2.5rem;font-family:'Noto Serif TC',serif;color:var(--brown)}
+.btns{display:flex;flex-direction:column;gap:1rem;align-items:center;width:100%;max-width:320px}
+/* 地圖 */
+#s-map{background:linear-gradient(160deg,#fff3e0,#fde8ec)}
+.mscroll{overflow:auto;padding:1rem}
+.mgrid{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);width:100%;max-width:900px;margin:0 auto;background:white;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.1);aspect-ratio:1/1}
+.mc{border:1px solid rgba(0,0,0,.06);position:relative;background:#fafafa;padding:3px 5px}
+.cn{font-size:clamp(.4rem,.9vw,.65rem);color:#ccc;font-weight:500;line-height:1}
+.zone-animal{background:rgba(123,201,126,.22)!important}
+.zone-number{background:rgba(106,171,247,.22)!important}
+.zone-color{background:rgba(180,142,244,.22)!important}
+.zone-body{background:rgba(244,160,85,.22)!important}
+.zone-boss{background:rgba(244,80,106,.18)!important}
+.zbw{display:flex;align-items:center;justify-content:center}
+.zb{width:85%;height:85%;border:none;border-radius:50%;cursor:pointer;box-shadow:0 6px 22px rgba(0,0,0,.28);transition:all .2s cubic-bezier(.34,1.56,.64,1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem}
+.zb:active{transform:scale(.9)}
+.zb.cleared{opacity:.55;filter:grayscale(.4)}
+.zbi{font-size:clamp(1.6rem,3.5vw,2.8rem);line-height:1}
+.zbl{font-size:clamp(.5rem,1.1vw,.75rem);font-weight:700;color:white;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.35)}
+/* 關卡 */
+#s-quest{background:linear-gradient(160deg,#fff3e0,#fde8ec)}
+.qbody{padding:1.5rem;max-width:720px;margin:0 auto}
+.qcard{background:white;border-radius:24px;padding:2.5rem 2rem;box-shadow:0 8px 30px rgba(0,0,0,.08);margin-bottom:1.2rem;text-align:center;animation:ci .35s cubic-bezier(.34,1.56,.64,1)}
+.qnum{font-size:.95rem;color:#bbb;letter-spacing:.2em;margin-bottom:.8rem}
+.qtxt{font-family:'Noto Serif TC',serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:900;color:var(--brown);letter-spacing:.3em;margin:.5rem 0 1rem;line-height:1.3}
+.qhint{font-size:1.05rem;color:#a0a0a0}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem}
+.cb{background:white;border:3px solid #eee;border-radius:20px;padding:1.2rem 1rem;font-size:clamp(1rem,2.5vw,1.25rem);font-family:'Noto Sans TC',sans-serif;font-weight:500;color:var(--brown);cursor:pointer;transition:all .2s;line-height:1.4;min-height:80px;display:flex;align-items:center;justify-content:center;text-align:center}
+.cb.correct{background:#e8f5e9;border-color:#66bb6a;color:#2e7d32}
+.cb.wrong{background:#ffebee;border-color:#ef5350;color:#c62828}
+.spanel{background:white;border-radius:20px;padding:1rem;margin-bottom:1.2rem;display:flex;gap:1rem;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.tsb{flex:1;border:none;border-radius:16px;padding:1rem;font-family:'Noto Sans TC',sans-serif;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.3rem;font-size:1rem}
+.tsb:active{transform:scale(.95)}
+.tsb span{font-size:2rem;font-family:'Noto Serif TC',serif}
+.nwrap{text-align:center}
+#nextBtn{display:none;background:linear-gradient(135deg,var(--pd),#e87090);color:white;border:none;border-radius:50px;padding:1rem 3rem;font-size:1.1rem;font-family:'Noto Sans TC',sans-serif;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(194,80,106,.4)}
+/* 後台 */
+#s-admin{background:#f8f0f4}
+.abody{padding:1.2rem;max-width:800px;margin:0 auto}
+.ztabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.ztab{background:white;border:2px solid #eee;border-radius:20px;padding:.5rem 1rem;font-size:.9rem;font-family:'Noto Sans TC',sans-serif;cursor:pointer;font-weight:500;transition:all .2s}
+.ztab:active{transform:scale(.96)}
+.qlist{display:flex;flex-direction:column;gap:.8rem;margin-bottom:1.2rem}
+.qi{background:white;border-radius:16px;padding:1rem 1.2rem;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.qi-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.6rem}
+.qi-t{font-family:'Noto Serif TC',serif;font-size:1.1rem;font-weight:700;color:var(--brown)}
+.qi-h{font-size:.8rem;color:#a0a0a0;margin-bottom:.4rem}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:.3rem}
+.cc{font-size:.8rem;padding:.25rem .6rem;border-radius:8px;background:#f5f5f5;color:#666}
+.cc.ans{background:#e8f5e9;color:#2e7d32;font-weight:700}
+.delbtn{background:#ffebee;color:#ef5350;border:none;border-radius:8px;padding:.3rem .7rem;font-size:.85rem;cursor:pointer;flex-shrink:0;white-space:nowrap;font-family:'Noto Sans TC',sans-serif}
+.delbtn:active{transform:scale(.95)}
+.aform{background:white;border-radius:20px;padding:1.5rem;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.aform h3{font-size:1rem;color:var(--pd);font-weight:700;margin-bottom:1rem}
+.fl{margin-bottom:.8rem}
+.fl label{display:block;font-size:.8rem;color:#a06070;margin-bottom:.3rem;font-weight:500}
+.fi{width:100%;border:2px solid #f0d0d8;border-radius:10px;padding:.6rem .9rem;font-size:.95rem;font-family:'Noto Sans TC',sans-serif;color:var(--brown);outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--pd)}
+.cig{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem}
+.ci2{width:100%;border:2px solid #eee;border-radius:10px;padding:.6rem .9rem;font-size:.9rem;font-family:'Noto Sans TC',sans-serif;color:var(--brown);outline:none;transition:all .2s}
+.ci2.sa{border-color:#66bb6a;background:#f0fff4}
+.ci2:focus{border-color:var(--pd)}
+.asel{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.8rem}
+.ab2{background:#f5f5f5;border:2px solid #eee;border-radius:10px;padding:.4rem .9rem;font-size:.85rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
+.ab2.sel{background:#e8f5e9;border-color:#66bb6a;color:#2e7d32;font-weight:700}
+/* 彈窗 */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
+.ov.show{display:flex}
+.pop{background:white;border-radius:28px;padding:2.5rem 2rem;text-align:center;max-width:380px;width:90%;animation:ci .35s cubic-bezier(.34,1.56,.64,1)}
+.pe{font-size:4.5rem;display:block;margin-bottom:1rem}
+.pt{font-family:'Noto Serif TC',serif;font-size:1.8rem;font-weight:900;color:var(--brown);margin-bottom:.5rem}
+.ps{font-size:1rem;color:#a0a0a0;margin-bottom:2rem}
+.cbns{display:flex;gap:.8rem;margin-top:1.2rem}
+.bd{flex:1;background:#ef5350;color:white;border:none;border-radius:12px;padding:.9rem;font-size:1rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:700}
+.bc{flex:1;background:#f5f5f5;color:#666;border:none;border-radius:12px;padding:.9rem;font-size:1rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif}
+.pwi{width:100%;border:2px solid #f0d0d8;border-radius:12px;padding:.8rem 1rem;font-size:1.2rem;text-align:center;letter-spacing:.3em;outline:none;margin:1rem 0;font-family:'Noto Sans TC',sans-serif;color:var(--brown)}
+.pwi:focus{border-color:var(--pd)}
+.pwerr{color:#ef5350;font-size:.85rem;min-height:1.2rem;margin-bottom:.5rem}
+@keyframes ci{from{opacity:0;transform:scale(.88) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
 </style>
 </head>
 <body>
 
-<!-- ════ 標題畫面 ════ -->
-<div id="screen-title">
-  <div class="title-logo">成之於語</div>
-  <div class="title-sub">成語地圖探險</div>
-
-  <div class="score-board-home">
+<!-- 標題 -->
+<div id="s-title" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#fde8ec,#fdf0e0);padding:2rem">
+  <div class="logo">成之於語</div>
+  <div class="sub">成語地圖探險</div>
+  <div class="card">
+    <h3>✏️ 輸入隊伍名稱</h3>
+    <div class="irow"><div class="d16" style="background:#f4a0b0"></div><input class="ni" id="inA" type="text" placeholder="隊伍 A" maxlength="8"></div>
+    <div class="irow"><div class="d16" style="background:#6aabf7"></div><input class="ni" id="inB" type="text" placeholder="隊伍 B" maxlength="8"></div>
+  </div>
+  <div class="card">
     <h3>📊 當前分數</h3>
-    <div class="team-scores">
-      <div class="team-score-item">
-        <div class="team-dot" style="background:#f4a0b0"></div>
-        <span id="home-name-a">隊伍 A</span>
-        <strong id="home-score-a">0</strong>
-      </div>
-      <div class="team-score-item">
-        <div class="team-dot" style="background:#6aabf7"></div>
-        <span id="home-name-b">隊伍 B</span>
-        <strong id="home-score-b">0</strong>
-      </div>
+    <div class="scores">
+      <div class="si"><div class="sid" style="background:#f4a0b0"></div><span id="hn-a">隊伍 A</span><strong id="hs-a">0</strong></div>
+      <div class="si"><div class="sid" style="background:#6aabf7"></div><span id="hn-b">隊伍 B</span><strong id="hs-b">0</strong></div>
     </div>
   </div>
-
-  <div class="btn-group">
-    <button class="btn-main" onclick="goMap()">🗺️ 開始探險</button>
-    <button class="btn-secondary" onclick="showConfirmReset()">🔄 清零分數</button>
+  <div class="btns">
+    <button class="bm" onclick="goMap()">🗺️ 開始探險</button>
+    <button class="bs" onclick="showReset()">🔄 清零分數</button>
+    <button class="bs" onclick="showPw()" style="border-color:#b48ef4;color:#7c52c8">⚙️ 後台管理</button>
   </div>
 </div>
 
-<!-- ════ 地圖畫面 ════ -->
-<div id="screen-map">
-  <div class="map-header">
-    <button class="btn-back" onclick="goTitle()">←</button>
-    <h1>🗺️ 成語大地圖</h1>
-    <div class="score-strip">
-      <div class="score-chip">
-        <div class="score-chip-dot" style="background:#f4a0b0"></div>
-        <span id="map-score-a">0</span>
-      </div>
-      <div class="score-chip">
-        <div class="score-chip-dot" style="background:#6aabf7"></div>
-        <span id="map-score-b">0</span>
-      </div>
+<!-- 地圖 -->
+<div id="s-map" class="screen" style="background:linear-gradient(160deg,#fff3e0,#fde8ec)">
+  <div class="hdr">
+    <button class="bb" onclick="goTitle()">←</button>
+    <div class="hdr-title">🗺️ 成語大地圖</div>
+    <div class="sstrip">
+      <div class="schip"><div class="sdot" style="background:#f4a0b0"></div><span id="mn-a">A</span>&nbsp;<b id="ms-a">0</b></div>
+      <div class="schip"><div class="sdot" style="background:#6aabf7"></div><span id="mn-b">B</span>&nbsp;<b id="ms-b">0</b></div>
     </div>
   </div>
+  <div class="mscroll"><div class="mgrid" id="mapGrid"></div></div>
+</div>
 
-  <div class="map-container">
-    <div class="map-grid" id="mapGrid"></div>
+<!-- 關卡 -->
+<div id="s-quest" class="screen" style="background:linear-gradient(160deg,#fff3e0,#fde8ec)">
+  <div class="hdr">
+    <button class="bb" onclick="goMap()">←</button>
+    <div class="hdr-title" id="questTitle">關卡</div>
+    <div class="sstrip">
+      <div class="schip"><div class="sdot" style="background:#f4a0b0"></div><span id="qn-a">A</span>&nbsp;<b id="qs-a">0</b></div>
+      <div class="schip"><div class="sdot" style="background:#6aabf7"></div><span id="qn-b">B</span>&nbsp;<b id="qs-b">0</b></div>
+    </div>
+  </div>
+  <div class="qbody">
+    <div class="qcard">
+      <div class="qnum" id="qNum">第 1 題 ／ 共 6 題</div>
+      <div class="qtxt" id="qTxt"></div>
+      <div class="qhint" id="qHint"></div>
+    </div>
+    <div class="choices" id="choices"></div>
+    <div class="spanel">
+      <button class="tsb" style="background:#fff0f3;color:#c2506a" onclick="addScore('A')"><span id="qa-s">0</span><div id="qa-n">隊伍 A</div>＋1 分</button>
+      <button class="tsb" style="background:#f0f6ff;color:#3a7fd5" onclick="addScore('B')"><span id="qb-s">0</span><div id="qb-n">隊伍 B</div>＋1 分</button>
+    </div>
+    <div class="nwrap"><button id="nextBtn" onclick="nextQ()">下一題 →</button></div>
   </div>
 </div>
 
-<!-- ════ 關卡畫面 ════ -->
-<div id="screen-quest">
-  <div class="quest-header">
-    <button class="btn-back" onclick="goMap()">←</button>
-    <h2 id="quest-title">關卡</h2>
-    <div class="score-strip">
-      <div class="score-chip">
-        <div class="score-chip-dot" style="background:#f4a0b0"></div>
-        <span id="quest-score-a">0</span>
-      </div>
-      <div class="score-chip">
-        <div class="score-chip-dot" style="background:#6aabf7"></div>
-        <span id="quest-score-b">0</span>
-      </div>
-    </div>
+<!-- 後台 -->
+<div id="s-admin" class="screen">
+  <div class="hdr">
+    <button class="bb" onclick="goTitle()">←</button>
+    <div class="hdr-title">⚙️ 後台管理</div>
+    <div style="font-size:.8rem;color:#a0a0a0;padding-right:.5rem">點題目右側可刪除</div>
   </div>
-
-  <div class="quest-body">
-    <div class="question-card" id="questionCard">
-      <div class="question-num" id="questionNum">第 1 題 / 共 3 題</div>
-      <div class="question-text" id="questionText"></div>
-      <div class="question-hint" id="questionHint"></div>
-    </div>
-
-    <div class="choices" id="choicesContainer"></div>
-
-    <div class="score-panel">
-      <button class="team-score-btn" id="addA" style="background:#fff0f3; color:#c2506a;" onclick="addScore('A')">
-        <span id="qs-a">0</span>
-        隊伍 A ＋1
-      </button>
-      <button class="team-score-btn" id="addB" style="background:#f0f6ff; color:#3a7fd5;" onclick="addScore('B')">
-        <span id="qs-b">0</span>
-        隊伍 B ＋1
-      </button>
-    </div>
-
-    <div style="text-align:center;">
-      <button class="btn-main" id="nextBtn" onclick="nextQuestion()" style="display:none;">下一題 →</button>
+  <div class="abody">
+    <div class="ztabs" id="zoneTabs"></div>
+    <div class="qlist" id="qList"></div>
+    <div class="aform">
+      <h3>＋ 新增題目到此關卡</h3>
+      <div class="fl"><label>成語或題目文字</label><input class="fi" id="f-t" type="text" placeholder="例：守株待兔"></div>
+      <div class="fl"><label>提示說明</label><input class="fi" id="f-h" type="text" placeholder="例：這個成語比喻什麼？"></div>
+      <div class="fl">
+        <label>四個選項</label>
+        <div class="cig">
+          <input class="ci2" id="c0" type="text" placeholder="選項 1">
+          <input class="ci2" id="c1" type="text" placeholder="選項 2">
+          <input class="ci2" id="c2" type="text" placeholder="選項 3">
+          <input class="ci2" id="c3" type="text" placeholder="選項 4">
+        </div>
+      </div>
+      <div class="fl">
+        <label>正確答案是？</label>
+        <div class="asel">
+          <button class="ab2" id="ab0" onclick="selA(0)">選項 1</button>
+          <button class="ab2" id="ab1" onclick="selA(1)">選項 2</button>
+          <button class="ab2" id="ab2" onclick="selA(2)">選項 3</button>
+          <button class="ab2" id="ab3" onclick="selA(3)">選項 4</button>
+        </div>
+      </div>
+      <button class="bm" style="margin-top:.5rem" onclick="addQ()">＋ 新增題目</button>
     </div>
   </div>
 </div>
 
-<!-- 結果彈窗 -->
-<div class="overlay" id="overlayResult">
-  <div class="result-card">
-    <span class="result-emoji" id="resultEmoji">🎉</span>
-    <div class="result-text" id="resultText">答對了！</div>
-    <div class="result-sub" id="resultSub">選擇隊伍加分</div>
-    <button class="btn-main" onclick="closeResult()">繼續</button>
-  </div>
+<!-- 完成彈窗 -->
+<div class="ov" id="ovResult">
+  <div class="pop"><span class="pe">🎊</span><div class="pt" id="popTitle">完成！</div><div class="ps">答對的隊伍記得按加分 ↑</div><button class="bm" onclick="closeResult()">回地圖</button></div>
 </div>
 
 <!-- 清零確認 -->
-<div class="overlay" id="overlayReset">
-  <div class="confirm-card">
-    <h3>確定要清零嗎？</h3>
-    <p>所有分數與通關紀錄將歸零</p>
-    <div class="confirm-btns">
-      <button class="btn-danger" onclick="resetAll()">確定清零</button>
-      <button class="btn-cancel" onclick="closeReset()">取消</button>
-    </div>
+<div class="ov" id="ovReset">
+  <div class="pop"><div class="pt">確定清零？</div><div class="ps">所有分數與通關紀錄將歸零</div><div class="cbns"><button class="bd" onclick="doReset()">確定清零</button><button class="bc" onclick="closeReset()">取消</button></div></div>
+</div>
+
+<!-- 密碼 -->
+<div class="ov" id="ovPw">
+  <div class="pop">
+    <span class="pe">🔐</span>
+    <div class="pt">後台管理</div>
+    <div class="ps">請輸入管理密碼</div>
+    <input class="pwi" id="pwIn" type="password" placeholder="••••" maxlength="20" onkeydown="if(event.key==='Enter')checkPw()">
+    <div class="pwerr" id="pwErr"></div>
+    <div class="cbns"><button class="bm" onclick="checkPw()" style="margin:0">確認進入</button><button class="bc" onclick="closePw()">取消</button></div>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════
-// 資料定義
-// ══════════════════════════════════════════
+const ADMIN_PW='1234';
 
-const ZONES = [
-  {
-    id: 'animal',
-    name: '動物村',
-    icon: '🐾',
-    color: '#7bc97e',
-    cells: [3, 4, 11, 12],      // 佔這些格子
-    btnCell: 7,                   // 按鈕放在第幾格（以1開始）
-    questions: [
-      {
-        text: '狐假虎威',
-        hint: '下列哪個解釋正確？',
-        choices: ['借助他人威勢嚇人', '老虎和狐狸是好朋友', '狐狸比老虎強', '假裝是老虎'],
-        answer: 0
-      },
-      {
-        text: '守株待兔',
-        hint: '這個成語比喻什麼？',
-        choices: ['農夫很努力', '坐等好事降臨', '耐心等待', '守護樹木'],
-        answer: 1
-      },
-      {
-        text: '井底之蛙',
-        hint: '比喻什麼樣的人？',
-        choices: ['住在井裡的蛙', '見識狹隘的人', '膽子很小的人', '很會跳的人'],
-        answer: 1
-      }
-    ]
-  },
-  {
-    id: 'number',
-    name: '數字街',
-    icon: '🔢',
-    color: '#6aabf7',
-    cells: [21, 22, 29, 30],
-    btnCell: 25,
-    questions: [
-      {
-        text: '一__反三',
-        hint: '空格填入的數字是？',
-        choices: ['二', '三', '四', '五'],
-        answer: 0
-      },
-      {
-        text: '火冒__丈',
-        hint: '空格填入的數字是？',
-        choices: ['一', '二', '三', '四'],
-        answer: 2
-      },
-      {
-        text: '__言為定',
-        hint: '空格填入的數字是？',
-        choices: ['一', '二', '三', '四'],
-        answer: 0
-      }
-    ]
-  },
-  {
-    id: 'color',
-    name: '顏色坊',
-    icon: '🎨',
-    color: '#b48ef4',
-    cells: [35, 36, 43, 44],
-    btnCell: 39,
-    questions: [
-      {
-        text: '青出於藍',
-        hint: '這個成語的意思是？',
-        choices: ['顏色很漂亮', '後來居上超越師長', '天空很藍', '出外旅行'],
-        answer: 1
-      },
-      {
-        text: '黑白不分',
-        hint: '比喻什麼？',
-        choices: ['眼睛看不清楚', '是非不分、糊塗', '沒有顏色', '夜晚和白天'],
-        answer: 1
-      },
-      {
-        text: '萬紫千紅',
-        hint: '形容什麼景象？',
-        choices: ['很多種顏色、百花盛開', '只有紅色和紫色', '天上的彩虹', '畫畫的顏料'],
-        answer: 0
-      }
-    ]
-  },
-  {
-    id: 'body',
-    name: '身體道',
-    icon: '💪',
-    color: '#f4a055',
-    cells: [53, 54, 61, 62],
-    btnCell: 57,
-    questions: [
-      {
-        text: '七__八臂',
-        hint: '空格填入身體部位',
-        choices: ['手', '頭', '腳', '眼'],
-        answer: 1
-      },
-      {
-        text: '__心__用',
-        hint: '形容同時做兩件事',
-        choices: ['一心二用', '二心三用', '一心一用', '三心兩用'],
-        answer: 0
-      },
-      {
-        text: '呆若木雞',
-        hint: '這個成語現代通常形容什麼？',
-        choices: ['像木頭一樣呆立、發愣', '很厲害的雞', '木工師傅', '很安靜'],
-        answer: 0
-      }
-    ]
-  },
-  {
-    id: 'boss',
-    name: '挑戰塔',
-    icon: '⭐',
-    color: '#f4506a',
-    cells: [47, 48, 55, 56],
-    btnCell: 51,
-    questions: [
-      {
-        text: '一箭雙鵰',
-        hint: '這個成語的意思是？',
-        choices: ['射箭技術很好', '一舉兩得', '兩隻老鷹打架', '雙倍的獎勵'],
-        answer: 1
-      },
-      {
-        text: '虎頭蛇尾',
-        hint: '比喻什麼？',
-        choices: ['老虎和蛇是朋友', '做事虎頭虎腦', '開始認真、結果草率', '長得像動物'],
-        answer: 2
-      },
-      {
-        text: '鶴立雞群',
-        hint: '形容什麼樣的人？',
-        choices: ['喜歡鳥類的人', '在人群中特別出眾', '養很多雞的農夫', '跑步很快'],
-        answer: 1
-      }
-    ]
-  }
-];
-
-// 格子對應區域
-const cellZone = {};
-ZONES.forEach(z => z.cells.forEach(c => { cellZone[c] = z.id; }));
-
-// ══════════════════════════════════════════
-// 狀態
-// ══════════════════════════════════════════
-
-let state = JSON.parse(localStorage.getItem('chengyu_state') || 'null') || {
-  scoreA: 0,
-  scoreB: 0,
-  cleared: []
+const DQ={
+  animal:[
+    {t:'狐假虎威',h:'這個成語的意思是？',c:['借助別人威勢來嚇人','老虎和狐狸是好朋友','狐狸比老虎更厲害','假裝自己是老虎'],a:0},
+    {t:'守株待兔',h:'這個成語比喻什麼？',c:['農夫非常努力耕田','坐等好事自動降臨','有耐心慢慢等待','守護樹木的工作'],a:1},
+    {t:'井底之蛙',h:'比喻什麼樣的人？',c:['真的住在井裡的青蛙','見識狹隘的人','膽子非常小的人','跳得很高的人'],a:1},
+    {t:'對牛彈琴',h:'這個成語的意思是？',c:['牛最喜歡音樂','白費力氣對象不對','彈琴給牛聽很有趣','牛聽到琴聲很開心'],a:1},
+    {t:'鶴立雞群',h:'用來形容什麼？',c:['鶴和雞是好朋友','在人群中特別出眾','喜歡跟雞在一起','鶴站得比雞高'],a:1},
+    {t:'雞犬不寧',h:'這個成語形容什麼狀況？',c:['雞和狗很友好','非常吵鬧混亂的狀況','動物們在玩耍','雞和狗都生病了'],a:1},
+    {t:'虎頭蛇尾',h:'比喻做事怎麼樣？',c:['老虎和蛇打架','開始強勁後來敷衍','動作很快速','外型很特別'],a:1},
+    {t:'呆若木雞',h:'這個成語形容人怎麼了？',c:['非常努力不停歇','驚嚇到傻在那裡','像雞一樣跑來跑去','站得很直很標準'],a:1},
+    {t:'鴉雀無聲',h:'形容什麼樣的氣氛？',c:['鳥叫聲很大聲','非常安靜沒有聲音','很多鳥在唱歌','大家都很快樂'],a:1},
+    {t:'狗急跳牆',h:'這個成語說明什麼道理？',c:['狗很喜歡跳高','被逼急了什麼都做得出來','狗的跳躍能力很強','遇到危險要逃跑'],a:1},
+    {t:'聞雞起舞',h:'這個成語形容人怎樣？',c:['聽到雞叫嚇一跳','非常勤奮努力練習','喜歡聽雞叫聲','早起去看雞跳舞'],a:1},
+    {t:'鸚鵡學舌',h:'比喻什麼行為？',c:['鸚鵡很聰明','只會模仿別人說話','學習說話的好方法','教鸚鵡說話'],a:1},
+    {t:'盲人摸象',h:'這個成語說明什麼道理？',c:['瞎子喜歡大象','只了解片面就下判斷','大象很喜歡人摸','視力不好要小心'],a:1},
+    {t:'抱頭鼠竄',h:'這個成語形容什麼？',c:['老鼠很喜歡抱頭','狼狽慌張地逃走','老鼠跑得很快','抱在一起逃跑'],a:1},
+    {t:'雞飛狗跳',h:'這個成語形容什麼場面？',c:['雞和狗在玩耍','非常混亂熱鬧的場面','雞飛得很高','狗跳得很高'],a:1},
+  ],
+  number:[
+    {t:'一__反三',h:'空格填入什麼字？',c:['二','三','四','五'],a:0},
+    {t:'火冒__丈',h:'空格填入的數字是？',c:['一','二','三','四'],a:2},
+    {t:'__言為定',h:'空格填入的數字是？',c:['一','二','三','四'],a:0},
+    {t:'__箭雙鵰',h:'一舉兩得，空格填入？',c:['一','二','三','四'],a:0},
+    {t:'__心__用',h:'同時做兩件事，完整成語是？',c:['一心二用','二心三用','一心一用','三心兩用'],a:0},
+    {t:'十全十美',h:'這個成語的意思是？',c:['有十個優點','非常完美完善','十件都完成了','全部都很美'],a:1},
+    {t:'三頭六臂',h:'形容本領高強，正確成語是？',c:['七頭八臂','三頭六臂','四頭八臂','五頭十臂'],a:1},
+    {t:'九牛一毛',h:'形容數量極少，正確成語是？',c:['一牛一毛','九牛一毛','三牛三毛','百牛百毛'],a:1},
+    {t:'舉一反三',h:'這個成語的意思是？',c:['舉起一樣東西','由一件事推知其他','反覆做三次','只做一件事'],a:1},
+    {t:'一刀兩斷',h:'這個成語的意思是？',c:['刀切兩半','徹底斷絕關係','切了一刀','斷了兩刀'],a:1},
+    {t:'百花齊放',h:'形容什麼景象？',c:['只有百種花','各種事物一起發展繁榮','花開了一百朵','所有花一起開'],a:1},
+    {t:'七嘴八舌',h:'形容什麼情況？',c:['嘴巴和舌頭的數量','大家同時說話很熱鬧','只有七個人說話','說話非常清楚'],a:1},
+  ],
+  color:[
+    {t:'青出於藍',h:'這個成語的意思是？',c:['顏色非常漂亮','後來居上超越師長','天空很藍很美','出外旅行玩耍'],a:1},
+    {t:'黑白不分',h:'比喻什麼？',c:['眼睛看不清楚顏色','是非不分糊塗','沒有任何顏色','夜晚和白天'],a:1},
+    {t:'萬紫千紅',h:'形容什麼景象？',c:['百花盛開五彩繽紛','只有紅色和紫色','天上的美麗彩虹','畫畫用的顏料'],a:0},
+    {t:'白手起家',h:'這個成語的意思是？',c:['手是白色的','從一無所有開始創業','做事情要洗手','白色的家很漂亮'],a:1},
+    {t:'紅顏薄命',h:'這個成語形容什麼？',c:['臉紅的人命不好','美麗的人往往命運多舛','臉色很紅很健康','長得漂亮很幸運'],a:1},
+    {t:'綠樹成蔭',h:'形容什麼樣的景色？',c:['樹木長得很茂盛','綠色的樹很好看','種很多棵樹','樹上有影子'],a:0},
+    {t:'黃粱一夢',h:'這個成語形容什麼？',c:['夢見黃色的稻子','比喻美夢成空','睡得很好的夢','黃金做的夢'],a:1},
+    {t:'一片丹心',h:'形容什麼？',c:['到處都是紅色','一心一意忠誠','紅色的心形','很多顆紅心'],a:1},
+  ],
+  body:[
+    {t:'一心一意',h:'這個成語的意思是？',c:['三心二意猶豫不決','全心全意專注做一件事','心臟很健康','用心思考問題'],a:1},
+    {t:'三頭六臂',h:'形容什麼樣的能力？',c:['人有三個頭','本領高強能力超凡','六隻手臂很有力','長相很奇特'],a:1},
+    {t:'手忙腳亂',h:'這個成語形容什麼？',c:['手腳都受傷了','非常忙碌慌張不知所措','手和腳在運動','做事情很有條理'],a:1},
+    {t:'眼高手低',h:'這個成語的意思是？',c:['眼睛比手還要高','眼光高但能力不足','視力非常好','手舉得比眼睛高'],a:1},
+    {t:'口是心非',h:'形容什麼樣的人？',c:['嘴巴和心臟的位置','說一套心裡想另一套','說話非常誠實','心情很好開口說話'],a:1},
+    {t:'手到擒來',h:'這個成語的意思是？',c:['用手去抓東西','輕而易舉就能做到','慢慢伸手去拿','需要很多人幫忙'],a:1},
+    {t:'胸有成竹',h:'這個成語的意思是？',c:['胸口有竹子的圖案','做事前已有完整計畫','很喜歡竹子','胸口很寬廣'],a:1},
+    {t:'目瞪口呆',h:'形容什麼樣的表情？',c:['眼睛和嘴巴都很大','震驚得說不出話來','目光炯炯有神','大口吃東西'],a:1},
+    {t:'耳聰目明',h:'這個成語的意思是？',c:['耳朵和眼睛都很大','聽覺和視覺都很好','很喜歡聽音樂','眼睛看得很清楚'],a:1},
+    {t:'七嘴八舌',h:'這個成語形容什麼情況？',c:['嘴巴和舌頭','大家同時說話很熱鬧','只有七個人說話','說話非常清楚'],a:1},
+  ],
+  boss:[
+    {t:'一箭雙鵰',h:'這個成語的意思是？',c:['射箭技術很好','一舉兩得同時達成兩個目標','兩隻老鷹在打架','雙倍的獎勵很棒'],a:1},
+    {t:'亡羊補牢',h:'這個成語給我們什麼啟示？',c:['羊跑掉不用管','犯錯後及時補救還不算晚','修羊圈很重要','羊不要亂跑'],a:1},
+    {t:'畫蛇添足',h:'這個成語的道理是？',c:['蛇本來就有腳','多此一舉反而壞事','畫畫技術很好','蛇的腳很好看'],a:1},
+    {t:'龍飛鳳舞',h:'現在多用來形容什麼？',c:['龍和鳳在飛舞','字跡飛揚生動有力','動作非常靈活','天空中的動物'],a:1},
+    {t:'半途而廢',h:'這個成語形容什麼行為？',c:['走到一半很累','做事做到一半就放棄','路途很遙遠','廢棄的道路'],a:1},
+    {t:'馬到成功',h:'這個成語形容什麼？',c:['馬跑得很快','形容很快就成功','馬來了就成功','馬的到來'],a:1},
+    {t:'破釜沉舟',h:'這個成語形容什麼精神？',c:['打破鍋子沉船','背水一戰決心到底','很浪費的行為','害怕失敗的心情'],a:1},
+    {t:'臥薪嚐膽',h:'這個成語表達什麼精神？',c:['睡在薪水上','忍辱負重努力雪恥','非常辛苦工作','吃很苦的食物'],a:1},
+    {t:'塞翁失馬',h:'這個成語告訴我們什麼？',c:['塞翁的馬跑掉了','禍福相倚不要輕易下定論','失去馬很可惜','邊塞的老人'],a:1},
+    {t:'名落孫山',h:'這個成語的意思是？',c:['名字排在孫山前面','考試或選拔落榜','名字叫孫山','山很有名'],a:1},
+  ]
 };
 
-let currentZone = null;
-let currentQIdx = 0;
-let answered = false;
+const ZONES=[
+  {id:'animal',name:'動物村',icon:'🐾',color:'#7bc97e',cells:[3,4,11,12],btnRow:1,btnCol:7},
+  {id:'number',name:'數字街',icon:'🔢',color:'#6aabf7',cells:[21,22,29,30],btnRow:3,btnCol:5},
+  {id:'color', name:'顏色坊',icon:'🎨',color:'#b48ef4',cells:[35,36,43,44],btnRow:5,btnCol:3},
+  {id:'body',  name:'身體道',icon:'💪',color:'#f4a055',cells:[53,54,61,62],btnRow:7,btnCol:1},
+  {id:'boss',  name:'挑戰塔',icon:'⭐',color:'#f4506a',cells:[47,48,55,56],btnRow:6,btnCol:7},
+];
+const cz={};ZONES.forEach(z=>z.cells.forEach(c=>{cz[c]=z.id;}));
 
-// ══════════════════════════════════════════
-// 建構地圖
-// ══════════════════════════════════════════
+let S=JSON.parse(localStorage.getItem('cy_v4')||'null')||{sA:0,sB:0,nA:'隊伍 A',nB:'隊伍 B',cleared:[]};
+let QB=JSON.parse(localStorage.getItem('cy_qb')||'null')||JSON.parse(JSON.stringify(DQ));
+let CZ=null,Qi=0,Ql=[],ans=false,azone='animal',sela=-1;
 
-function buildMap() {
-  const grid = document.getElementById('mapGrid');
-  grid.innerHTML = '';
-
-  for (let i = 1; i <= 64; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'map-cell';
-    cell.dataset.cell = i;
-
-    const numLabel = document.createElement('span');
-    numLabel.className = 'cell-num';
-    numLabel.textContent = i;
-    cell.appendChild(numLabel);
-
-    const zoneId = cellZone[i];
-    if (zoneId) {
-      cell.classList.add('zone-' + zoneId);
+function buildMap(){
+  const g=document.getElementById('mapGrid');g.innerHTML='';
+  const occ={};
+  ZONES.forEach(z=>{for(let dr=0;dr<2;dr++)for(let dc=0;dc<2;dc++)occ[`${z.btnRow+dr}-${z.btnCol+dc}`]=true;});
+  for(let r=1;r<=8;r++){
+    for(let c=1;c<=8;c++){
+      const k=`${r}-${c}`;
+      const bz=ZONES.find(z=>z.btnRow===r&&z.btnCol===c);
+      if(bz){
+        const w=document.createElement('div');w.className='zbw';
+        w.style.cssText=`grid-column:${c}/span 2;grid-row:${r}/span 2`;
+        const b=document.createElement('button');
+        b.className='zb'+(S.cleared.includes(bz.id)?' cleared':'');
+        b.style.background=`linear-gradient(145deg,${bz.color},${bz.color}aa)`;
+        b.innerHTML=`<span class="zbi">${bz.icon}</span><span class="zbl">${bz.name}</span>`;
+        b.onclick=()=>startQ(bz.id);w.appendChild(b);g.appendChild(w);continue;
+      }
+      if(occ[k])continue;
+      const n=(r-1)*8+c;
+      const el=document.createElement('div');el.className='mc';
+      el.style.cssText=`grid-column:${c};grid-row:${r}`;
+      if(cz[n])el.classList.add('zone-'+cz[n]);
+      const num=document.createElement('span');num.className='cn';num.textContent=n;
+      el.appendChild(num);g.appendChild(el);
     }
-
-    grid.appendChild(cell);
-  }
-
-  // 放按鈕
-  ZONES.forEach(zone => {
-    const targetCell = grid.querySelector(`[data-cell="${zone.btnCell}"]`);
-    if (!targetCell) return;
-
-    const btn = document.createElement('button');
-    btn.className = 'zone-btn' + (state.cleared.includes(zone.id) ? ' cleared' : '');
-    btn.style.background = `linear-gradient(135deg, ${zone.color}, ${zone.color}cc)`;
-    btn.textContent = zone.icon;
-    btn.title = zone.name;
-    btn.onclick = () => startQuest(zone.id);
-
-    targetCell.style.position = 'relative';
-    targetCell.appendChild(btn);
-  });
-}
-
-// ══════════════════════════════════════════
-// 畫面切換
-// ══════════════════════════════════════════
-
-function goTitle() {
-  document.getElementById('screen-title').style.display = 'flex';
-  document.getElementById('screen-map').style.display = 'none';
-  document.getElementById('screen-quest').style.display = 'none';
-  updateAllScores();
-}
-
-function goMap() {
-  document.getElementById('screen-title').style.display = 'none';
-  document.getElementById('screen-map').style.display = 'block';
-  document.getElementById('screen-quest').style.display = 'none';
-  buildMap();
-  updateAllScores();
-}
-
-// ══════════════════════════════════════════
-// 關卡邏輯
-// ══════════════════════════════════════════
-
-function startQuest(zoneId) {
-  currentZone = ZONES.find(z => z.id === zoneId);
-  currentQIdx = 0;
-  document.getElementById('screen-map').style.display = 'none';
-  document.getElementById('screen-quest').style.display = 'block';
-  document.getElementById('quest-title').textContent = currentZone.icon + ' ' + currentZone.name;
-  renderQuestion();
-  updateAllScores();
-}
-
-function renderQuestion() {
-  answered = false;
-  const q = currentZone.questions[currentQIdx];
-  document.getElementById('questionNum').textContent = `第 ${currentQIdx + 1} 題 ／ 共 ${currentZone.questions.length} 題`;
-  document.getElementById('questionText').textContent = q.text;
-  document.getElementById('questionHint').textContent = q.hint;
-  document.getElementById('nextBtn').style.display = 'none';
-
-  const container = document.getElementById('choicesContainer');
-  container.innerHTML = '';
-  q.choices.forEach((c, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'choice-btn';
-    btn.textContent = c;
-    btn.onclick = () => selectChoice(i, btn, q.answer);
-    container.appendChild(btn);
-  });
-}
-
-function selectChoice(idx, btn, answer) {
-  if (answered) return;
-  answered = true;
-
-  const allBtns = document.querySelectorAll('.choice-btn');
-  allBtns.forEach((b, i) => {
-    if (i === answer) b.classList.add('correct');
-    else if (i === idx && idx !== answer) b.classList.add('wrong');
-  });
-
-  document.getElementById('nextBtn').style.display = 'inline-block';
-}
-
-function nextQuestion() {
-  currentQIdx++;
-  if (currentQIdx >= currentZone.questions.length) {
-    // 關卡完成
-    if (!state.cleared.includes(currentZone.id)) {
-      state.cleared.push(currentZone.id);
-      saveState();
-    }
-    showResult();
-  } else {
-    renderQuestion();
   }
 }
 
-function addScore(team) {
-  if (team === 'A') state.scoreA++;
-  else state.scoreB++;
-  saveState();
-  updateAllScores();
-}
-
-// ══════════════════════════════════════════
-// 彈窗
-// ══════════════════════════════════════════
-
-function showResult() {
-  document.getElementById('overlayResult').classList.add('show');
-  document.getElementById('resultEmoji').textContent = '🎊';
-  document.getElementById('resultText').textContent = currentZone.name + ' 完成！';
-  document.getElementById('resultSub').textContent = '答對的隊伍請加分 ↑';
-}
-
-function closeResult() {
-  document.getElementById('overlayResult').classList.remove('show');
-  goMap();
-}
-
-function showConfirmReset() {
-  document.getElementById('overlayReset').classList.add('show');
-}
-
-function closeReset() {
-  document.getElementById('overlayReset').classList.remove('show');
-}
-
-function resetAll() {
-  state = { scoreA: 0, scoreB: 0, cleared: [] };
-  saveState();
-  updateAllScores();
-  closeReset();
-}
-
-// ══════════════════════════════════════════
-// 工具
-// ══════════════════════════════════════════
-
-function saveState() {
-  localStorage.setItem('chengyu_state', JSON.stringify(state));
-}
-
-function updateAllScores() {
-  const ids = ['home-score-a','map-score-a','quest-score-a','qs-a'];
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = state.scoreA;
-  });
-  const ids2 = ['home-score-b','map-score-b','quest-score-b','qs-b'];
-  ids2.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = state.scoreB;
+function show(id){
+  ['s-title','s-map','s-quest','s-admin'].forEach(s=>{
+    const el=document.getElementById(s);
+    el.style.display=s===id?(s==='s-title'?'flex':'block'):'none';
   });
 }
-
-// ══════════════════════════════════════════
-// 初始化
-// ══════════════════════════════════════════
-
-updateAllScores();
-</script>
-<script>
-if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("./sw.js").then(()=>console.log("SW registered"));
+function goTitle(){saveN();show('s-title');upUI();}
+function goMap(){saveN();show('s-map');buildMap();upUI();}
+function goAdmin(){show('s-admin');renderA();}
+function saveN(){
+  const a=document.getElementById('inA').value.trim();
+  const b=document.getElementById('inB').value.trim();
+  if(a)S.nA=a;if(b)S.nB=b;sv();
 }
+
+function startQ(id){
+  CZ=ZONES.find(z=>z.id===id);
+  const p=[...(QB[id]||[])];shuf(p);
+  Ql=p.slice(0,Math.min(6,p.length));Qi=0;
+  show('s-quest');
+  document.getElementById('questTitle').textContent=CZ.icon+' '+CZ.name;
+  rQ();upUI();
+}
+function rQ(){
+  ans=false;const q=Ql[Qi];
+  document.getElementById('qNum').textContent=`第 ${Qi+1} 題 ／ 共 ${Ql.length} 題`;
+  document.getElementById('qTxt').textContent=q.t;
+  document.getElementById('qHint').textContent=q.h;
+  document.getElementById('nextBtn').style.display='none';
+  const box=document.getElementById('choices');box.innerHTML='';
+  q.c.forEach((c,i)=>{
+    const b=document.createElement('button');b.className='cb';b.textContent=c;
+    b.onclick=()=>pick(i,q.a);box.appendChild(b);
+  });
+}
+function pick(idx,a){
+  if(ans)return;ans=true;
+  document.querySelectorAll('.cb').forEach((b,i)=>{
+    if(i===a)b.classList.add('correct');else if(i===idx)b.classList.add('wrong');
+  });
+  document.getElementById('nextBtn').style.display='inline-block';
+}
+function nextQ(){
+  Qi++;
+  if(Qi>=Ql.length){
+    if(!S.cleared.includes(CZ.id)){S.cleared.push(CZ.id);sv();}
+    document.getElementById('popTitle').textContent=CZ.name+' 全部完成！';
+    document.getElementById('ovResult').classList.add('show');
+  }else rQ();
+}
+function addScore(t){if(t==='A')S.sA++;else S.sB++;sv();upUI();}
+
+// ─ 後台 ─
+function renderA(){
+  const tabs=document.getElementById('zoneTabs');tabs.innerHTML='';
+  ZONES.forEach(z=>{
+    const t=document.createElement('button');t.className='ztab'+(azone===z.id?' active':'');
+    t.textContent=z.icon+' '+z.name+(azone===z.id?'':' ('+( QB[z.id]||[]).length+')');
+    if(azone===z.id)t.style.cssText=`background:${z.color};color:white;border-color:${z.color}`;
+    t.onclick=()=>{azone=z.id;renderA();};tabs.appendChild(t);
+  });
+  const list=document.getElementById('qList');list.innerHTML='';
+  const qs=QB[azone]||[];
+  if(!qs.length){list.innerHTML='<div style="text-align:center;color:#bbb;padding:1rem;font-size:.9rem">這個關卡還沒有題目</div>';return;}
+  qs.forEach((q,i)=>{
+    const el=document.createElement('div');el.className='qi';
+    el.innerHTML=`<div class="qi-top"><div><div class="qi-t">${q.t}</div><div class="qi-h">${q.h}</div></div><button class="delbtn" onclick="delQ(${i})">🗑 刪除</button></div><div class="cg">${q.c.map((c,ci)=>`<span class="cc${ci===q.a?' ans':''}">${ci===q.a?'✓ ':''}${c}</span>`).join('')}</div>`;
+    list.appendChild(el);
+  });
+  // 重設表單
+  sela=-1;['f-t','f-h','c0','c1','c2','c3'].forEach(id=>{document.getElementById(id).value='';});
+  document.querySelectorAll('.ab2').forEach(b=>b.classList.remove('sel'));
+  document.querySelectorAll('.ci2').forEach(b=>b.classList.remove('sa'));
+}
+function selA(i){
+  sela=i;
+  document.querySelectorAll('.ab2').forEach((b,j)=>b.classList.toggle('sel',j===i));
+  document.querySelectorAll('.ci2').forEach((b,j)=>b.classList.toggle('sa',j===i));
+}
+function addQ(){
+  const t=document.getElementById('f-t').value.trim();
+  const h=document.getElementById('f-h').value.trim();
+  const cs=[0,1,2,3].map(i=>document.getElementById('c'+i).value.trim());
+  if(!t){alert('請填入成語或題目文字');return;}
+  if(!h){alert('請填入提示說明');return;}
+  if(cs.some(c=>!c)){alert('請填入全部四個選項');return;}
+  if(sela<0){alert('請選擇正確答案');return;}
+  if(!QB[azone])QB[azone]=[];
+  QB[azone].push({t,h,c:cs,a:sela});
+  svQB();renderA();
+}
+function delQ(i){
+  if(!confirm('確定刪除這個題目？'))return;
+  QB[azone].splice(i,1);svQB();renderA();
+}
+
+// ─ 密碼 ─
+function showPw(){
+  document.getElementById('pwIn').value='';
+  document.getElementById('pwErr').textContent='';
+  document.getElementById('ovPw').classList.add('show');
+  setTimeout(()=>document.getElementById('pwIn').focus(),300);
+}
+function closePw(){document.getElementById('ovPw').classList.remove('show');}
+function checkPw(){
+  if(document.getElementById('pwIn').value===ADMIN_PW){closePw();goAdmin();}
+  else{document.getElementById('pwErr').textContent='密碼錯誤，請再試一次';document.getElementById('pwIn').value='';}
+}
+
+// ─ 彈窗 ─
+function closeResult(){document.getElementById('ovResult').classList.remove('show');goMap();}
+function showReset(){document.getElementById('ovReset').classList.add('show');}
+function closeReset(){document.getElementById('ovReset').classList.remove('show');}
+function doReset(){S.sA=0;S.sB=0;S.cleared=[];sv();upUI();closeReset();}
+
+// ─ 工具 ─
+function sv(){localStorage.setItem('cy_v4',JSON.stringify(S));}
+function svQB(){localStorage.setItem('cy_qb',JSON.stringify(QB));}
+function shuf(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
+function upUI(){
+  const na=S.nA||'隊伍 A',nb=S.nB||'隊伍 B';
+  ['hn-a','mn-a','qn-a'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=na;});
+  ['hn-b','mn-b','qn-b'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=nb;});
+  ['hs-a','ms-a','qs-a','qa-s'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=S.sA;});
+  ['hs-b','ms-b','qs-b','qb-s'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=S.sB;});
+  document.getElementById('qa-n').textContent=na;
+  document.getElementById('qb-n').textContent=nb;
+  document.getElementById('inA').value=S.nA==='隊伍 A'?'':S.nA;
+  document.getElementById('inB').value=S.nB==='隊伍 B'?'':S.nB;
+}
+
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
+upUI();
 </script>
 </body>
 </html>
