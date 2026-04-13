@@ -234,8 +234,22 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
     </div>
     <div class="choices" id="choices"></div>
     <div class="spanel">
-      <button class="tsb" style="background:#fff0f3;color:#c2506a" onclick="addScore('A')"><span id="qa-s">0</span><div id="qa-n">隊伍 A</div>＋1 分</button>
-      <button class="tsb" style="background:#f0f6ff;color:#3a7fd5" onclick="addScore('B')"><span id="qb-s">0</span><div id="qb-n">隊伍 B</div>＋1 分</button>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:.35rem;background:#fff0f3;border-radius:16px;padding:.9rem .5rem">
+        <span id="qa-s" style="font-size:1.9rem;font-family:'Noto Serif TC',serif;color:#c2506a;font-weight:900">0</span>
+        <div id="qa-n" style="font-size:.85rem;font-weight:700;color:#c2506a">隊伍 A</div>
+        <div style="display:flex;gap:.5rem">
+          <button style="background:#c2506a;color:white;border:none;border-radius:10px;width:46px;height:38px;font-size:1.4rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center" onclick="addScore('A',1)">＋</button>
+          <button style="background:#ddd;color:#666;border:none;border-radius:10px;width:46px;height:38px;font-size:1.4rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center" onclick="addScore('A',-1)">－</button>
+        </div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:.35rem;background:#f0f6ff;border-radius:16px;padding:.9rem .5rem">
+        <span id="qb-s" style="font-size:1.9rem;font-family:'Noto Serif TC',serif;color:#3a7fd5;font-weight:900">0</span>
+        <div id="qb-n" style="font-size:.85rem;font-weight:700;color:#3a7fd5">隊伍 B</div>
+        <div style="display:flex;gap:.5rem">
+          <button style="background:#3a7fd5;color:white;border:none;border-radius:10px;width:46px;height:38px;font-size:1.4rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center" onclick="addScore('B',1)">＋</button>
+          <button style="background:#ddd;color:#666;border:none;border-radius:10px;width:46px;height:38px;font-size:1.4rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center" onclick="addScore('B',-1)">－</button>
+        </div>
+      </div>
     </div>
     <div class="nwrap"><button id="nextBtn" onclick="nextQ()">下一題 →</button></div>
   </div>
@@ -602,12 +616,18 @@ function rQ(){
   });
 }
 
+// 記錄這題是否答對，供加分按鈕使用
+let lastWasCorrect = false;
+
 function pick(idx,ans){
   if(answered)return;answered=true;
+  lastWasCorrect = (idx===ans);
   document.querySelectorAll('.cb').forEach((b,i)=>{
     if(i===ans)b.classList.add('correct');else if(i===idx)b.classList.add('wrong');
   });
   document.getElementById('nextBtn').style.display='inline-block';
+  // 答題當下直接觸發雙方連擊更新（以這題是否答對為準）
+  updateBothStreaks(lastWasCorrect);
 }
 
 function nextQ(){
@@ -619,46 +639,31 @@ function nextQ(){
   }else rQ();
 }
 
-function addScore(team){
-  if(team==='A')S.sA++;else S.sB++;
-  sv();
-
-  // 連擊判斷：只有答題後才算（answered=true代表剛剛有答）
-  if(answered){
-    const allCb=document.querySelectorAll('.cb');
-    let wasCorrect=false;
-    allCb.forEach(b=>{if(b.classList.contains('correct')&&b.style.cursor!=='default')wasCorrect=true;});
-    // 用答對/答錯的class判斷
-    const correctBtn=document.querySelector('.cb.correct');
-    // 若加分，記錄連擊
-    recordStreak(team, true); // 每次按加分算答對
-  }
-  upUI();
+function addScore(team, delta){
+  delta = (delta===undefined) ? 1 : delta;
+  if(team==='A') S.sA = Math.max(0, S.sA + delta);
+  else S.sB = Math.max(0, S.sB + delta);
+  sv(); upUI();
 }
 
-// streak 正數=連續答對，負數=連續答錯
-function recordStreak(team, correct){
-  if(team==='A'){
-    if(correct){ streakA= streakA>=0? streakA+1: 1; }
-    else{ streakA= streakA<=0? streakA-1: -1; }
-    checkStreak('A', streakA);
+// 答題時同步更新雙方連擊（老師選擇哪隊加分前先觸發）
+function updateBothStreaks(correct){
+  // 兩隊共用同一道題，答對就連對，答錯就連錯
+  if(correct){
+    streakA++;streakB++;
+    streakA=Math.max(streakA,0);streakB=Math.max(streakB,0);
   } else {
-    if(correct){ streakB= streakB>=0? streakB+1: 1; }
-    else{ streakB= streakB<=0? streakB-1: -1; }
-    checkStreak('B', streakB);
+    streakA--;streakB--;
+    streakA=Math.min(streakA,0);streakB=Math.min(streakB,0);
   }
+  renderStreakBar();
+  // 檢查觸發（延遲讓答題動畫先顯示）
+  const win=CFG.streakWin||5, lose=CFG.streakLose||5;
+  if(streakA>=win){ setTimeout(()=>{openLottery('A','win');streakA=0;streakB=0;renderStreakBar();},600); }
+  else if(streakA<=-lose){ setTimeout(()=>{openLottery('A','lose');streakA=0;streakB=0;renderStreakBar();},600); }
 }
 
-function checkStreak(team, streak){
-  if(streak>=CFG.streakWin){
-    // 觸發抽獎
-    setTimeout(()=>openLottery(team,'win'),300);
-    if(team==='A')streakA=0;else streakB=0;
-  } else if(streak<=-CFG.streakLose){
-    setTimeout(()=>openLottery(team,'lose'),300);
-    if(team==='A')streakA=0;else streakB=0;
-  }
-}
+// streak 正數=連續答對，負數=連續答錯（已不需要舊版 recordStreak/checkStreak）
 
 function renderStreakBar(){
   const bar=document.getElementById('streakBarA');
