@@ -355,22 +355,15 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
       </div>
     </div>
 
-    <!-- 獎懲設定 -->
+    <!-- 妙不妙轉盤設定 -->
     <div id="apanel-r" style="display:none">
       <div class="aform">
-        <h3>🎉 獎勵項目（連續答對觸發）</h3>
-        <div class="reward-list" id="reward-win-list"></div>
+        <h3>🎡 妙不妙大轉盤項目</h3>
+        <p style="font-size:.82rem;color:#a0a0a0;margin-bottom:.9rem;line-height:1.6">觸發時獎勵與懲罰會從同一個轉盤隨機抽出，<br>全部項目都在這裡設定。</p>
+        <div class="reward-list" id="miao-list"></div>
         <div class="reward-add-row">
-          <input class="reward-input" id="reward-win-input" type="text" placeholder="輸入獎勵內容，例：加 2 分">
-          <button class="reward-add-btn" onclick="addReward('win')">＋ 新增</button>
-        </div>
-      </div>
-      <div class="aform">
-        <h3>😱 懲罰項目（連續答錯觸發）</h3>
-        <div class="reward-list" id="reward-lose-list"></div>
-        <div class="reward-add-row">
-          <input class="reward-input" id="reward-lose-input" type="text" placeholder="輸入懲罰內容，例：扣 1 分">
-          <button class="reward-add-btn" onclick="addReward('lose')">＋ 新增</button>
+          <input class="reward-input" id="miao-input" type="text" placeholder="輸入項目，例：全班一起跳舞">
+          <button class="reward-add-btn" onclick="addMiao()">＋ 新增</button>
         </div>
       </div>
     </div>
@@ -849,32 +842,39 @@ function changeStreak(type,d){
 }
 
 function renderRewardAdmin(){
-  renderRewardList('win');renderRewardList('lose');
+  renderMiaoList();
 }
 
-function renderRewardList(type){
-  const list=document.getElementById('reward-'+type+'-list');
+function renderMiaoList(){
+  const list=document.getElementById('miao-list');
+  if(!list)return;
   list.innerHTML='';
-  const items=type==='win'?CFG.rewards:CFG.punishments;
-  if(!items.length){list.innerHTML='<div style="color:#bbb;font-size:.85rem;padding:.4rem">尚未設定</div>';return;}
-  items.forEach((item,i)=>{
+  // 合併 rewards + punishments 為統一列表
+  const all=[...CFG.rewards,...CFG.punishments];
+  if(!all.length){list.innerHTML='<div style="color:#bbb;font-size:.85rem;padding:.4rem">尚未設定任何項目</div>';return;}
+  all.forEach((item,i)=>{
     const el=document.createElement('div');el.className='reward-item';
-    el.innerHTML=`<div class="reward-text">${item}</div><button class="reward-del" onclick="delReward('${type}',${i})">刪除</button>`;
+    el.innerHTML=`<div class="reward-text">${item}</div><button class="reward-del" onclick="delMiao(${i})">刪除</button>`;
     list.appendChild(el);
   });
 }
 
-function addReward(type){
-  const inp=document.getElementById('reward-'+type+'-input');
+function addMiao(){
+  const inp=document.getElementById('miao-input');
   const val=inp.value.trim();
-  if(!val){alert('請輸入內容');return;}
-  if(type==='win')CFG.rewards.push(val);else CFG.punishments.push(val);
-  inp.value='';svCFG();renderRewardList(type);
+  if(!val){alert('請輸入項目內容');return;}
+  CFG.rewards.push(val);
+  inp.value='';svCFG();renderMiaoList();
 }
 
-function delReward(type,i){
-  if(type==='win')CFG.rewards.splice(i,1);else CFG.punishments.splice(i,1);
-  svCFG();renderRewardList(type);
+function delMiao(i){
+  // 合併後的 index，先刪 rewards 再刪 punishments
+  const all=[...CFG.rewards,...CFG.punishments];
+  const item=all[i];
+  const ri=CFG.rewards.indexOf(item);
+  if(ri!==-1)CFG.rewards.splice(ri,1);
+  else{const pi=CFG.punishments.indexOf(item);if(pi!==-1)CFG.punishments.splice(pi,1);}
+  svCFG();renderMiaoList();
 }
 
 // ════════════════════════════════════
