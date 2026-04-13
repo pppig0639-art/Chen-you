@@ -648,19 +648,16 @@ function addScore(team, delta){
 
 // 答題時同步更新雙方連擊（老師選擇哪隊加分前先觸發）
 function updateBothStreaks(correct){
-  // 兩隊共用同一道題，答對就連對，答錯就連錯
-  if(correct){
-    streakA++;streakB++;
-    streakA=Math.max(streakA,0);streakB=Math.max(streakB,0);
-  } else {
-    streakA--;streakB--;
-    streakA=Math.min(streakA,0);streakB=Math.min(streakB,0);
-  }
+  // 每次答題後，各有 20% 機率隨機觸發獎勵或懲罰
   renderStreakBar();
-  // 檢查觸發（延遲讓答題動畫先顯示）
-  const win=CFG.streakWin||5, lose=CFG.streakLose||5;
-  if(streakA>=win){ setTimeout(()=>{openLottery('A','win');streakA=0;streakB=0;renderStreakBar();},600); }
-  else if(streakA<=-lose){ setTimeout(()=>{openLottery('A','lose');streakA=0;streakB=0;renderStreakBar();},600); }
+  const roll = Math.random();
+  if(roll < 0.10){
+    // 10% 觸發獎勵
+    setTimeout(()=>openLottery('A','win'), 600);
+  } else if(roll < 0.20){
+    // 10% 觸發懲罰
+    setTimeout(()=>openLottery('A','lose'), 600);
+  }
 }
 
 // streak 正數=連續答對，負數=連續答錯（已不需要舊版 recordStreak/checkStreak）
