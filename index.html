@@ -401,11 +401,11 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 <div class="ov" id="ov-lottery">
   <div class="pop">
     <span class="pe" id="lot-emoji">🎉</span>
-    <div class="lottery-title" id="lot-title">恭喜！連續答對5題！</div>
-    <div class="lottery-sub" id="lot-sub">點下方按鈕抽獎</div>
+    <div class="lottery-title" id="lot-title">超級妙不妙大轉盤！！</div>
+    <div class="lottery-sub" id="lot-sub">恭喜你觸發了超級妙不妙大轉盤！！<br>請按下抽獎看看是妙什麼妙<br>還是妙不妙吧～</div>
     <div class="lottery-reel" id="lot-reel">按下抽獎！</div>
     <div class="lottery-result" id="lot-result"></div>
-    <button class="bm" id="lot-btn" onclick="spinLottery()" style="margin-top:1rem">🎰 開始抽！</button>
+    <button class="bm" id="lot-btn" onclick="spinLottery()" style="margin-top:1rem">🎡 妙不妙！按這裡！</button>
     <button class="bc" id="lot-close" style="display:none;margin-top:.6rem;border-radius:50px;padding:.8rem" onclick="closeLottery()">繼續遊戲</button>
   </div>
 </div>
@@ -683,12 +683,10 @@ let lotType='win',lotTeam='A',lotSpinning=false;
 function openLottery(team,type){
   lotType=type;lotTeam=team;lotSpinning=false;
   const na=team==='A'?S.nA:S.nB;
-  document.getElementById('lot-emoji').textContent=type==='win'?'🎉':'😱';
-  document.getElementById('lot-title').textContent=type==='win'
-    ?`${na} 連續答對${CFG.streakWin}題！`
-    :`${na} 連續答錯${CFG.streakLose}題！`;
-  document.getElementById('lot-sub').textContent=type==='win'?'點下方按鈕抽取獎勵！':'點下方按鈕抽取懲罰！';
-  document.getElementById('lot-reel').textContent=type==='win'?'按下抽獎！':'按下抽罰！';
+  document.getElementById('lot-emoji').textContent='🎡';
+  document.getElementById('lot-title').textContent='超級妙不妙大轉盤！！';
+  document.getElementById('lot-sub').textContent='恭喜你觸發了超級妙不妙大轉盤！！\n請按下抽獎看看是妙什麼妙還是妙不妙吧～';
+  document.getElementById('lot-reel').textContent='按下抽獎！';
   document.getElementById('lot-reel').classList.remove('spinning');
   document.getElementById('lot-result').textContent='';
   document.getElementById('lot-btn').style.display='block';
@@ -700,7 +698,7 @@ function openLottery(team,type){
 function spinLottery(){
   if(lotSpinning)return;
   lotSpinning=true;
-  const pool=lotType==='win'?CFG.rewards:CFG.punishments;
+  const pool=[...CFG.rewards,...CFG.punishments];
   if(!pool.length){
     document.getElementById('lot-reel').textContent='（尚未設定項目）';
     document.getElementById('lot-btn').style.display='none';
