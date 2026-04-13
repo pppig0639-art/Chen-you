@@ -641,8 +641,8 @@ function nextQ(){
 
 function addScore(team, delta){
   delta = (delta===undefined) ? 1 : delta;
-  if(team==='A') S.sA = Math.max(0, S.sA + delta);
-  else S.sB = Math.max(0, S.sB + delta);
+  if(team==='A') S.sA = S.sA + delta;
+  else S.sB = S.sB + delta;
   sv(); upUI();
 }
 
@@ -842,8 +842,8 @@ function renderScoreAdmin(){
 }
 
 function manualScore(team,d){
-  if(team==='A')S.sA=Math.max(0,S.sA+d);
-  else S.sB=Math.max(0,S.sB+d);
+  if(team==='A')S.sA=S.sA+d;
+  else S.sB=S.sB+d;
   sv();upUI();renderScoreAdmin();
 }
 
