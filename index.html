@@ -263,7 +263,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
       <button class="atab" id="atab-z" onclick="switchAtab('z')">🗺️ 地圖</button>
       <button class="atab" id="atab-t" onclick="switchAtab('t')">✏️ 文字</button>
       <button class="atab" id="atab-r" onclick="switchAtab('r')">🎡 妙不妙</button>
-      
+      <button class="atab" id="atab-x" onclick="switchAtab('x')">📦 匯出匯入</button>
     </div>
 
     <!-- 題目管理 -->
@@ -374,6 +374,22 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
           <input class="reward-input" id="miao-input" type="text" placeholder="輸入項目，例：全班一起跳舞">
           <button class="reward-add-btn" onclick="addMiao()">＋ 新增</button>
         </div>
+
+    <!-- 匯出匯入 -->
+    <div id="apanel-x" style="display:none">
+      <div class="aform">
+        <h3>📤 匯出資料</h3>
+        <p style="font-size:.85rem;color:#a0a0a0;margin-bottom:1rem;line-height:1.6">將目前的題庫、設定、關卡名稱打包成 JSON 檔案下載。<br>傳給其他設備後用下方「匯入」功能載入即可。<br><span style="color:#f4a0b0">※ 圖片不包含在匯出內容中</span></p>
+        <button class="bm" onclick="exportData()">📤 下載匯出檔案</button>
+      </div>
+      <div class="aform" style="margin-top:.8rem">
+        <h3>📥 匯入資料</h3>
+        <p style="font-size:.85rem;color:#a0a0a0;margin-bottom:1rem;line-height:1.6">選擇從其他設備匯出的 JSON 檔案。<br><span style="color:#ef5350;font-weight:600">⚠️ 匯入後會覆蓋目前所有題庫和設定</span></p>
+        <label style="display:flex;align-items:center;justify-content:center;gap:.6rem;background:#fde8ec;border:2px dashed #f4a0b0;border-radius:14px;padding:1.2rem;cursor:pointer;font-size:.95rem;color:var(--pd);font-weight:600">
+          📥 選擇 JSON 檔案
+          <input type="file" accept=".json,application/json" style="display:none" onchange="importData(this)">
+        </label>
+        <div id="import-status" style="margin-top:.8rem;font-size:.85rem;text-align:center;min-height:1.2rem"></div>
       </div>
     </div>
   </div>
@@ -784,7 +800,7 @@ function spawnConfetti(){
 // ════════════════════════════════════
 function switchAtab(tab){
   curAtab=tab;
-  ['q','z','t','r','f'].forEach(t=>{
+  ['q','z','t','r','f','x'].forEach(t=>{
     const tabEl=document.getElementById('atab-'+t);
     const panEl=document.getElementById('apanel-'+t);
     if(tabEl)tabEl.classList.toggle('on',t===tab);
@@ -1220,6 +1236,59 @@ function doReset(){S.sA=0;S.sB=0;S.cleared=[];sv();upUI();closeReset();}
 function showPw(){document.getElementById('pwIn').value='';document.getElementById('pwErr').textContent='';document.getElementById('ovPw').classList.add('show');setTimeout(()=>document.getElementById('pwIn').focus(),300);}
 function closePw(){document.getElementById('ovPw').classList.remove('show');}
 function checkPw(){if(document.getElementById('pwIn').value===ADMIN_PW){closePw();goAdmin();}else{document.getElementById('pwErr').textContent='密碼錯誤，請再試一次';document.getElementById('pwIn').value='';}}
+
+
+// ════════════════════════════════════
+// 匯出 / 匯入
+// ════════════════════════════════════
+function exportData(){
+  const fid=_fid();
+  const payload={
+    version:2,
+    exportedAt:new Date().toISOString(),
+    folderName: (getFolders().list.find(f=>f.id===fid)||{}).name||'未知資料夾',
+    QB: QB,
+    CFG: CFG,
+    ZONENAME: window.ZONENAME||{},
+    // 圖片不匯出（體積太大）
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='成之於語_'+payload.folderName+'_'+new Date().toLocaleDateString('zh-TW').replace(/\//g,'-')+'.json';
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},1000);
+}
+
+function importData(input){
+  const file=input.files[0];
+  if(!file)return;
+  const status=document.getElementById('import-status');
+  status.textContent='讀取中…';status.style.color='#a0a0a0';
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!data.QB||!data.CFG){throw new Error('檔案格式不正確');}
+      if(!confirm('確定要匯入？目前的題庫和設定將被覆蓋。')){status.textContent='已取消';return;}
+      // 寫入
+      QB=data.QB;
+      CFG=data.CFG;
+      if(data.ZONENAME)window.ZONENAME=data.ZONENAME;
+      svQB();svCFG();
+      if(data.ZONENAME)localStorage.setItem('cy_zname_'+_fid(),JSON.stringify(data.ZONENAME));
+      status.textContent='✅ 匯入成功！';status.style.color='#4caf50';
+      input.value='';
+      // 重新渲染
+      upUI();buildMap();
+    }catch(err){
+      status.textContent='❌ 匯入失敗：'+err.message;
+      status.style.color='#ef5350';
+    }
+  };
+  reader.readAsText(file);
+}
 
 // ════════════════════════════════════
 // 工具
