@@ -230,6 +230,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
       <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:.35rem;background:#fff0f3;border-radius:16px;padding:.9rem .5rem">
         <span id="qa-s" style="font-size:1.9rem;font-family:'Noto Serif TC',serif;color:#c2506a;font-weight:900">0</span>
         <div id="qa-n" style="font-size:.85rem;font-weight:700;color:#c2506a">隊伍 A</div>
+          <div id="qa-label" style="font-size:.8rem;color:#c2506a;opacity:.7">＋1</div>
         <div style="display:flex;gap:.5rem">
           <button style="background:#c2506a;color:white;border:none;border-radius:10px;width:46px;height:38px;font-size:1.4rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center" onclick="addScore('A',1)">＋</button>
           <button style="background:#ddd;color:#666;border:none;border-radius:10px;width:46px;height:38px;font-size:1.4rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center" onclick="addScore('A',-1)">－</button>
@@ -238,6 +239,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
       <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:.35rem;background:#f0f6ff;border-radius:16px;padding:.9rem .5rem">
         <span id="qb-s" style="font-size:1.9rem;font-family:'Noto Serif TC',serif;color:#3a7fd5;font-weight:900">0</span>
         <div id="qb-n" style="font-size:.85rem;font-weight:700;color:#3a7fd5">隊伍 B</div>
+          <div id="qb-label" style="font-size:.8rem;color:#3a7fd5;opacity:.7">＋1</div>
         <div style="display:flex;gap:.5rem">
           <button style="background:#3a7fd5;color:white;border:none;border-radius:10px;width:46px;height:38px;font-size:1.4rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center" onclick="addScore('B',1)">＋</button>
           <button style="background:#ddd;color:#666;border:none;border-radius:10px;width:46px;height:38px;font-size:1.4rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center" onclick="addScore('B',-1)">－</button>
@@ -257,8 +259,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
   <div class="abody">
     <!-- 後台主分頁 -->
     <div class="admin-tabs">
-      <button class="atab on" id="atab-q" onclick="switchAtab('q')">📝 題目管理</button>
-      <button class="atab" id="atab-z" onclick="switchAtab('z')">🗺️ 關卡設定</button>
+      <button class="atab on" id="atab-q" onclick="switchAtab('q')">📝 題目</button>
+      <button class="atab" id="atab-z" onclick="switchAtab('z')">🗺️ 地圖</button>
+      <button class="atab" id="atab-t" onclick="switchAtab('t')">✏️ 文字</button>
       <button class="atab" id="atab-r" onclick="switchAtab('r')">🎡 妙不妙</button>
       
     </div>
@@ -305,6 +308,27 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
           <button class="bm" onclick="saveQ()">儲存題目</button>
           <button class="bc" id="cancelEditBtn" style="display:none;border-radius:50px;padding:.9rem" onclick="cancelEdit()">取消編輯</button>
         </div>
+      </div>
+    </div>
+
+    <!-- 文字編輯 -->
+    <div id="apanel-t" style="display:none">
+      <div class="aform" style="margin-bottom:.8rem">
+        <h3>✏️ 首頁按鈕文字</h3>
+        <div class="fl"><label>開始遊戲按鈕</label><input class="fi" id="txt-start" type="text" placeholder="🗺️ 開始探險"></div>
+        <div class="fl"><label>清零分數按鈕</label><input class="fi" id="txt-reset" type="text" placeholder="🔄 清零分數"></div>
+        <div class="fl"><label>後台管理按鈕</label><input class="fi" id="txt-admin" type="text" placeholder="⚙️ 後台管理"></div>
+        <div class="fl"><label>隊伍 A 預設名稱</label><input class="fi" id="txt-teamA" type="text" placeholder="隊伍 A"></div>
+        <div class="fl"><label>隊伍 B 預設名稱</label><input class="fi" id="txt-teamB" type="text" placeholder="隊伍 B"></div>
+        <button class="bm" style="margin-top:.5rem" onclick="saveTxt()">儲存文字設定</button>
+      </div>
+      <div class="aform">
+        <h3>✏️ 答題畫面文字</h3>
+        <div class="fl"><label>加分按鈕文字（A隊）</label><input class="fi" id="txt-addA" type="text" placeholder="＋1"></div>
+        <div class="fl"><label>加分按鈕文字（B隊）</label><input class="fi" id="txt-addB" type="text" placeholder="＋1"></div>
+        <div class="fl"><label>下一題按鈕</label><input class="fi" id="txt-next" type="text" placeholder="下一題 →"></div>
+        <div class="fl"><label>完成關卡後返回按鈕</label><input class="fi" id="txt-back" type="text" placeholder="回地圖"></div>
+        <button class="bm" style="margin-top:.5rem" onclick="saveTxt()">儲存文字設定</button>
       </div>
     </div>
 
@@ -357,7 +381,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 
 <!-- 完成彈窗 -->
 <div class="ov" id="ovResult">
-  <div class="pop"><span class="pe">🎊</span><div class="pt" id="popTitle">完成！</div><div class="ps">答對的隊伍記得按加分 ↑</div><button class="bm" onclick="closeResult()">回地圖</button></div>
+  <div class="pop"><span class="pe">🎊</span><div class="pt" id="popTitle">完成！</div><div class="ps">答對的隊伍記得按加分 ↑</div><button class="bm" id="result-back-btn" onclick="closeResult()">回地圖</button></div>
 </div>
 
 <!-- 清零確認 -->
@@ -521,7 +545,8 @@ let CFG = JSON.parse(localStorage.getItem('cy_cfg_'+_initFid)||localStorage.getI
   qPerZone:{animal:6,number:6,color:6,body:6,emotion:6,boss:6},
   streakWin:5, streakLose:5,
   rewards:['加 1 分！','全隊站起來歡呼！','老師說一個笑話！','隊長帶全隊跳一下！','免做一題！'],
-  punishments:['扣 1 分！','全隊拍手三下！','站起來轉一圈！','學鴨子叫三聲！','幫對手鼓掌！']
+  punishments:['扣 1 分！','全隊拍手三下！','站起來轉一圈！','學鴨子叫三聲！','幫對手鼓掌！'],
+  txt:{start:'🗺️ 開始探險',reset:'🔄 清零分數',admin:'⚙️ 後台管理',teamA:'隊伍 A',teamB:'隊伍 B',addA:'＋1',addB:'＋1',next:'下一題 →',back:'回地圖'}
 };
 
 let CZ=null,Qi=0,Ql=[],answered=false;
@@ -755,7 +780,7 @@ function spawnConfetti(){
 // ════════════════════════════════════
 function switchAtab(tab){
   curAtab=tab;
-  ['q','z','r','f'].forEach(t=>{
+  ['q','z','t','r','f'].forEach(t=>{
     const tabEl=document.getElementById('atab-'+t);
     const panEl=document.getElementById('apanel-'+t);
     if(tabEl)tabEl.classList.toggle('on',t===tab);
@@ -763,6 +788,7 @@ function switchAtab(tab){
   });
   if(tab==='q')renderAdmin();
   if(tab==='z')renderZoneSettings();
+  if(tab==='t')renderTxtAdmin();
   if(tab==='r')renderRewardAdmin();
   if(tab==='f')renderFolders();
 }
@@ -887,6 +913,47 @@ function renderMapBgPreview(){
   }
 }
 
+
+// ════════════════════════════════════
+// 文字設定
+// ════════════════════════════════════
+function applyTxt(){
+  const t=CFG.txt||{};
+  // 首頁按鈕
+  const btnStart=document.querySelector('#s-title .bm');
+  if(btnStart&&t.start)btnStart.textContent=t.start;
+  const bsAll=document.querySelectorAll('#s-title .bs');
+  if(bsAll[0]&&t.reset)bsAll[0].textContent=t.reset;
+  if(bsAll[1]&&t.admin)bsAll[1].textContent=t.admin;
+  // 隊伍預設名稱（只有還沒改過才套）
+  if(!S.nA||S.nA==='隊伍 A')S.nA=t.teamA||'隊伍 A';
+  if(!S.nB||S.nB==='隊伍 B')S.nB=t.teamB||'隊伍 B';
+  // 答題畫面
+  const qa=document.getElementById('qa-label');if(qa&&t.addA)qa.textContent=t.addA;
+  const qb=document.getElementById('qb-label');if(qb&&t.addB)qb.textContent=t.addB;
+  const nb=document.getElementById('nextBtn');if(nb&&t.next)nb.textContent=t.next;
+  const bb=document.getElementById('result-back-btn');if(bb&&t.back)bb.textContent=t.back;
+}
+
+function renderTxtAdmin(){
+  const t=CFG.txt||{};
+  const fields=['start','reset','admin','teamA','teamB','addA','addB','next','back'];
+  fields.forEach(k=>{
+    const el=document.getElementById('txt-'+k);
+    if(el)el.value=t[k]||'';
+  });
+}
+
+function saveTxt(){
+  if(!CFG.txt)CFG.txt={};
+  ['start','reset','admin','teamA','teamB','addA','addB','next','back'].forEach(k=>{
+    const el=document.getElementById('txt-'+k);
+    if(el&&el.value.trim())CFG.txt[k]=el.value.trim();
+  });
+  svCFG();applyTxt();upUI();
+  alert('✅ 文字設定已儲存！');
+}
+
 // ════════════════════════════════════
 // 關卡設定（名稱＋圖片）
 // ════════════════════════════════════
@@ -943,28 +1010,13 @@ function renderZoneSettings(){
   });
 }
 
-function uploadMapBg(input){
-  const file=input.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    localStorage.setItem('cy_mapbg',e.target.result);
-    renderZoneSettings();buildMap();
-  };
-  reader.readAsDataURL(file);
-}
-
-function clearMapBg(){
-  localStorage.removeItem('cy_mapbg');
-  renderZoneSettings();buildMap();
-}
-
 function uploadZoneImg(zoneId, input){
   const file=input.files[0];if(!file)return;
   const reader=new FileReader();
   reader.onload=e=>{
     if(!window.ZONEIMG)window.ZONEIMG={};
     ZONEIMG[zoneId]=e.target.result;
-    localStorage.setItem('cy_zimg',JSON.stringify(ZONEIMG));svZimg();
+    svZimg();
     renderZoneSettings();
     buildMap(); // 更新地圖上的圖示
   };
@@ -983,7 +1035,7 @@ function saveZoneName(zoneId){
   if(!val){alert('名稱不能為空');return;}
   if(!window.ZONENAME)window.ZONENAME={};
   ZONENAME[zoneId]=val;
-  localStorage.setItem('cy_zname',JSON.stringify(ZONENAME));svZname();
+  localStorage.setItem('cy_zname_'+_fid(),JSON.stringify(ZONENAME));svZname();
   buildMap(); // 更新地圖按鈕名稱
   alert('✅ 已儲存！');
 }
@@ -1192,6 +1244,7 @@ function upUI(){
   document.getElementById('inB').value=S.nB==='隊伍 B'?'':S.nB;
 }
 
+applyTxt();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
 upUI();
 </script>
