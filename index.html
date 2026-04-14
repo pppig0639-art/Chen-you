@@ -45,9 +45,8 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 
 /* ─── 地圖：真正全螢幕 ─── */
 #s-map{display:none;position:fixed;inset:0;overflow:hidden}
-#s-map.active{display:block}
 .map-bg{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;background-color:#2a1a0e}
-.map-back-btn{position:absolute;top:12px;left:12px;z-index:20;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center}
+/* map-back-btn removed */
 .mgrid{
   position:absolute;inset:0;
   display:grid;
@@ -198,14 +197,15 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
     <button class="bm" onclick="goMap()">🗺️ 開始探險</button>
     <button class="bs" onclick="showReset()">🔄 清零分數</button>
     <button class="bs" onclick="showPw()" style="border-color:#b48ef4;color:#7c52c8">⚙️ 後台管理</button>
+    <button class="bs" id="switch-folder-btn" onclick="showFolderSwitch()" style="border-color:#6aabf7;color:#2a7fd5">📁 切換資料夾（<span id="cur-folder-name">預設資料夾</span>）</button>
   </div>
 </div>
 
 <!-- ════ 地圖（真正全螢幕） ════ -->
-<div id="s-map">
+<div id="s-map" ondblclick="goTitle()">
   <div class="map-bg" id="mapBg"></div>
-  <button class="map-back-btn" onclick="goTitle()">←</button>
   <div class="mgrid" id="mapGrid"></div>
+  <div style="position:fixed;bottom:10px;right:12px;z-index:20;font-size:.7rem;color:rgba(255,255,255,.3);pointer-events:none">點兩下返回</div>
 </div>
 
 <!-- ════ 關卡 ════ -->
@@ -260,7 +260,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
       <button class="atab on" id="atab-q" onclick="switchAtab('q')">📝 題目管理</button>
       <button class="atab" id="atab-z" onclick="switchAtab('z')">🗺️ 關卡設定</button>
       <button class="atab" id="atab-r" onclick="switchAtab('r')">🎡 妙不妙</button>
-      <button class="atab" id="atab-f" onclick="switchAtab('f')">📁 資料夾</button>
+      
     </div>
 
     <!-- 題目管理 -->
@@ -310,6 +310,20 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 
     <!-- 關卡設定 -->
     <div id="apanel-z" style="display:none">
+      <div class="aform" style="margin-bottom:.8rem">
+        <h3>🗺️ 地圖背景圖片</h3>
+        <p style="font-size:.8rem;color:#a0a0a0;margin-bottom:.9rem">上傳後會顯示為地圖底圖（建議比例 4:3 或 16:9）</p>
+        <div id="mapbg-preview" style="width:100%;height:120px;border-radius:12px;background:#2a1a0e;margin-bottom:.8rem;display:flex;align-items:center;justify-content:center;overflow:hidden;background-size:cover;background-position:center">
+          <span style="color:rgba(255,255,255,.3);font-size:.85rem">尚未上傳地圖背景</span>
+        </div>
+        <div style="display:flex;gap:.6rem">
+          <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:.5rem;background:#fde8ec;border-radius:10px;padding:.6rem;cursor:pointer;font-size:.88rem;color:var(--pd);font-weight:600">
+            📷 上傳地圖背景
+            <input type="file" accept="image/*" style="display:none" onchange="uploadMapBg(this)">
+          </label>
+          <button onclick="clearMapBg()" style="background:#ffebee;color:#ef5350;border:none;border-radius:10px;padding:.6rem 1rem;font-size:.85rem;cursor:pointer;white-space:nowrap">清除</button>
+        </div>
+      </div>
       <div id="zone-settings-list"></div>
     </div>
 
@@ -317,21 +331,12 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
     <div id="apanel-f" style="display:none">
       <div class="aform">
         <h3>📁 資料夾管理</h3>
-        <p style="font-size:.82rem;color:#a0a0a0;margin-bottom:.9rem;line-height:1.6">每個資料夾有獨立的題庫和設定。<br>匯出 JSON 後可帶到其他設備匯入。</p>
+        <p style="font-size:.82rem;color:#a0a0a0;margin-bottom:.9rem;line-height:1.6">每個資料夾有獨立的題庫和關卡設定，<br>切換後立即生效。</p>
         <div id="folder-list" style="margin-bottom:1rem"></div>
-        <div style="display:flex;gap:.6rem;margin-bottom:.8rem">
-          <input id="new-folder-name" class="fi" type="text" placeholder="新資料夾名稱" style="flex:1">
+        <div style="display:flex;gap:.6rem">
+          <input id="new-folder-name" class="fi" type="text" placeholder="新資料夾名稱，例：三甲班">
           <button class="reward-add-btn" onclick="createFolder()">＋ 建立</button>
         </div>
-      </div>
-      <div class="aform">
-        <h3>📤 匯出 / 📥 匯入</h3>
-        <p style="font-size:.82rem;color:#a0a0a0;margin-bottom:.8rem">匯出當前資料夾設定為 JSON 檔案，<br>在其他設備匯入即可使用相同題庫。</p>
-        <button class="bm" onclick="exportFolder()" style="margin-bottom:.6rem">📤 匯出當前資料夾</button>
-        <label style="display:flex;align-items:center;justify-content:center;gap:.5rem;background:#fde8ec;border-radius:50px;padding:.8rem;cursor:pointer;font-size:.95rem;color:var(--pd);font-weight:700;box-shadow:0 3px 10px rgba(194,80,106,.2)">
-          📥 匯入 JSON 檔案
-          <input type="file" accept=".json" style="display:none" onchange="importFolder(this)">
-        </label>
       </div>
     </div>
 
@@ -358,6 +363,21 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 <!-- 清零確認 -->
 <div class="ov" id="ovReset">
   <div class="pop"><div class="pt">確定清零？</div><div class="ps">所有分數與通關紀錄將歸零</div><div class="cbns"><button class="bd" onclick="doReset()">確定清零</button><button class="bc" onclick="closeReset()">取消</button></div></div>
+</div>
+
+
+<!-- 資料夾切換 -->
+<div class="ov" id="ov-folder">
+  <div class="pop" style="max-width:400px;width:94%">
+    <div class="pt" style="font-size:1.3rem;margin-bottom:.3rem">📁 資料夾管理</div>
+    <div class="ps" style="margin-bottom:1rem">每個資料夾有獨立的題庫、關卡設定與轉盤項目</div>
+    <div id="folder-modal-list" style="margin-bottom:1rem;display:flex;flex-direction:column;gap:.5rem;max-height:240px;overflow-y:auto"></div>
+    <div style="display:flex;gap:.5rem;margin-bottom:.8rem">
+      <input id="new-folder-name-modal" class="fi" type="text" placeholder="新資料夾名稱" style="flex:1;font-size:.9rem;padding:.55rem .8rem">
+      <button class="reward-add-btn" onclick="createFolderModal()" style="white-space:nowrap">＋ 建立</button>
+    </div>
+    <button class="bc" onclick="closeFolderSwitch()" style="width:100%;border-radius:50px;padding:.8rem">關閉</button>
+  </div>
 </div>
 
 <!-- 密碼 -->
@@ -516,7 +536,7 @@ function buildMap(){
   // 更新地圖背景圖
   const mapBg=document.getElementById('mapBg');
   if(mapBg){
-    const bgImg=localStorage.getItem('cy_mapbg')||'';
+    const bgImg=localStorage.getItem('cy_mapbg_'+_fid())||localStorage.getItem('cy_mapbg')||'';
     mapBg.style.backgroundImage=bgImg?`url(${bgImg})`:'none';
     mapBg.style.backgroundColor=bgImg?'transparent':'#2a1a0e';
   }
@@ -561,11 +581,11 @@ function buildMap(){
 function showScreen(id){
   ['s-title','s-map','s-quest','s-admin'].forEach(s=>{
     const el=document.getElementById(s);
-    if(s==='s-map'){
-      el.classList.toggle('active', s===id);
-      el.style.display=''; // 讓CSS控制
-    } else if(s===id){
-      el.style.display=s==='s-title'?'flex':'block';
+    if(!el){return;}
+    if(s===id){
+      if(s==='s-title') el.style.display='flex';
+      else if(s==='s-map') el.style.display='block';
+      else el.style.display='block';
     } else {
       el.style.display='none';
     }
@@ -833,6 +853,40 @@ function setQNumDirect(val){
 // 分數設定已移除
 
 
+
+// ════════════════════════════════════
+// 地圖背景圖片
+// ════════════════════════════════════
+function uploadMapBg(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    localStorage.setItem('cy_mapbg_'+_fid(),e.target.result);
+    renderMapBgPreview();
+    buildMap();
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearMapBg(){
+  localStorage.removeItem('cy_mapbg_'+_fid());
+  renderMapBgPreview();
+  buildMap();
+}
+
+function renderMapBgPreview(){
+  const preview=document.getElementById('mapbg-preview');
+  if(!preview)return;
+  const img=localStorage.getItem('cy_mapbg_'+_fid())||'';
+  if(img){
+    preview.style.backgroundImage=`url(${img})`;
+    preview.innerHTML='';
+  } else {
+    preview.style.backgroundImage='none';
+    preview.innerHTML='<span style="color:rgba(255,255,255,.3);font-size:.85rem">尚未上傳地圖背景</span>';
+  }
+}
+
 // ════════════════════════════════════
 // 關卡設定（名稱＋圖片）
 // ════════════════════════════════════
@@ -974,6 +1028,62 @@ function delMiao(i){
 // ════════════════════════════════════
 // 資料夾管理
 // ════════════════════════════════════
+
+// ════════════════════════════════════
+// 資料夾切換（首頁彈窗版）
+// ════════════════════════════════════
+function showFolderSwitch(){
+  renderFolderModal();
+  document.getElementById('ov-folder').classList.add('show');
+}
+function closeFolderSwitch(){
+  document.getElementById('ov-folder').classList.remove('show');
+}
+
+function renderFolderModal(){
+  const meta=getFolders();
+  const box=document.getElementById('folder-modal-list');
+  box.innerHTML='';
+  meta.list.forEach(f=>{
+    const isActive=f.id===meta.current;
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:.5rem;background:'+(isActive?'#fde8ec':'#f9f9f9')+';border-radius:12px;padding:.6rem .9rem;border:2px solid '+(isActive?'#f4a0b0':'#eee');
+    row.innerHTML=`
+      <div style="flex:1;font-size:.95rem;font-weight:${isActive?'700':'400'};color:${isActive?'var(--pd)':'#555'}">${f.name}${isActive?' ✓':''}</div>
+      ${!isActive?`<button onclick="switchFolderModal('${f.id}')" style="background:var(--pd);color:white;border:none;border-radius:8px;padding:.3rem .7rem;font-size:.82rem;cursor:pointer;white-space:nowrap">切換</button>`:'<span style="font-size:.75rem;color:#f4a0b0;white-space:nowrap">使用中</span>'}
+      ${meta.list.length>1&&!isActive?`<button onclick="deleteFolderModal('${f.id}')" style="background:#ffebee;color:#ef5350;border:none;border-radius:8px;padding:.3rem .6rem;font-size:.82rem;cursor:pointer">刪除</button>`:''}
+    `;
+    box.appendChild(row);
+  });
+}
+
+function createFolderModal(){
+  const name=document.getElementById('new-folder-name-modal').value.trim();
+  if(!name){alert('請輸入資料夾名稱');return;}
+  const meta=getFolders();
+  const id='folder_'+Date.now();
+  meta.list.push({id,name});
+  saveFolderMeta(meta);
+  document.getElementById('new-folder-name-modal').value='';
+  renderFolderModal();
+}
+
+function switchFolderModal(id){
+  if(!confirm('切換資料夾後會重新載入，確定嗎？'))return;
+  const meta=getFolders();
+  meta.current=id;
+  saveFolderMeta(meta);
+  location.reload();
+}
+
+function deleteFolderModal(id){
+  if(!confirm('確定刪除這個資料夾？題庫和設定都會消失。'))return;
+  const meta=getFolders();
+  meta.list=meta.list.filter(f=>f.id!==id);
+  saveFolderMeta(meta);
+  renderFolderModal();
+}
+
 function getFolders(){
   return JSON.parse(localStorage.getItem('cy_folders')||'{"list":[{"id":"default","name":"預設資料夾"}],"current":"default"}');
 }
@@ -1044,54 +1154,6 @@ function deleteFolder(id){
   renderFolders();
 }
 
-function exportFolder(){
-  const meta=getFolders();
-  const id=meta.current;
-  const folderName=meta.list.find(f=>f.id===id)?.name||'資料夾';
-  const data={
-    name:folderName,
-    qb:QB,
-    cfg:CFG,
-    zimg:window.ZONEIMG||{},
-    zname:window.ZONENAME||{},
-  };
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download=folderName+'_成之於語.json';a.click();
-  URL.revokeObjectURL(url);
-}
-
-function importFolder(input){
-  const file=input.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    try{
-      const data=JSON.parse(e.target.result);
-      const name=data.name||'匯入的資料夾';
-      const meta=getFolders();
-      const id='folder_'+Date.now();
-      meta.list.push({id,name});
-      meta.current=id;
-      saveFolderMeta(meta);
-      // 寫入資料
-      localStorage.setItem('cy_qb_'+id,JSON.stringify(data.qb||{}));
-      localStorage.setItem('cy_cfg_'+id,JSON.stringify(data.cfg||{}));
-      localStorage.setItem('cy_zimg_'+id,JSON.stringify(data.zimg||{}));
-      localStorage.setItem('cy_zname_'+id,JSON.stringify(data.zname||{}));
-      // 切換
-      QB=data.qb||JSON.parse(JSON.stringify(DQ));
-      CFG=data.cfg||CFG;
-      window.ZONEIMG=data.zimg||{};
-      window.ZONENAME=data.zname||{};
-      alert('✅ 匯入成功！已切換到「'+name+'」');
-      renderFolders();renderAdmin();
-    }catch(err){alert('匯入失敗，請確認檔案格式正確');}
-  };
-  reader.readAsText(file);
-  input.value='';
-}
-
 // ════════════════════════════════════
 // 彈窗
 // ════════════════════════════════════
@@ -1114,6 +1176,11 @@ function svZimg(){localStorage.setItem('cy_zimg_'+_fid(),JSON.stringify(window.Z
 function svZname(){localStorage.setItem('cy_zname_'+_fid(),JSON.stringify(window.ZONENAME||{}));}
 function shuf(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
 function upUI(){
+  // 更新首頁資料夾名稱
+  const _curFolder=getFolders();
+  const _curFolderName=(_curFolder.list.find(f=>f.id===_curFolder.current)||{}).name||'預設資料夾';
+  const _cfEl=document.getElementById('cur-folder-name');
+  if(_cfEl)_cfEl.textContent=_curFolderName;
   const na=S.nA||'隊伍 A',nb=S.nB||'隊伍 B';
   ['hn-a','mn-a','qn-a'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=na;});
   ['hn-b','mn-b','qn-b'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=nb;});
