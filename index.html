@@ -265,8 +265,8 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
     <!-- 後台主分頁 -->
     <div class="admin-tabs">
       <button class="atab on" id="atab-q" onclick="switchAtab('q')">📝 題目管理</button>
-      <button class="atab" id="atab-s" onclick="switchAtab('s')">🎯 分數設定</button>
-      <button class="atab" id="atab-r" onclick="switchAtab('r')">🎁 獎懲設定</button>
+      <button class="atab" id="atab-z" onclick="switchAtab('z')">🗺️ 關卡設定</button>
+      <button class="atab" id="atab-r" onclick="switchAtab('r')">🎡 妙不妙</button>
     </div>
 
     <!-- 題目管理 -->
@@ -277,7 +277,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
         <div class="qnum-label">每次出題數量</div>
         <div class="qnum-ctrl">
           <button class="qnum-btn" onclick="changeQNum(-1)">−</button>
-          <div class="qnum-val" id="qnum-display">6</div>
+          <input type="number" id="qnum-display" min="1" value="6"
+            style="width:56px;text-align:center;border:2px solid #f0d0d8;border-radius:9px;padding:.3rem .4rem;font-size:1rem;font-family:'Noto Serif TC',serif;font-weight:700;color:var(--br);outline:none"
+            onchange="setQNumDirect(this.value)">
           <button class="qnum-btn" onclick="changeQNum(1)">＋</button>
         </div>
       </div>
@@ -312,47 +314,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
       </div>
     </div>
 
-    <!-- 分數設定 -->
-    <div id="apanel-s" style="display:none">
-      <div class="aform">
-        <h3>🎯 手動調整分數</h3>
-        <div class="score-edit-row">
-          <div class="score-edit-label"><div class="d16" style="background:#f4a0b0"></div><span id="se-na">隊伍 A</span></div>
-          <div class="qnum-ctrl">
-            <button class="qnum-btn" onclick="manualScore('A',-1)">−</button>
-            <div class="qnum-val" id="se-sa">0</div>
-            <button class="qnum-btn" onclick="manualScore('A',1)">＋</button>
-          </div>
-        </div>
-        <div class="score-edit-row">
-          <div class="score-edit-label"><div class="d16" style="background:#6aabf7"></div><span id="se-nb">隊伍 B</span></div>
-          <div class="qnum-ctrl">
-            <button class="qnum-btn" onclick="manualScore('B',-1)">−</button>
-            <div class="qnum-val" id="se-sb">0</div>
-            <button class="qnum-btn" onclick="manualScore('B',1)">＋</button>
-          </div>
-        </div>
-        <button class="bm" style="margin-top:.8rem" onclick="showReset()">🔄 全部清零</button>
-      </div>
-      <div class="aform">
-        <h3>🔥 連續答對/錯觸發題數</h3>
-        <div class="qnum-row" style="box-shadow:none;padding:.5rem 0;background:transparent">
-          <div class="qnum-label">觸發抽獎（連續答對幾題）</div>
-          <div class="qnum-ctrl">
-            <button class="qnum-btn" onclick="changeStreak('win',-1)">−</button>
-            <div class="qnum-val" id="streak-win-val">5</div>
-            <button class="qnum-btn" onclick="changeStreak('win',1)">＋</button>
-          </div>
-        </div>
-        <div class="qnum-row" style="box-shadow:none;padding:.5rem 0;background:transparent">
-          <div class="qnum-label">觸發懲罰（連續答錯幾題）</div>
-          <div class="qnum-ctrl">
-            <button class="qnum-btn" onclick="changeStreak('lose',-1)">−</button>
-            <div class="qnum-val" id="streak-lose-val">5</div>
-            <button class="qnum-btn" onclick="changeStreak('lose',1)">＋</button>
-          </div>
-        </div>
-      </div>
+    <!-- 關卡設定 -->
+    <div id="apanel-z" style="display:none">
+      <div id="zone-settings-list"></div>
     </div>
 
     <!-- 妙不妙轉盤設定 -->
@@ -506,6 +470,8 @@ const ZONES = [
   {id:'boss',    name:'挑戰塔', icon:'⭐', color:'#f4506a', cells:[47,48,55,56], btnRow:6, btnCol:7, isBoss:true},
 ];
 const CZmap={};ZONES.forEach(z=>z.cells.forEach(c=>{CZmap[c]=z.id;}));
+window.ZONEIMG=JSON.parse(localStorage.getItem('cy_zimg')||'{}');
+window.ZONENAME=JSON.parse(localStorage.getItem('cy_zname')||'{}');
 
 // ════════════════════════════════════
 // 狀態
@@ -543,7 +509,13 @@ function buildMap(){
         b.className='zb'+(isBoss?' zb-boss':'')+(S.cleared.includes(bz.id)?' cleared':'');
         b.style.background=`linear-gradient(145deg,${bz.color},${bz.color}aa)`;
         const iconSize=isBoss?'clamp(2rem,4.5vw,3.5rem)':'clamp(1.5rem,3.5vw,2.6rem)';
-        b.innerHTML=`<span class="zbi" style="font-size:${iconSize}">${bz.icon}</span><span class="zbl">${bz.name}</span>`;
+        const custImg=(window.ZONEIMG&&ZONEIMG[bz.id])||'';
+        const custName=(window.ZONENAME&&ZONENAME[bz.id])||bz.name;
+        if(custImg){
+          b.innerHTML=`<img src="${custImg}" style="width:${isBoss?'55%':'50%'};height:${isBoss?'55%':'50%'};border-radius:50%;object-fit:cover"><span class="zbl">${custName}</span>`;
+        } else {
+          b.innerHTML=`<span class="zbi" style="font-size:${iconSize}">${bz.icon}</span><span class="zbl">${custName}</span>`;
+        }
         b.onclick=()=>startQ(bz.id);w.appendChild(b);g.appendChild(w);continue;
       }
       if(occ[k])continue;
@@ -734,12 +706,14 @@ function spawnConfetti(){
 // ════════════════════════════════════
 function switchAtab(tab){
   curAtab=tab;
-  ['q','s','r'].forEach(t=>{
-    document.getElementById('atab-'+t).classList.toggle('on',t===tab);
-    document.getElementById('apanel-'+t).style.display=t===tab?'block':'none';
+  ['q','z','r'].forEach(t=>{
+    const tabEl=document.getElementById('atab-'+t);
+    const panEl=document.getElementById('apanel-'+t);
+    if(tabEl)tabEl.classList.toggle('on',t===tab);
+    if(panEl)panEl.style.display=t===tab?'block':'none';
   });
   if(tab==='q')renderAdmin();
-  if(tab==='s')renderScoreAdmin();
+  if(tab==='z')renderZoneSettings();
   if(tab==='r')renderRewardAdmin();
 }
 
@@ -754,7 +728,7 @@ function renderAdmin(){
   });
   // 題數
   const qn=CFG.qPerZone[azone]||6;
-  document.getElementById('qnum-display').textContent=qn;
+  document.getElementById('qnum-display').value=qn;
   // 題目列表
   const list=document.getElementById('qList');list.innerHTML='';
   const qs=QB[azone]||[];
@@ -816,29 +790,87 @@ function delQ(i){
 
 function changeQNum(d){
   const cur=CFG.qPerZone[azone]||6;
-  CFG.qPerZone[azone]=Math.max(1,Math.min(20,cur+d));
-  svCFG();document.getElementById('qnum-display').textContent=CFG.qPerZone[azone];
+  CFG.qPerZone[azone]=Math.max(1,cur+d);
+  svCFG();document.getElementById('qnum-display').value=CFG.qPerZone[azone];
 }
 
-function renderScoreAdmin(){
-  document.getElementById('se-na').textContent=S.nA||'隊伍 A';
-  document.getElementById('se-nb').textContent=S.nB||'隊伍 B';
-  document.getElementById('se-sa').textContent=S.sA;
-  document.getElementById('se-sb').textContent=S.sB;
-  document.getElementById('streak-win-val').textContent=CFG.streakWin;
-  document.getElementById('streak-lose-val').textContent=CFG.streakLose;
-}
-
-function manualScore(team,d){
-  if(team==='A')S.sA=S.sA+d;
-  else S.sB=S.sB+d;
-  sv();upUI();renderScoreAdmin();
-}
-
-function changeStreak(type,d){
-  if(type==='win'){CFG.streakWin=Math.max(2,Math.min(10,CFG.streakWin+d));document.getElementById('streak-win-val').textContent=CFG.streakWin;}
-  else{CFG.streakLose=Math.max(2,Math.min(10,CFG.streakLose+d));document.getElementById('streak-lose-val').textContent=CFG.streakLose;}
+function setQNumDirect(val){
+  const n=Math.max(1,parseInt(val)||1);
+  CFG.qPerZone[azone]=n;
   svCFG();
+}
+
+// 分數設定已移除
+
+
+// ════════════════════════════════════
+// 關卡設定（名稱＋圖片）
+// ════════════════════════════════════
+function renderZoneSettings(){
+  // 從 localStorage 載入自訂名稱和圖片
+  if(!window.ZONEIMG) window.ZONEIMG = JSON.parse(localStorage.getItem('cy_zimg')||'{}');
+  if(!window.ZONENAME) window.ZONENAME = JSON.parse(localStorage.getItem('cy_zname')||'{}');
+  const box=document.getElementById('zone-settings-list');
+  box.innerHTML='';
+  ZONES.forEach(z=>{
+    const customName=ZONENAME[z.id]||z.name;
+    const customImg=ZONEIMG[z.id]||'';
+    const card=document.createElement('div');
+    card.className='aform';
+    card.style.marginBottom='.8rem';
+    card.innerHTML=`
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.8rem">
+        <div id="zone-preview-${z.id}" style="width:60px;height:60px;border-radius:50%;background:${z.color};display:flex;align-items:center;justify-content:center;font-size:1.8rem;overflow:hidden;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.15)">
+          ${customImg?`<img src="${customImg}" style="width:100%;height:100%;object-fit:cover">`:`${z.icon}`}
+        </div>
+        <div style="flex:1">
+          <div style="font-size:.78rem;color:#a06070;margin-bottom:.3rem">關卡名稱</div>
+          <input id="zname-${z.id}" type="text" value="${customName}"
+            style="width:100%;border:2px solid #f0d0d8;border-radius:10px;padding:.5rem .8rem;font-size:.95rem;font-family:'Noto Sans TC',sans-serif;color:var(--br);outline:none"
+            onfocus="this.style.borderColor='var(--pd)'" onblur="this.style.borderColor='#f0d0d8'">
+        </div>
+      </div>
+      <div style="display:flex;gap:.6rem;align-items:center">
+        <label style="flex:1;display:flex;align-items:center;gap:.5rem;background:#fde8ec;border-radius:10px;padding:.5rem .8rem;cursor:pointer;font-size:.85rem;color:var(--pd);font-weight:600">
+          📷 上傳關卡圖示
+          <input type="file" accept="image/*" style="display:none" onchange="uploadZoneImg('${z.id}',this)">
+        </label>
+        ${customImg?`<button onclick="clearZoneImg('${z.id}')" style="background:#ffebee;color:#ef5350;border:none;border-radius:10px;padding:.5rem .8rem;font-size:.82rem;cursor:pointer;white-space:nowrap">清除圖片</button>`:''}
+      </div>
+      <button onclick="saveZoneName('${z.id}')" class="bm" style="margin-top:.7rem;font-size:.9rem;padding:.6rem">儲存名稱</button>
+    `;
+    box.appendChild(card);
+  });
+}
+
+function uploadZoneImg(zoneId, input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    if(!window.ZONEIMG)window.ZONEIMG={};
+    ZONEIMG[zoneId]=e.target.result;
+    localStorage.setItem('cy_zimg',JSON.stringify(ZONEIMG));
+    renderZoneSettings();
+    buildMap(); // 更新地圖上的圖示
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearZoneImg(zoneId){
+  if(!window.ZONEIMG)window.ZONEIMG={};
+  delete ZONEIMG[zoneId];
+  localStorage.setItem('cy_zimg',JSON.stringify(ZONEIMG));
+  renderZoneSettings();buildMap();
+}
+
+function saveZoneName(zoneId){
+  const val=document.getElementById('zname-'+zoneId).value.trim();
+  if(!val){alert('名稱不能為空');return;}
+  if(!window.ZONENAME)window.ZONENAME={};
+  ZONENAME[zoneId]=val;
+  localStorage.setItem('cy_zname',JSON.stringify(ZONENAME));
+  buildMap(); // 更新地圖按鈕名稱
+  alert('✅ 已儲存！');
 }
 
 function renderRewardAdmin(){
@@ -883,7 +915,7 @@ function delMiao(i){
 function closeResult(){document.getElementById('ovResult').classList.remove('show');goMap();}
 function showReset(){document.getElementById('ovReset').classList.add('show');}
 function closeReset(){document.getElementById('ovReset').classList.remove('show');}
-function doReset(){S.sA=0;S.sB=0;S.cleared=[];sv();upUI();closeReset();if(curAtab==='s')renderScoreAdmin();}
+function doReset(){S.sA=0;S.sB=0;S.cleared=[];sv();upUI();closeReset();}
 function showPw(){document.getElementById('pwIn').value='';document.getElementById('pwErr').textContent='';document.getElementById('ovPw').classList.add('show');setTimeout(()=>document.getElementById('pwIn').focus(),300);}
 function closePw(){document.getElementById('ovPw').classList.remove('show');}
 function checkPw(){if(document.getElementById('pwIn').value===ADMIN_PW){closePw();goAdmin();}else{document.getElementById('pwErr').textContent='密碼錯誤，請再試一次';document.getElementById('pwIn').value='';}}
