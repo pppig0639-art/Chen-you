@@ -334,20 +334,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 
     <!-- 關卡設定 -->
     <div id="apanel-z" style="display:none">
-      <div class="aform" style="margin-bottom:.8rem">
-        <h3>🗺️ 地圖背景圖片</h3>
-        <p style="font-size:.8rem;color:#a0a0a0;margin-bottom:.9rem">上傳後會顯示為地圖底圖（建議比例 4:3 或 16:9）</p>
-        <div id="mapbg-preview" style="width:100%;height:120px;border-radius:12px;background:#2a1a0e;margin-bottom:.8rem;display:flex;align-items:center;justify-content:center;overflow:hidden;background-size:cover;background-position:center">
-          <span style="color:rgba(255,255,255,.3);font-size:.85rem">尚未上傳地圖背景</span>
-        </div>
-        <div style="display:flex;gap:.6rem">
-          <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:.5rem;background:#fde8ec;border-radius:10px;padding:.6rem;cursor:pointer;font-size:.88rem;color:var(--pd);font-weight:600">
-            📷 上傳地圖背景
-            <input type="file" accept="image/*" style="display:none" onchange="uploadMapBg(this)">
-          </label>
-          <button onclick="clearMapBg()" style="background:#ffebee;color:#ef5350;border:none;border-radius:10px;padding:.6rem 1rem;font-size:.85rem;cursor:pointer;white-space:nowrap">清除</button>
-        </div>
-      </div>
       <div id="zone-settings-list"></div>
     </div>
 
@@ -987,7 +973,7 @@ function renderZoneSettings(){
   box.innerHTML='';
 
   // 地圖背景上傳區塊
-  const bgImg=localStorage.getItem('cy_mapbg')||'';
+  const bgImg=localStorage.getItem('cy_mapbg_'+_fid())||localStorage.getItem('cy_mapbg')||'';
   const bgCard=document.createElement('div');
   bgCard.className='aform';bgCard.style.marginBottom='.8rem';
   bgCard.innerHTML=`
