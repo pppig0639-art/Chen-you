@@ -20,76 +20,39 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 .bs{background:white;color:var(--pd);border:2px solid #f4a0b0;border-radius:50px;padding:.65rem 1.8rem;font-size:.95rem;font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:all .2s;width:100%}
 .bs:active{transform:scale(.96)}
 .bb{background:#fde8ec;border:none;border-radius:50%;width:42px;height:42px;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.hdr{display:flex;align-items:center;padding:.7rem 1rem;background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);gap:.5rem}
+.hdr{display:flex;align-items:center;padding:.7rem 1rem;background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);gap:.5rem;position:sticky;top:0;z-index:10}
 .hdr-t{font-family:'Noto Serif TC',serif;font-size:1.1rem;color:var(--pd);font-weight:900;flex:1}
-.ss{display:flex;gap:.6rem}
-.sc{display:flex;align-items:center;gap:.35rem;background:#fde8ec;border-radius:20px;padding:.25rem .7rem;font-size:.95rem;font-weight:700;color:var(--br)}
-.sd{width:9px;height:9px;border-radius:50%}
 
 /* ─── 標題 ─── */
 #s-title{display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#fde8ec,#fdf0e0);padding:1.5rem;min-height:100vh}
 .logo{font-family:'Noto Serif TC',serif;font-size:clamp(2.8rem,9vw,6rem);font-weight:900;color:var(--pd);text-shadow:4px 4px 0 rgba(194,80,106,.2);letter-spacing:.2em;margin-bottom:.2rem}
 .sub{font-size:1rem;color:#a06070;letter-spacing:.3em;margin-bottom:1.5rem}
-.card{background:white;border-radius:18px;padding:1.3rem 1.8rem;margin-bottom:1rem;box-shadow:0 6px 24px rgba(194,80,106,.1);width:100%;max-width:420px}
-.card h3{font-size:.8rem;color:#a06070;letter-spacing:.2em;margin-bottom:.9rem;text-align:center}
-.irow{display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem}
-.d16{width:15px;height:15px;border-radius:50%;flex-shrink:0}
-.ni{flex:1;border:2px solid #f0d0d8;border-radius:11px;padding:.6rem .9rem;font-size:.95rem;font-family:'Noto Sans TC',sans-serif;color:var(--br);outline:none;transition:border-color .2s}
-.ni:focus{border-color:var(--pd)}
-.scores{display:flex;gap:1.5rem;justify-content:center}
-.si{text-align:center}
-.sid{width:13px;height:13px;border-radius:50%;margin:0 auto .35rem}
-.si span{display:block;font-size:.8rem;color:#a06070;margin-bottom:.15rem}
-.si strong{font-size:2.2rem;font-family:'Noto Serif TC',serif;color:var(--br)}
 .btns{display:flex;flex-direction:column;gap:.8rem;align-items:center;width:100%;max-width:300px}
 
-/* ─── 地圖：真正全螢幕 ─── */
-#s-map{display:none;position:fixed;inset:0;overflow:hidden}
-.map-bg{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;background-color:#2a1a0e}
-/* map-back-btn removed */
-.mgrid{
-  position:absolute;inset:0;
-  display:grid;
-  grid-template-columns:repeat(8,1fr);
-  grid-template-rows:repeat(8,1fr);
-  width:100%;height:100%;
-}
-.mc{border:1px solid rgba(255,255,255,.04);position:relative;background:transparent;padding:2px 4px}
-.cn{font-size:clamp(.35rem,.75vw,.55rem);color:rgba(255,255,255,.08);font-weight:500;line-height:1}
-.zone-animal{background:transparent!important}
-.zone-number{background:transparent!important}
-.zone-color{background:transparent!important}
-.zone-body{background:transparent!important}
-.zone-boss{background:transparent!important}
-.zone-emotion{background:transparent!important}
-.zbw{display:flex;align-items:center;justify-content:center}
-.zb{width:95%;height:95%;border:none;background:none;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;padding:0}
-.zb:active{transform:scale(.88)}
-.zb.cleared{opacity:.5;filter:grayscale(.4)}
-.zbi{line-height:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
-.zbl{font-size:clamp(.4rem,.9vw,.65rem);font-weight:700;color:white;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.8);background:rgba(0,0,0,.3);border-radius:6px;padding:.05rem .3rem}
-.zb-boss{width:95%!important;height:95%!important}
-.zb-boss .zbi{font-size:clamp(2rem,4.5vw,3.5rem)!important}
+/* ─── 主題選單（卡片式） ─── */
+#s-topics{background:linear-gradient(160deg,#fff3e0,#fde8ec)}
+.topic-body{padding:1.2rem;max-width:820px;margin:0 auto}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1rem}
+.topic-card{background:white;border-radius:20px;padding:1.2rem .7rem;display:flex;flex-direction:column;align-items:center;gap:.55rem;box-shadow:0 4px 16px rgba(194,80,106,.14);cursor:pointer;transition:all .2s;border:none;position:relative;font-family:'Noto Sans TC',sans-serif}
+.topic-card:active{transform:scale(.94)}
+.topic-card.cleared{opacity:.55}
+.topic-icon-wrap{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.9rem;overflow:hidden;background:linear-gradient(135deg,var(--pd),#e87090);flex-shrink:0}
+.topic-icon-wrap img{width:100%;height:100%;object-fit:cover}
+.topic-name{font-family:'Noto Serif TC',serif;font-weight:700;color:var(--br);font-size:.95rem;text-align:center;line-height:1.3;word-break:break-all}
+.topic-check{position:absolute;top:6px;right:6px;background:#66bb6a;color:white;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:.8rem;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.topic-empty{grid-column:1/-1;text-align:center;color:#c99;padding:2.5rem 1rem;font-size:.9rem;line-height:1.8}
 
 /* ─── 關卡 ─── */
 #s-quest{background:linear-gradient(160deg,#fff3e0,#fde8ec)}
 .qbody{padding:1.2rem;max-width:700px;margin:0 auto}
 .qcard{background:white;border-radius:22px;padding:2rem 1.8rem;box-shadow:0 6px 24px rgba(0,0,0,.08);margin-bottom:1rem;text-align:center;animation:ci .35s cubic-bezier(.34,1.56,.64,1)}
 .qnum{font-size:.9rem;color:#bbb;letter-spacing:.15em;margin-bottom:.6rem}
-.qtxt{font-family:'Noto Serif TC',serif;font-size:clamp(2rem,5.5vw,3.8rem);font-weight:900;color:var(--br);letter-spacing:.3em;margin:.4rem 0 .8rem;line-height:1.3}
+.qtxt{font-family:'Noto Serif TC',serif;font-size:clamp(1.6rem,5vw,3rem);font-weight:900;color:var(--br);letter-spacing:.1em;margin:.4rem 0 .8rem;line-height:1.5}
 .qhint{font-size:1rem;color:#a0a0a0}
-.streak-bar{display:flex;justify-content:center;gap:.3rem;margin:.5rem 0 0}
-.streak-dot{width:10px;height:10px;border-radius:50%;background:#eee;transition:background .3s}
-.streak-dot.hit{background:#66bb6a}
-.streak-dot.miss{background:#ef5350}
-.choices{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1rem}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.2rem}
 .cb{background:white;border:3px solid #eee;border-radius:18px;padding:1.1rem .9rem;font-size:clamp(.95rem,2.3vw,1.2rem);font-family:'Noto Sans TC',sans-serif;font-weight:500;color:var(--br);cursor:pointer;transition:all .2s;line-height:1.4;min-height:74px;display:flex;align-items:center;justify-content:center;text-align:center}
 .cb.correct{background:#e8f5e9;border-color:#66bb6a;color:#2e7d32}
 .cb.wrong{background:#ffebee;border-color:#ef5350;color:#c62828}
-.spanel{background:white;border-radius:18px;padding:.9rem;margin-bottom:1rem;display:flex;gap:.8rem;box-shadow:0 3px 12px rgba(0,0,0,.06)}
-.tsb{flex:1;border:none;border-radius:14px;padding:.9rem .5rem;font-family:'Noto Sans TC',sans-serif;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.25rem;font-size:.95rem;transition:all .2s}
-.tsb:active{transform:scale(.95)}
-.tsb span{font-size:1.8rem;font-family:'Noto Serif TC',serif}
 .nwrap{text-align:center}
 #nextBtn{display:none;background:linear-gradient(135deg,var(--pd),#e87090);color:white;border:none;border-radius:50px;padding:.9rem 2.8rem;font-size:1.05rem;font-family:'Noto Sans TC',sans-serif;font-weight:700;cursor:pointer;box-shadow:0 5px 18px rgba(194,80,106,.4)}
 
@@ -99,11 +62,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 .ztabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
 .ztab{background:white;border:2px solid #eee;border-radius:18px;padding:.4rem .9rem;font-size:.85rem;font-family:'Noto Sans TC',sans-serif;cursor:pointer;font-weight:500;transition:all .2s}
 .ztab:active{transform:scale(.96)}
-/* 後台分頁 */
-.admin-tabs{display:flex;gap:.5rem;margin-bottom:1rem;border-bottom:2px solid #eee;padding-bottom:.5rem}
+.admin-tabs{display:flex;gap:.5rem;margin-bottom:1rem;border-bottom:2px solid #eee;padding-bottom:.5rem;flex-wrap:wrap}
 .atab{background:none;border:none;border-radius:10px 10px 0 0;padding:.5rem 1rem;font-size:.9rem;font-family:'Noto Sans TC',sans-serif;cursor:pointer;color:#aaa;font-weight:500;transition:all .2s}
 .atab.on{background:var(--pd);color:white}
-/* 題目列表 */
 .qlist{display:flex;flex-direction:column;gap:.7rem;margin-bottom:1rem}
 .qi{background:white;border-radius:14px;padding:.9rem 1rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .qi-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.5rem}
@@ -114,7 +75,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 .cc.ans{background:#e8f5e9;color:#2e7d32;font-weight:700}
 .delbtn{background:#ffebee;color:#ef5350;border:none;border-radius:8px;padding:.25rem .6rem;font-size:.8rem;cursor:pointer;flex-shrink:0;font-family:'Noto Sans TC',sans-serif}
 .editbtn{background:#e3f2fd;color:#1976d2;border:none;border-radius:8px;padding:.25rem .6rem;font-size:.8rem;cursor:pointer;flex-shrink:0;font-family:'Noto Sans TC',sans-serif;margin-right:.3rem}
-/* 新增/編輯表單 */
 .aform{background:white;border-radius:18px;padding:1.3rem;box-shadow:0 3px 14px rgba(0,0,0,.07);margin-bottom:1rem}
 .aform h3{font-size:.95rem;color:var(--pd);font-weight:700;margin-bottom:.9rem}
 .fl{margin-bottom:.7rem}
@@ -128,16 +88,11 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 .asel{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.7rem}
 .ab2{background:#f5f5f5;border:2px solid #eee;border-radius:9px;padding:.35rem .8rem;font-size:.8rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;transition:all .2s}
 .ab2.sel{background:#e8f5e9;border-color:#66bb6a;color:#2e7d32;font-weight:700}
-/* 題數設定 */
 .qnum-row{display:flex;align-items:center;gap:.8rem;background:white;border-radius:12px;padding:.8rem 1rem;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:.6rem}
 .qnum-label{flex:1;font-size:.9rem;color:var(--br)}
 .qnum-ctrl{display:flex;align-items:center;gap:.5rem}
 .qnum-btn{width:32px;height:32px;border:none;border-radius:50%;background:#fde8ec;color:var(--pd);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
 .qnum-val{font-size:1.1rem;font-weight:700;color:var(--br);min-width:28px;text-align:center}
-/* 分數設定 */
-.score-edit-row{display:flex;align-items:center;gap:.8rem;background:white;border-radius:12px;padding:.8rem 1rem;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:.6rem}
-.score-edit-label{flex:1;display:flex;align-items:center;gap:.5rem;font-size:.95rem;color:var(--br);font-weight:500}
-/* 獎懲 */
 .reward-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.8rem}
 .reward-item{display:flex;align-items:center;gap:.5rem;background:white;border-radius:10px;padding:.6rem .9rem;box-shadow:0 2px 6px rgba(0,0,0,.05)}
 .reward-text{flex:1;font-size:.9rem;color:var(--br)}
@@ -147,10 +102,24 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 .reward-input:focus{border-color:var(--pd)}
 .reward-add-btn{background:var(--pd);color:white;border:none;border-radius:9px;padding:.55rem 1rem;font-size:.85rem;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:700;white-space:nowrap}
 
+/* 主題管理 */
+.topic-admin-item{background:white;border-radius:14px;padding:.8rem .9rem;margin-bottom:.6rem;display:flex;align-items:center;gap:.65rem;box-shadow:0 2px 8px rgba(0,0,0,.06);flex-wrap:wrap}
+.topic-admin-icon{width:46px;height:46px;border-radius:50%;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,var(--pd),#e87090);display:flex;align-items:center;justify-content:center;font-size:1.3rem;cursor:pointer}
+.topic-admin-icon img{width:100%;height:100%;object-fit:cover}
+.topic-admin-info{flex:1;min-width:120px}
+.topic-admin-name-inp{width:100%;border:2px solid transparent;border-radius:8px;padding:.3rem .5rem;font-size:.92rem;font-weight:700;color:var(--br);font-family:'Noto Serif TC',serif;outline:none;background:#fafafa}
+.topic-admin-name-inp:focus{border-color:var(--pd);background:white}
+.topic-admin-meta{font-size:.72rem;color:#a0a0a0;margin-top:.2rem}
+.topic-admin-btns{display:flex;gap:.3rem;flex-shrink:0;align-items:center}
+.tab-btn-sm{background:#f5f5f5;border:none;border-radius:8px;width:30px;height:30px;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tab-btn-sm.danger{background:#ffebee;color:#ef5350}
+.icon-emoji-inp{width:44px;border:2px solid #eee;border-radius:8px;text-align:center;font-size:1.1rem;padding:.3rem 0}
+.add-topic-row{display:flex;gap:.5rem;margin-top:.5rem}
+
 /* ─── 彈窗 ─── */
 .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:center;justify-content:center}
 .ov.show{display:flex}
-.pop{background:white;border-radius:26px;padding:2.2rem 1.8rem;text-align:center;max-width:360px;width:92%;animation:ci .35s cubic-bezier(.34,1.56,.64,1)}
+.pop{background:white;border-radius:26px;padding:2.2rem 1.8rem;text-align:center;max-width:360px;width:92%;animation:ci .35s cubic-bezier(.34,1.56,.64,1);max-height:85vh;overflow-y:auto}
 .pe{font-size:4rem;display:block;margin-bottom:.8rem}
 .pt{font-family:'Noto Serif TC',serif;font-size:1.7rem;font-weight:900;color:var(--br);margin-bottom:.4rem}
 .ps{font-size:.95rem;color:#a0a0a0;margin-bottom:1.8rem}
@@ -161,7 +130,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 .pwi:focus{border-color:var(--pd)}
 .pwerr{color:#ef5350;font-size:.82rem;min-height:1.1rem;margin-bottom:.4rem}
 
-/* ─── 抽獎畫面 ─── */
 #ov-lottery .pop{max-width:420px}
 .lottery-title{font-family:'Noto Serif TC',serif;font-size:1.5rem;font-weight:900;margin-bottom:.3rem}
 .lottery-sub{font-size:.9rem;color:#a0a0a0;margin-bottom:1.2rem}
@@ -181,71 +149,38 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 <div id="s-title">
   <div class="logo">成之於語</div>
   <div class="sub">成語地圖探險</div>
-  <div class="card">
-    <h3>✏️ 輸入隊伍名稱</h3>
-    <div class="irow"><div class="d16" style="background:#f4a0b0"></div><input class="ni" id="inA" type="text" placeholder="隊伍 A" maxlength="8"></div>
-    <div class="irow"><div class="d16" style="background:#6aabf7"></div><input class="ni" id="inB" type="text" placeholder="隊伍 B" maxlength="8"></div>
-  </div>
-  <div class="card">
-    <h3>📊 當前分數</h3>
-    <div class="scores">
-      <div class="si"><div class="sid" style="background:#f4a0b0"></div><span id="hn-a">隊伍 A</span><strong id="hs-a">0</strong></div>
-      <div class="si"><div class="sid" style="background:#6aabf7"></div><span id="hn-b">隊伍 B</span><strong id="hs-b">0</strong></div>
-    </div>
-  </div>
   <div class="btns">
-    <button class="bm" onclick="goMap()">🗺️ 開始探險</button>
-    <button class="bs" onclick="showReset()">🔄 清零分數</button>
+    <button class="bm" onclick="goTopics()">🗺️ 開始探險</button>
+    <button class="bs" onclick="showResetProgress()" style="border-color:#f4a0b0">🔄 重置本回合進度</button>
     <button class="bs" onclick="showPw()" style="border-color:#b48ef4;color:#7c52c8">⚙️ 後台管理</button>
     <button class="bs" id="switch-folder-btn" onclick="showFolderSwitch()" style="border-color:#6aabf7;color:#2a7fd5">📁 切換資料夾（<span id="cur-folder-name">預設資料夾</span>）</button>
   </div>
 </div>
 
-<!-- ════ 地圖（真正全螢幕） ════ -->
-<div id="s-map" ondblclick="goTitle()">
-  <div class="map-bg" id="mapBg"></div>
-  <div class="mgrid" id="mapGrid"></div>
-  <div style="position:fixed;bottom:10px;right:12px;z-index:20;font-size:.7rem;color:rgba(255,255,255,.3);pointer-events:none">點兩下返回</div>
+<!-- ════ 主題選單（卡片式） ════ -->
+<div id="s-topics" class="screen">
+  <div class="hdr">
+    <button class="bb" onclick="goTitle()">←</button>
+    <div class="hdr-t">選擇主題</div>
+  </div>
+  <div class="topic-body">
+    <div class="topic-grid" id="topicGrid"></div>
+  </div>
 </div>
 
 <!-- ════ 關卡 ════ -->
 <div id="s-quest" class="screen">
   <div class="hdr">
-    <button class="bb" onclick="goMap()">←</button>
+    <button class="bb" onclick="goTopics()">←</button>
     <div class="hdr-t" id="questTitle">關卡</div>
-    <div class="ss">
-      <div class="sc"><div class="sd" style="background:#f4a0b0"></div><span id="qn-a">A</span>&nbsp;<b id="qs-a">0</b></div>
-      <div class="sc"><div class="sd" style="background:#6aabf7"></div><span id="qn-b">B</span>&nbsp;<b id="qs-b">0</b></div>
-    </div>
   </div>
   <div class="qbody">
     <div class="qcard">
       <div class="qnum" id="qNum">第 1 題 ／ 共 6 題</div>
       <div class="qtxt" id="qTxt"></div>
       <div class="qhint" id="qHint"></div>
-      <div class="streak-bar" id="streakBarA"></div>
     </div>
     <div class="choices" id="choices"></div>
-    <div class="spanel">
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:.35rem;background:#fff0f3;border-radius:16px;padding:.9rem .5rem">
-        <span id="qa-s" style="font-size:1.9rem;font-family:'Noto Serif TC',serif;color:#c2506a;font-weight:900">0</span>
-        <div id="qa-n" style="font-size:.85rem;font-weight:700;color:#c2506a">隊伍 A</div>
-          <div id="qa-label" style="font-size:.8rem;color:#c2506a;opacity:.7">＋1</div>
-        <div style="display:flex;gap:.5rem">
-          <button style="background:#c2506a;color:white;border:none;border-radius:10px;width:46px;height:38px;font-size:1.4rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center" onclick="addScore('A',1)">＋</button>
-          <button style="background:#ddd;color:#666;border:none;border-radius:10px;width:46px;height:38px;font-size:1.4rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center" onclick="addScore('A',-1)">－</button>
-        </div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:.35rem;background:#f0f6ff;border-radius:16px;padding:.9rem .5rem">
-        <span id="qb-s" style="font-size:1.9rem;font-family:'Noto Serif TC',serif;color:#3a7fd5;font-weight:900">0</span>
-        <div id="qb-n" style="font-size:.85rem;font-weight:700;color:#3a7fd5">隊伍 B</div>
-          <div id="qb-label" style="font-size:.8rem;color:#3a7fd5;opacity:.7">＋1</div>
-        <div style="display:flex;gap:.5rem">
-          <button style="background:#3a7fd5;color:white;border:none;border-radius:10px;width:46px;height:38px;font-size:1.4rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center" onclick="addScore('B',1)">＋</button>
-          <button style="background:#ddd;color:#666;border:none;border-radius:10px;width:46px;height:38px;font-size:1.4rem;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center" onclick="addScore('B',-1)">－</button>
-        </div>
-      </div>
-    </div>
     <div class="nwrap"><button id="nextBtn" onclick="nextQ()">下一題 →</button></div>
   </div>
 </div>
@@ -257,10 +192,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
     <div class="hdr-t">⚙️ 後台管理</div>
   </div>
   <div class="abody">
-    <!-- 後台主分頁 -->
     <div class="admin-tabs">
       <button class="atab on" id="atab-q" onclick="switchAtab('q')">📝 題目</button>
-      <button class="atab" id="atab-z" onclick="switchAtab('z')">🗺️ 地圖</button>
+      <button class="atab" id="atab-z" onclick="switchAtab('z')">🗂️ 主題管理</button>
       <button class="atab" id="atab-t" onclick="switchAtab('t')">✏️ 文字</button>
       <button class="atab" id="atab-r" onclick="switchAtab('r')">🎡 妙不妙</button>
       <button class="atab" id="atab-x" onclick="switchAtab('x')">📦 匯出匯入</button>
@@ -269,7 +203,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
     <!-- 題目管理 -->
     <div id="apanel-q">
       <div class="ztabs" id="zoneTabs"></div>
-      <!-- 題數設定 -->
       <div id="qnum-row-wrap" class="qnum-row">
         <div class="qnum-label">每次出題數量</div>
         <div class="qnum-ctrl">
@@ -284,7 +217,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
       <div class="aform" id="addForm">
         <h3 id="formTitle">＋ 新增題目</h3>
         <input type="hidden" id="editIdx" value="-1">
-        <div class="fl"><label>成語或題目文字</label><input class="fi" id="f-t" type="text" placeholder="例：守株待兔"></div>
+        <div class="fl"><label>題目文字</label><input class="fi" id="f-t" type="text" placeholder="例：守株待兔"></div>
         <div class="fl"><label>提示說明</label><input class="fi" id="f-h" type="text" placeholder="例：這個成語比喻什麼？"></div>
         <div class="fl">
           <label>四個選項</label>
@@ -313,39 +246,26 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 
     <!-- 文字編輯 -->
     <div id="apanel-t" style="display:none">
-      <div class="aform" style="margin-bottom:.8rem">
-        <h3>✏️ 首頁按鈕文字</h3>
+      <div class="aform">
+        <h3>✏️ 介面文字</h3>
         <div class="fl"><label>開始遊戲按鈕</label><input class="fi" id="txt-start" type="text" placeholder="🗺️ 開始探險"></div>
-        <div class="fl"><label>清零分數按鈕</label><input class="fi" id="txt-reset" type="text" placeholder="🔄 清零分數"></div>
+        <div class="fl"><label>重置進度按鈕</label><input class="fi" id="txt-resetProgress" type="text" placeholder="🔄 重置本回合進度"></div>
         <div class="fl"><label>後台管理按鈕</label><input class="fi" id="txt-admin" type="text" placeholder="⚙️ 後台管理"></div>
-        <div class="fl"><label>隊伍 A 預設名稱</label><input class="fi" id="txt-teamA" type="text" placeholder="隊伍 A"></div>
-        <div class="fl"><label>隊伍 B 預設名稱</label><input class="fi" id="txt-teamB" type="text" placeholder="隊伍 B"></div>
-        <button class="bm" style="margin-top:.5rem" onclick="saveTxt()">儲存文字設定</button>
-      </div>
-      <div class="aform">
-        <h3>✏️ 答題畫面文字</h3>
-        <div class="fl"><label>加分按鈕文字（A隊）</label><input class="fi" id="txt-addA" type="text" placeholder="＋1"></div>
-        <div class="fl"><label>加分按鈕文字（B隊）</label><input class="fi" id="txt-addB" type="text" placeholder="＋1"></div>
         <div class="fl"><label>下一題按鈕</label><input class="fi" id="txt-next" type="text" placeholder="下一題 →"></div>
-        <div class="fl"><label>完成關卡後返回按鈕</label><input class="fi" id="txt-back" type="text" placeholder="回地圖"></div>
+        <div class="fl"><label>完成關卡後返回按鈕</label><input class="fi" id="txt-back" type="text" placeholder="回主題選單"></div>
         <button class="bm" style="margin-top:.5rem" onclick="saveTxt()">儲存文字設定</button>
       </div>
     </div>
 
-    <!-- 關卡設定 -->
+    <!-- 主題管理 -->
     <div id="apanel-z" style="display:none">
-      <div id="zone-settings-list"></div>
-    </div>
-
-    <!-- 資料夾 -->
-    <div id="apanel-f" style="display:none">
-      <div class="aform">
-        <h3>📁 資料夾管理</h3>
-        <p style="font-size:.82rem;color:#a0a0a0;margin-bottom:.9rem;line-height:1.6">每個資料夾有獨立的題庫和關卡設定，<br>切換後立即生效。</p>
-        <div id="folder-list" style="margin-bottom:1rem"></div>
-        <div style="display:flex;gap:.6rem">
-          <input id="new-folder-name" class="fi" type="text" placeholder="新資料夾名稱，例：三甲班">
-          <button class="reward-add-btn" onclick="createFolder()">＋ 建立</button>
+      <div class="aform" style="margin-bottom:.8rem">
+        <h3 style="margin-bottom:.4rem">🗂️ 主題清單</h3>
+        <p style="font-size:.8rem;color:#a0a0a0;margin-bottom:.9rem;line-height:1.6">可任意新增、刪除、改名、排序、換圖示，數量不限。</p>
+        <div id="topic-admin-list"></div>
+        <div class="add-topic-row">
+          <input class="fi" id="new-topic-name" type="text" placeholder="新主題名稱，例：詩詞區">
+          <button class="reward-add-btn" onclick="addTopicFromInput()">＋ 新增</button>
         </div>
       </div>
     </div>
@@ -354,7 +274,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
     <div id="apanel-r" style="display:none">
       <div class="aform">
         <h3>🎡 妙不妙大轉盤項目</h3>
-        <p style="font-size:.82rem;color:#a0a0a0;margin-bottom:.9rem;line-height:1.6">觸發時獎勵與懲罰會從同一個轉盤隨機抽出，<br>全部項目都在這裡設定。</p>
+        <p style="font-size:.82rem;color:#a0a0a0;margin-bottom:.9rem;line-height:1.6">答題後有機率觸發轉盤，項目在這裡設定。</p>
         <div class="reward-list" id="miao-list"></div>
         <div class="reward-add-row">
           <input class="reward-input" id="miao-input" type="text" placeholder="輸入項目，例：全班一起跳舞">
@@ -367,12 +287,12 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
     <div id="apanel-x" style="display:none">
       <div class="aform">
         <h3>📤 匯出資料</h3>
-        <p style="font-size:.85rem;color:#a0a0a0;margin-bottom:1rem;line-height:1.6">將目前的題庫、設定、關卡名稱打包成 JSON 檔案下載。<br>傳給其他設備後用下方「匯入」功能載入即可。<br><span style="color:#f4a0b0">※ 圖片不包含在匯出內容中</span></p>
+        <p style="font-size:.85rem;color:#a0a0a0;margin-bottom:1rem;line-height:1.6">將目前的主題、題庫、設定打包成 JSON 檔案下載。<br><span style="color:#f4a0b0">※ 主題圖示不包含在匯出內容中</span></p>
         <button class="bm" onclick="exportData()">📤 下載匯出檔案</button>
       </div>
       <div class="aform" style="margin-top:.8rem">
         <h3>📥 匯入資料</h3>
-        <p style="font-size:.85rem;color:#a0a0a0;margin-bottom:1rem;line-height:1.6">選擇從其他設備匯出的 JSON 檔案。<br><span style="color:#ef5350;font-weight:600">⚠️ 匯入後會覆蓋目前所有題庫和設定</span></p>
+        <p style="font-size:.85rem;color:#a0a0a0;margin-bottom:1rem;line-height:1.6">支援新版（主題式）與舊版（固定關卡）匯出檔，舊版會自動轉換成主題格式。<br><span style="color:#ef5350;font-weight:600">⚠️ 匯入後會覆蓋目前資料夾的所有主題和設定</span></p>
         <label style="display:flex;align-items:center;justify-content:center;gap:.6rem;background:#fde8ec;border:2px dashed #f4a0b0;border-radius:14px;padding:1.2rem;cursor:pointer;font-size:.95rem;color:var(--pd);font-weight:600">
           📥 選擇 JSON 檔案
           <input type="file" accept=".json,application/json" style="display:none" onchange="importData(this)">
@@ -386,20 +306,19 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 
 <!-- 完成彈窗 -->
 <div class="ov" id="ovResult">
-  <div class="pop"><span class="pe">🎊</span><div class="pt" id="popTitle">完成！</div><div class="ps">答對的隊伍記得按加分 ↑</div><button class="bm" id="result-back-btn" onclick="closeResult()">回地圖</button></div>
+  <div class="pop"><span class="pe">🎊</span><div class="pt" id="popTitle">完成！</div><div class="ps">這個主題的題目都答完囉</div><button class="bm" id="result-back-btn" onclick="closeResult()">回主題選單</button></div>
 </div>
 
-<!-- 清零確認 -->
+<!-- 重置進度確認 -->
 <div class="ov" id="ovReset">
-  <div class="pop"><div class="pt">確定清零？</div><div class="ps">所有分數與通關紀錄將歸零</div><div class="cbns"><button class="bd" onclick="doReset()">確定清零</button><button class="bc" onclick="closeReset()">取消</button></div></div>
+  <div class="pop"><div class="pt">確定重置？</div><div class="ps">目前資料夾的通關紀錄將清空（題目不會刪除）</div><div class="cbns"><button class="bd" onclick="doResetProgress()">確定重置</button><button class="bc" onclick="closeResetProgress()">取消</button></div></div>
 </div>
-
 
 <!-- 資料夾切換 -->
 <div class="ov" id="ov-folder">
   <div class="pop" style="max-width:400px;width:94%">
     <div class="pt" style="font-size:1.3rem;margin-bottom:.3rem">📁 資料夾管理</div>
-    <div class="ps" style="margin-bottom:1rem">每個資料夾有獨立的題庫、關卡設定與轉盤項目</div>
+    <div class="ps" style="margin-bottom:1rem">每個資料夾有獨立的主題、題庫與轉盤項目</div>
     <div id="folder-modal-list" style="margin-bottom:1rem;display:flex;flex-direction:column;gap:.5rem;max-height:240px;overflow-y:auto"></div>
     <div style="display:flex;gap:.5rem;margin-bottom:.8rem">
       <input id="new-folder-name-modal" class="fi" type="text" placeholder="新資料夾名稱" style="flex:1;font-size:.9rem;padding:.55rem .8rem">
@@ -438,180 +357,1751 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 // ════════════════════════════════════
 const ADMIN_PW = '1234';
 
-// ════════════════════════════════════
-// 預設題庫
-// ════════════════════════════════════
-const DQ = {
-  animal:[
-    {t:'狐假虎威',h:'這個成語的意思是？',c:['借助別人威勢來嚇人','老虎和狐狸是好朋友','狐狸比老虎更厲害','假裝自己是老虎'],a:0},
-    {t:'守株待兔',h:'這個成語比喻什麼？',c:['農夫非常努力耕田','坐等好事自動降臨','有耐心慢慢等待','守護樹木的工作'],a:1},
-    {t:'井底之蛙',h:'比喻什麼樣的人？',c:['真的住在井裡的青蛙','見識狹隘的人','膽子非常小的人','跳得很高的人'],a:1},
-    {t:'對牛彈琴',h:'這個成語的意思是？',c:['牛最喜歡音樂','白費力氣對象不對','彈琴給牛聽很有趣','牛聽到琴聲很開心'],a:1},
-    {t:'鶴立雞群',h:'用來形容什麼？',c:['鶴和雞是好朋友','在人群中特別出眾','喜歡跟雞在一起','鶴站得比雞高'],a:1},
-    {t:'雞犬不寧',h:'形容什麼狀況？',c:['雞和狗很友好','非常吵鬧混亂的狀況','動物們在玩耍','雞和狗都生病了'],a:1},
-    {t:'虎頭蛇尾',h:'比喻做事怎麼樣？',c:['老虎和蛇打架','開始強勁後來敷衍','動作很快速','外型很特別'],a:1},
-    {t:'呆若木雞',h:'形容人怎麼了？',c:['非常努力不停歇','驚嚇到傻在那裡','像雞一樣跑來跑去','站得很直'],a:1},
-    {t:'鴉雀無聲',h:'形容什麼樣的氣氛？',c:['鳥叫聲很大聲','非常安靜沒有聲音','很多鳥在唱歌','大家都很快樂'],a:1},
-    {t:'狗急跳牆',h:'說明什麼道理？',c:['狗很喜歡跳高','被逼急了什麼都做得出來','狗的跳躍能力很強','遇到危險要逃跑'],a:1},
-    {t:'聞雞起舞',h:'形容人怎樣？',c:['聽到雞叫嚇一跳','非常勤奮努力練習','喜歡聽雞叫聲','早起去看雞跳舞'],a:1},
-    {t:'鸚鵡學舌',h:'比喻什麼行為？',c:['鸚鵡很聰明','只會模仿別人說話','學習說話的好方法','教鸚鵡說話'],a:1},
-    {t:'盲人摸象',h:'說明什麼道理？',c:['瞎子喜歡大象','只了解片面就下判斷','大象很喜歡人摸','視力不好要小心'],a:1},
-    {t:'抱頭鼠竄',h:'形容什麼？',c:['老鼠很喜歡抱頭','狼狽慌張地逃走','老鼠跑得很快','抱在一起逃跑'],a:1},
-    {t:'雞飛狗跳',h:'形容什麼場面？',c:['雞和狗在玩耍','非常混亂熱鬧的場面','雞飛得很高','狗跳得很高'],a:1},
-  ],
-  number:[
-    {t:'一__反三',h:'空格填入什麼字？',c:['二','三','四','五'],a:0},
-    {t:'火冒__丈',h:'空格填入的數字是？',c:['一','二','三','四'],a:2},
-    {t:'__言為定',h:'空格填入的數字是？',c:['一','二','三','四'],a:0},
-    {t:'__箭雙鵰',h:'一舉兩得，空格填入？',c:['一','二','三','四'],a:0},
-    {t:'__心__用',h:'同時做兩件事，完整成語是？',c:['一心二用','二心三用','一心一用','三心兩用'],a:0},
-    {t:'十全十美',h:'這個成語的意思是？',c:['有十個優點','非常完美完善','十件都完成了','全部都很美'],a:1},
-    {t:'三頭六臂',h:'形容本領高強，正確成語是？',c:['七頭八臂','三頭六臂','四頭八臂','五頭十臂'],a:1},
-    {t:'九牛一毛',h:'形容數量極少，正確成語是？',c:['一牛一毛','九牛一毛','三牛三毛','百牛百毛'],a:1},
-    {t:'舉一反三',h:'這個成語的意思是？',c:['舉起一樣東西','由一件事推知其他','反覆做三次','只做一件事'],a:1},
-    {t:'一刀兩斷',h:'這個成語的意思是？',c:['刀切兩半','徹底斷絕關係','切了一刀','斷了兩刀'],a:1},
-    {t:'百花齊放',h:'形容什麼景象？',c:['只有百種花','各種事物一起發展繁榮','花開了一百朵','所有花一起開'],a:1},
-    {t:'七嘴八舌',h:'形容什麼情況？',c:['嘴巴和舌頭的數量','大家同時說話很熱鬧','只有七個人說話','說話非常清楚'],a:1},
-  ],
-  color:[
-    {t:'青出於藍',h:'這個成語的意思是？',c:['顏色非常漂亮','後來居上超越師長','天空很藍很美','出外旅行玩耍'],a:1},
-    {t:'黑白不分',h:'比喻什麼？',c:['眼睛看不清楚顏色','是非不分糊塗','沒有任何顏色','夜晚和白天'],a:1},
-    {t:'萬紫千紅',h:'形容什麼景象？',c:['百花盛開五彩繽紛','只有紅色和紫色','天上的美麗彩虹','畫畫用的顏料'],a:0},
-    {t:'白手起家',h:'這個成語的意思是？',c:['手是白色的','從一無所有開始創業','做事情要洗手','白色的家很漂亮'],a:1},
-    {t:'紅顏薄命',h:'這個成語形容什麼？',c:['臉紅的人命不好','美麗的人往往命運多舛','臉色很紅很健康','長得漂亮很幸運'],a:1},
-    {t:'綠樹成蔭',h:'形容什麼樣的景色？',c:['樹木長得很茂盛','綠色的樹很好看','種很多棵樹','樹上有影子'],a:0},
-    {t:'黃粱一夢',h:'這個成語形容什麼？',c:['夢見黃色的稻子','比喻美夢成空','睡得很好的夢','黃金做的夢'],a:1},
-    {t:'一片丹心',h:'形容什麼？',c:['到處都是紅色','一心一意忠誠','紅色的心形','很多顆紅心'],a:1},
-  ],
-  body:[
-    {t:'一心一意',h:'這個成語的意思是？',c:['三心二意猶豫不決','全心全意專注做一件事','心臟很健康','用心思考問題'],a:1},
-    {t:'三頭六臂',h:'形容什麼樣的能力？',c:['人有三個頭','本領高強能力超凡','六隻手臂很有力','長相很奇特'],a:1},
-    {t:'手忙腳亂',h:'形容什麼？',c:['手腳都受傷了','非常忙碌慌張不知所措','手和腳在運動','做事情很有條理'],a:1},
-    {t:'眼高手低',h:'這個成語的意思是？',c:['眼睛比手還要高','眼光高但能力不足','視力非常好','手舉得比眼睛高'],a:1},
-    {t:'口是心非',h:'形容什麼樣的人？',c:['嘴巴和心臟的位置','說一套心裡想另一套','說話非常誠實','心情很好開口說話'],a:1},
-    {t:'手到擒來',h:'這個成語的意思是？',c:['用手去抓東西','輕而易舉就能做到','慢慢伸手去拿','需要很多人幫忙'],a:1},
-    {t:'胸有成竹',h:'這個成語的意思是？',c:['胸口有竹子的圖案','做事前已有完整計畫','很喜歡竹子','胸口很寬廣'],a:1},
-    {t:'目瞪口呆',h:'形容什麼樣的表情？',c:['眼睛和嘴巴都很大','震驚得說不出話來','目光炯炯有神','大口吃東西'],a:1},
-    {t:'耳聰目明',h:'這個成語的意思是？',c:['耳朵和眼睛都很大','聽覺和視覺都很好','很喜歡聽音樂','眼睛看得很清楚'],a:1},
-    {t:'七嘴八舌',h:'形容什麼情況？',c:['嘴巴和舌頭','大家同時說話很熱鬧','只有七個人說話','說話非常清楚'],a:1},
-  ],
-  boss:[
-    {t:'一箭雙鵰',h:'這個成語的意思是？',c:['射箭技術很好','一舉兩得同時達成兩個目標','兩隻老鷹在打架','雙倍的獎勵很棒'],a:1},
-    {t:'亡羊補牢',h:'這個成語給我們什麼啟示？',c:['羊跑掉不用管','犯錯後及時補救還不算晚','修羊圈很重要','羊不要亂跑'],a:1},
-    {t:'畫蛇添足',h:'這個成語的道理是？',c:['蛇本來就有腳','多此一舉反而壞事','畫畫技術很好','蛇的腳很好看'],a:1},
-    {t:'龍飛鳳舞',h:'現在多用來形容什麼？',c:['龍和鳳在飛舞','字跡飛揚生動有力','動作非常靈活','天空中的動物'],a:1},
-    {t:'半途而廢',h:'形容什麼行為？',c:['走到一半很累','做事做到一半就放棄','路途很遙遠','廢棄的道路'],a:1},
-    {t:'馬到成功',h:'形容什麼？',c:['馬跑得很快','形容很快就成功','馬來了就成功','馬的到來'],a:1},
-    {t:'破釜沉舟',h:'形容什麼精神？',c:['打破鍋子沉船','背水一戰決心到底','很浪費的行為','害怕失敗的心情'],a:1},
-    {t:'臥薪嚐膽',h:'表達什麼精神？',c:['睡在薪水上','忍辱負重努力雪恥','非常辛苦工作','吃很苦的食物'],a:1},
-    {t:'塞翁失馬',h:'告訴我們什麼？',c:['塞翁的馬跑掉了','禍福相倚不要輕易下定論','失去馬很可惜','邊塞的老人'],a:1},
-    {t:'名落孫山',h:'這個成語的意思是？',c:['名字排在孫山前面','考試或選拔落榜','名字叫孫山','山很有名'],a:1},
-  ],
-  emotion:[
-    {t:'喜出望外',h:'這個成語形容什麼感受？',c:['很開心但有點失望','遇到意外的驚喜非常高興','出去外面玩很開心','看到外面的景色很美'],a:1},
-    {t:'義憤填膺',h:'形容什麼情緒？',c:['因為正義的事情非常憤怒','填滿食物很滿足','義氣很重的人','胸口很寬廣'],a:0},
-    {t:'悶悶不樂',h:'形容人怎麼了？',c:['很悶熱不舒服','心情不好悶悶的不開心','很快樂很悶很開心','悶在家裡很快樂'],a:1},
-    {t:'心花怒放',h:'這個成語形容什麼？',c:['心裡的花很生氣','心情非常愉快興奮','心中的花開放了','怒氣衝天的樣子'],a:1},
-    {t:'愁眉苦臉',h:'形容人怎麼樣？',c:['眉毛很漂亮','表情憂愁痛苦','眉毛和臉都很苦','很認真思考的表情'],a:1},
-    {t:'歡天喜地',h:'形容什麼場面？',c:['天氣很好，地面乾淨','非常歡樂喜悅的氣氛','到天空和土地玩耍','歡迎貴賓到來'],a:1},
-    {t:'垂頭喪氣',h:'形容人怎麼了？',c:['頭低下來在找東西','因失敗或失望而沮喪','垂著頭很危險','非常生氣的樣子'],a:1},
-    {t:'忐忑不安',h:'形容什麼心情？',c:['非常平靜安心','心裡不踏實非常不安','走路走不穩','坐不安靜'],a:1},
-    {t:'樂不思蜀',h:'形容什麼狀況？',c:['在四川很開心','玩得太開心忘了回家','思念四川的食物','很開心地思考'],a:1},
-    {t:'怒髮衝冠',h:'形容人怎麼樣？',c:['頭髮很長頂到帽子','非常憤怒','頭髮很多很蓬鬆','帽子戴歪了'],a:1},
-    {t:'欣喜若狂',h:'形容什麼情緒？',c:['高興得像瘋了一樣','若無其事地微笑','稍微有點開心','若隱若現的喜悅'],a:0},
-    {t:'哭笑不得',h:'形容什麼狀況？',c:['又哭又笑很開心','遇到尷尬的事不知如何反應','表情很豐富','哭完就笑了'],a:1},
-  ]
-};
+// 舊版固定關卡（僅用於自動轉換舊資料，不再作為預設題庫寫死使用）
+const LEGACY_ZONES=[
+  {id:'animal',name:'動物村',icon:'🐾'},
+  {id:'number',name:'數字街',icon:'🔢'},
+  {id:'color',name:'顏色坊',icon:'🎨'},
+  {id:'body',name:'身體道',icon:'💪'},
+  {id:'emotion',name:'情緒橋',icon:'😊'},
+  {id:'boss',name:'挑戰塔',icon:'⭐'},
+];
 
 // ════════════════════════════════════
-// 區域定義
+// 預設種子資料（首次使用時自動建立「成語」「詩詞」兩個資料夾）
 // ════════════════════════════════════
-const ZONES = [
-  {id:'animal',  name:'動物村', icon:'🐾', color:'#7bc97e', cells:[3,4,11,12],   btnRow:1, btnCol:7, isBoss:false},
-  {id:'number',  name:'數字街', icon:'🔢', color:'#6aabf7', cells:[21,22,29,30], btnRow:3, btnCol:5, isBoss:false},
-  {id:'color',   name:'顏色坊', icon:'🎨', color:'#b48ef4', cells:[35,36,43,44], btnRow:5, btnCol:3, isBoss:false},
-  {id:'body',    name:'身體道', icon:'💪', color:'#f4a055', cells:[53,54,61,62], btnRow:7, btnCol:1, isBoss:false},
-  {id:'emotion', name:'情緒橋', icon:'😊', color:'#ffb74d', cells:[9,10,17,18],  btnRow:2, btnCol:3, isBoss:false},
-  {id:'boss',    name:'挑戰塔', icon:'⭐', color:'#f4506a', cells:[47,48,55,56], btnRow:6, btnCol:7, isBoss:true},
+const SEED_FOLDERS = [
+{
+"name": "成語",
+"topics": [
+{
+"id": "animal",
+"name": "動物村",
+"icon": "🐾",
+"img": "",
+"qPerRound": 30,
+"questions": [
+{
+"t": "狐假虎威",
+"h": "這個成語的意思是？",
+"c": [
+"借助別人威勢來嚇人",
+"老虎和狐狸是好朋友",
+"狐狸比老虎更厲害",
+"假裝自己是老虎"
+],
+"a": 0
+},
+{
+"t": "守株待兔",
+"h": "這個成語比喻什麼？",
+"c": [
+"農夫非常努力耕田",
+"坐等好事自動降臨",
+"有耐心慢慢等待",
+"守護樹木的工作"
+],
+"a": 1
+},
+{
+"t": "井底之蛙",
+"h": "比喻什麼樣的人？",
+"c": [
+"真的住在井裡的青蛙",
+"膽子很小的人",
+"見識狹隘的人",
+"跳得很高的人"
+],
+"a": 2
+},
+{
+"t": "對牛彈琴",
+"h": "這個成語的意思是？",
+"c": [
+"牛最喜歡音樂",
+"對象不對，白費力氣",
+"彈琴給牛聽很有趣",
+"牛聽到琴聲很開心"
+],
+"a": 1
+},
+{
+"t": "鶴立雞群",
+"h": "用來形容什麼？",
+"c": [
+"鶴和雞是好朋友",
+"在人群中特別出眾",
+"喜歡跟雞在一起",
+"鶴站得比雞高"
+],
+"a": 1
+},
+{
+"t": "雞犬不寧",
+"h": "形容什麼狀況？",
+"c": [
+"雞和狗很友好",
+"非常吵鬧混亂的狀況",
+"動物們在玩耍",
+"雞和狗都生病了"
+],
+"a": 1
+},
+{
+"t": "虎頭蛇尾",
+"h": "比喻做事怎麼樣？",
+"c": [
+"老虎和蛇打架",
+"開始強勁後來敷衍",
+"動作很快速",
+"外型很特別"
+],
+"a": 1
+},
+{
+"t": "呆若木雞",
+"h": "形容人怎麼了？",
+"c": [
+"非常努力不停歇",
+"驚嚇到傻在那裡",
+"像雞一樣跑來跑去",
+"站得很直"
+],
+"a": 1
+},
+{
+"t": "鴉雀無聲",
+"h": "形容什麼樣的氣氛？",
+"c": [
+"鳥叫聲很大聲",
+"很多烏鴉在唱歌",
+"非常安靜沒有聲音",
+"大家都很快樂"
+],
+"a": 1
+},
+{
+"t": "狗急跳牆",
+"h": "說明什麼道理？",
+"c": [
+"狗很喜歡跳高",
+"被逼急了什麼都做得出來",
+"狗的跳躍能力很強",
+"遇到危險要逃跑"
+],
+"a": 1
+},
+{
+"t": "聞雞起舞",
+"h": "形容人怎樣？",
+"c": [
+"聽到雞叫嚇一跳",
+"非常勤奮努力練習",
+"喜歡聽雞叫聲",
+"早起去看雞跳舞"
+],
+"a": 1
+},
+{
+"t": "鸚鵡學舌",
+"h": "比喻什麼行為？",
+"c": [
+"只會模仿別人說話",
+"鸚鵡很聰明",
+"學習說話的好方法",
+"教鸚鵡說話"
+],
+"a": 0
+},
+{
+"t": "盲人摸象",
+"h": "說明什麼道理？",
+"c": [
+"瞎子喜歡大象",
+"只了解片面就下判斷",
+"大象很喜歡人摸",
+"視力不好要小心"
+],
+"a": 1
+},
+{
+"t": "抱頭鼠竄",
+"h": "形容什麼？",
+"c": [
+"老鼠很喜歡抱頭",
+"老鼠逃跑很快",
+"狼狽慌張的逃走",
+"抱在一起逃跑"
+],
+"a": 2
+},
+{
+"t": "雞飛狗跳",
+"h": "形容什麼場面？",
+"c": [
+"雞和狗在玩耍",
+"狗跳得很高",
+"雞飛得很高",
+"非常混亂熱鬧的場面"
+],
+"a": 3
+},
+{
+"t": "亡「」補牢",
+"h": "十二生肖中「」屬第幾？",
+"c": [
+"1",
+"9",
+"8",
+"5"
+],
+"a": 2
+},
+{
+"t": "畫蛇添「」",
+"h": "「」是什麼？",
+"c": [
+"目",
+"手",
+"足",
+"舌"
+],
+"a": 2
+}
+]
+},
+{
+"id": "number",
+"name": "數字街",
+"icon": "🔢",
+"img": "",
+"qPerRound": 6,
+"questions": [
+{
+"t": "舉__反三",
+"h": "空格填入什麼字？",
+"c": [
+"一",
+"三",
+"四",
+"五"
+],
+"a": 0
+},
+{
+"t": "火冒__丈",
+"h": "空格填入的數字是？",
+"c": [
+"一",
+"二",
+"三",
+"四"
+],
+"a": 2
+},
+{
+"t": "__言為定",
+"h": "空格填入的數字是？",
+"c": [
+"一",
+"二",
+"三",
+"四"
+],
+"a": 0
+},
+{
+"t": "__箭雙鵰",
+"h": "一舉兩得，空格填入？",
+"c": [
+"一",
+"二",
+"三",
+"四"
+],
+"a": 0
+},
+{
+"t": "__心__用",
+"h": "同時做兩件事，完整成語是？",
+"c": [
+"一心二用",
+"二心三用",
+"一心一用",
+"三心兩用"
+],
+"a": 0
+},
+{
+"t": "十全十美",
+"h": "這個成語的意思是？",
+"c": [
+"有十個優點",
+"非常完美完善",
+"十件都完成了",
+"全部都很美"
+],
+"a": 1
+},
+{
+"t": "形容本領高強，正確成語是？",
+"h": "無",
+"c": [
+"七頭八臂",
+"三頭六臂",
+"四頭八臂",
+"五頭十臂"
+],
+"a": 1
+},
+{
+"t": "九牛一毛",
+"h": "形容數量極少，正確成語是？",
+"c": [
+"一牛一毛",
+"九牛一毛",
+"三牛三毛",
+"百牛百毛"
+],
+"a": 1
+},
+{
+"t": "舉一反三",
+"h": "這個成語的意思是？",
+"c": [
+"舉起一樣東西",
+"由一件事推知其他",
+"反覆做三次",
+"只做一件事"
+],
+"a": 1
+},
+{
+"t": "一刀兩斷",
+"h": "這個成語的意思是？",
+"c": [
+"刀切兩半",
+"徹底斷絕關係",
+"切了一刀",
+"斷了兩刀"
+],
+"a": 1
+},
+{
+"t": "百花齊放",
+"h": "形容什麼景象？",
+"c": [
+"只有百種花",
+"各種事物一起發展繁榮",
+"花開了一百朵",
+"所有花一起開"
+],
+"a": 1
+},
+{
+"t": "七嘴八舌",
+"h": "形容什麼情況？",
+"c": [
+"嘴巴和舌頭的數量",
+"大家同時說話很熱鬧",
+"只有七個人說話",
+"說話非常清楚"
+],
+"a": 1
+}
+]
+},
+{
+"id": "color",
+"name": "顏色坊",
+"icon": "🎨",
+"img": "",
+"qPerRound": 6,
+"questions": [
+{
+"t": "青出於藍",
+"h": "這個成語的意思是？",
+"c": [
+"顏色非常漂亮",
+"後來居上超越師長",
+"天空很藍很美",
+"出外旅行玩耍"
+],
+"a": 1
+},
+{
+"t": "黑白不分",
+"h": "比喻什麼？",
+"c": [
+"眼睛看不清楚顏色",
+"是非不分糊塗",
+"沒有任何顏色",
+"夜晚和白天"
+],
+"a": 1
+},
+{
+"t": "萬紫千紅",
+"h": "形容什麼景象？",
+"c": [
+"百花盛開五彩繽紛",
+"只有紅色和紫色",
+"天上的美麗彩虹",
+"畫畫用的顏料"
+],
+"a": 0
+},
+{
+"t": "白手起家",
+"h": "這個成語的意思是？",
+"c": [
+"手是白色的",
+"從一無所有開始創業",
+"做事情要洗手",
+"白色的家很漂亮"
+],
+"a": 1
+},
+{
+"t": "紅顏薄命",
+"h": "這個成語形容什麼？",
+"c": [
+"臉紅的人命不好",
+"美麗的人往往命運多舛",
+"臉色很紅很健康",
+"長得漂亮很幸運"
+],
+"a": 1
+},
+{
+"t": "綠樹成蔭",
+"h": "形容什麼樣的景色？",
+"c": [
+"樹木長得很茂盛",
+"綠色的樹很好看",
+"種很多棵樹",
+"樹上有影子"
+],
+"a": 0
+},
+{
+"t": "黃粱一夢",
+"h": "這個成語形容什麼？",
+"c": [
+"夢見黃色的稻子",
+"比喻美夢成空",
+"睡得很好的夢",
+"黃金做的夢"
+],
+"a": 1
+},
+{
+"t": "一片丹心",
+"h": "形容什麼？",
+"c": [
+"到處都是紅色",
+"一心一意忠誠",
+"紅色的心形",
+"很多顆紅心"
+],
+"a": 1
+}
+]
+},
+{
+"id": "body",
+"name": "比大小",
+"icon": "💪",
+"img": "",
+"qPerRound": 6,
+"questions": [
+{
+"t": "一心一意",
+"h": "這個成語的意思是？",
+"c": [
+"三心二意猶豫不決",
+"全心全意專注做一件事",
+"心臟很健康",
+"用心思考問題"
+],
+"a": 1
+},
+{
+"t": "三頭六臂",
+"h": "形容什麼樣的能力？",
+"c": [
+"人有三個頭",
+"本領高強能力超凡",
+"六隻手臂很有力",
+"長相很奇特"
+],
+"a": 1
+},
+{
+"t": "手忙腳亂",
+"h": "形容什麼？",
+"c": [
+"手腳都受傷了",
+"非常忙碌慌張不知所措",
+"手和腳在運動",
+"做事情很有條理"
+],
+"a": 1
+},
+{
+"t": "眼高手低",
+"h": "這個成語的意思是？",
+"c": [
+"眼睛比手還要高",
+"眼光高但能力不足",
+"視力非常好",
+"手舉得比眼睛高"
+],
+"a": 1
+},
+{
+"t": "口是心非",
+"h": "形容什麼樣的人？",
+"c": [
+"嘴巴和心臟的位置",
+"說一套心裡想另一套",
+"說話非常誠實",
+"心情很好開口說話"
+],
+"a": 1
+},
+{
+"t": "手到擒來",
+"h": "這個成語的意思是？",
+"c": [
+"用手去抓東西",
+"輕而易舉就能做到",
+"慢慢伸手去拿",
+"需要很多人幫忙"
+],
+"a": 1
+},
+{
+"t": "胸有成竹",
+"h": "這個成語的意思是？",
+"c": [
+"胸口有竹子的圖案",
+"做事前已有完整計畫",
+"很喜歡竹子",
+"胸口很寬廣"
+],
+"a": 1
+},
+{
+"t": "目瞪口呆",
+"h": "形容什麼樣的表情？",
+"c": [
+"眼睛和嘴巴都很大",
+"震驚得說不出話來",
+"目光炯炯有神",
+"大口吃東西"
+],
+"a": 1
+},
+{
+"t": "耳聰目明",
+"h": "這個成語的意思是？",
+"c": [
+"耳朵和眼睛都很大",
+"聽覺和視覺都很好",
+"很喜歡聽音樂",
+"眼睛看得很清楚"
+],
+"a": 1
+},
+{
+"t": "七嘴八舌",
+"h": "形容什麼情況？",
+"c": [
+"嘴巴和舌頭",
+"大家同時說話很熱鬧",
+"只有七個人說話",
+"說話非常清楚"
+],
+"a": 1
+}
+]
+},
+{
+"id": "emotion",
+"name": "情緒橋",
+"icon": "😊",
+"img": "",
+"qPerRound": 6,
+"questions": [
+{
+"t": "喜出望外",
+"h": "這個成語形容什麼感受？",
+"c": [
+"很開心但有點失望",
+"遇到意外的驚喜非常高興",
+"出去外面玩很開心",
+"看到外面的景色很美"
+],
+"a": 1
+},
+{
+"t": "義憤填膺",
+"h": "形容什麼情緒？",
+"c": [
+"因為正義的事情非常憤怒",
+"填滿食物很滿足",
+"義氣很重的人",
+"胸口很寬廣"
+],
+"a": 0
+},
+{
+"t": "悶悶不樂",
+"h": "形容人怎麼了？",
+"c": [
+"很悶熱不舒服",
+"心情不好悶悶的不開心",
+"很快樂很悶很開心",
+"悶在家裡很快樂"
+],
+"a": 1
+},
+{
+"t": "心花怒放",
+"h": "這個成語形容什麼？",
+"c": [
+"心裡的花很生氣",
+"心情非常愉快興奮",
+"心中的花開放了",
+"怒氣衝天的樣子"
+],
+"a": 1
+},
+{
+"t": "愁眉苦臉",
+"h": "形容人怎麼樣？",
+"c": [
+"眉毛很漂亮",
+"表情憂愁痛苦",
+"眉毛和臉都很苦",
+"很認真思考的表情"
+],
+"a": 1
+},
+{
+"t": "歡天喜地",
+"h": "形容什麼場面？",
+"c": [
+"天氣很好，地面乾淨",
+"非常歡樂喜悅的氣氛",
+"到天空和土地玩耍",
+"歡迎貴賓到來"
+],
+"a": 1
+},
+{
+"t": "垂頭喪氣",
+"h": "形容人怎麼了？",
+"c": [
+"頭低下來在找東西",
+"因失敗或失望而沮喪",
+"垂著頭很危險",
+"非常生氣的樣子"
+],
+"a": 1
+},
+{
+"t": "忐忑不安",
+"h": "形容什麼心情？",
+"c": [
+"非常平靜安心",
+"心裡不踏實非常不安",
+"走路走不穩",
+"坐不安靜"
+],
+"a": 1
+},
+{
+"t": "樂不思蜀",
+"h": "形容什麼狀況？",
+"c": [
+"在四川很開心",
+"玩得太開心忘了回家",
+"思念四川的食物",
+"很開心地思考"
+],
+"a": 1
+},
+{
+"t": "怒髮衝冠",
+"h": "形容人怎麼樣？",
+"c": [
+"頭髮很長頂到帽子",
+"非常憤怒",
+"頭髮很多很蓬鬆",
+"帽子戴歪了"
+],
+"a": 1
+},
+{
+"t": "欣喜若狂",
+"h": "形容什麼情緒？",
+"c": [
+"高興得像瘋了一樣",
+"若無其事地微笑",
+"稍微有點開心",
+"若隱若現的喜悅"
+],
+"a": 0
+},
+{
+"t": "哭笑不得",
+"h": "形容什麼狀況？",
+"c": [
+"又哭又笑很開心",
+"遇到尷尬的事不知如何反應",
+"表情很豐富",
+"哭完就笑了"
+],
+"a": 1
+}
+]
+},
+{
+"id": "boss",
+"name": "挑戰塔",
+"icon": "⭐",
+"img": "",
+"qPerRound": 30,
+"questions": [
+{
+"t": "破釜沉舟",
+"h": "形容什麼精神？",
+"c": [
+"打破鍋子沉船",
+"背水一戰決心到底",
+"很浪費的行為",
+"害怕失敗的心情"
+],
+"a": 1
+},
+{
+"t": "臥薪嚐膽",
+"h": "表達什麼精神？",
+"c": [
+"睡在薪水上",
+"忍辱負重努力雪恥",
+"非常辛苦工作",
+"吃很苦的食物"
+],
+"a": 1
+},
+{
+"t": "塞翁失馬",
+"h": "告訴我們什麼？",
+"c": [
+"塞翁的馬跑掉了",
+"禍福相倚不要輕易下定論",
+"失去馬很可惜",
+"邊塞的老人"
+],
+"a": 1
+},
+{
+"t": "名落孫山",
+"h": "這個成語的意思是？",
+"c": [
+"名字排在孫山前面",
+"考試或選拔落榜",
+"名字叫孫山",
+"山很有名"
+],
+"a": 1
+},
+{
+"t": "____滅親",
+"h": "填空",
+"c": [
+"大德",
+"小義",
+"大義",
+"大萌"
+],
+"a": 2
+},
+{
+"t": "騰云駕務",
+"h": "少了什麼？",
+"c": [
+"雨",
+"冫",
+"氵",
+"土"
+],
+"a": 0
+},
+{
+"t": "青每馬",
+"h": "缺少的元素？",
+"c": [
+"木/竹",
+"氵/竹",
+"竹/木",
+"青/木"
+],
+"a": 0
+}
+]
+}
+],
+"cfg": {
+"rewards": [
+"加1分！",
+"扣1分！",
+"加2分！",
+"李沛潔超喜歡辛棄疾"
+],
+"punishments": [],
+"txt": {
+"start": "🗺️ 開始探險",
+"resetProgress": "🔄 重置本回合進度",
+"admin": "⚙️ 後台管理",
+"next": "下一題 →",
+"back": "回主題選單"
+}
+}
+},
+{
+"name": "詩詞",
+"topics": [
+{
+"id": "animal",
+"name": "妙妙妙哇",
+"icon": "🐾",
+"img": "",
+"qPerRound": 20,
+"questions": [
+{
+"t": "組內討論，說出三句有「花」的詩詞",
+"h": "討論完就按鈴，搶到就回答問題。",
+"c": [
+".",
+".",
+".",
+"."
+],
+"a": 0
+},
+{
+"t": "個人搶答，說出任何一句五字詩詞，不可重複同一首",
+"h": "限時一分鐘，按鈴搶答",
+"c": [
+".",
+".",
+".",
+"."
+],
+"a": 0
+},
+{
+"t": "組內討論，說出三句有關「動物」的詩詞",
+"h": "討論完就按鈴，搶到就回答問題。",
+"c": [
+".",
+".",
+".",
+"."
+],
+"a": 0
+},
+{
+"t": "踏破「」無覓處，得來全不費功夫。",
+"h": "填空",
+"c": [
+"紅鞋",
+"布鞋",
+"草鞋",
+"鐵鞋"
+],
+"a": 3
+},
+{
+"t": "「」無稜，天地合，乃敢與君絕。",
+"h": "填空",
+"c": [
+"山",
+"海",
+"草",
+"天"
+],
+"a": 0
+},
+{
+"t": "月落烏啼霜滿天，江楓漁火對愁眠，姑蘇城外「」，夜半鐘聲到客船。",
+"h": "填空",
+"c": [
+"鳳山寺",
+"寒山寺",
+"少林寺",
+"松竹寺"
+],
+"a": 1
+},
+{
+"t": "春眠不覺曉，處處聞啼鳥，夜來風雨聲，花落知多少。",
+"h": "此詩作者是誰？",
+"c": [
+"王之渙",
+"李白",
+"孟浩然",
+"王維"
+],
+"a": 2
+},
+{
+"t": "空山不見人，但聞人語響，返景入深林，復照青苔上。",
+"h": "本詩名為？",
+"c": [
+"鹿柴（ㄔㄞˉ）",
+"鹿柴（ㄔㄞˊ）",
+"鹿柴（ㄓㄞˇ）",
+"鹿柴（ㄓㄞˋ）"
+],
+"a": 3
+},
+{
+"t": "「」生南國，春來發幾枝，願君多採拮，此物最相思。",
+"h": "猜",
+"c": [
+"綠豆",
+"紅豆",
+"相思豆",
+"黃豆"
+],
+"a": 1
+},
+{
+"t": "白依山盡，黃河入氵流，欲窮千里目，更上一層樓。",
+"h": "消失的字怎麼念？",
+"c": [
+"ㄏㄨㄟˋ",
+"ㄏㄨㄟˇ",
+"ㄇㄟˇ",
+"ㄇㄟˊ"
+],
+"a": 0
+},
+{
+"t": "「」美酒夜光杯，欲飲琵琶馬上催，醉臥沙場君莫笑，古來征戰幾人回。",
+"h": "猜一水果",
+"c": [
+"櫻桃",
+"木瓜",
+"葡萄",
+"檸檬"
+],
+"a": 2
+},
+{
+"t": "木前明月光，疑是地上霜，舉頭望明月，亻頭思故鄉。",
+"h": "用消失的字組一個成語。",
+"c": [
+"。",
+"。",
+"。",
+"。"
+],
+"a": 0
+},
+{
+"t": "故人西辭黃鶴樓，煙花三月下揚州。 孤帆遠影碧山盡，惟見長江天際流。",
+"h": "李白的故人是指⋯？",
+"c": [
+"陳子昂",
+"王維",
+"杜甫",
+"孟浩然"
+],
+"a": 3
+},
+{
+"t": "向晚意不適，驅車登古原。 「」無限好，只是近「」。",
+"h": "「」/「」",
+"c": [
+"夕陽/黃昏",
+"朝露/清晨",
+"夕陽/清晨",
+"朝露/黃昏"
+],
+"a": 0
+},
+{
+"t": "少小離家老大回，鄉音無改鬢毛衰。",
+"h": "後二句是？",
+"c": [
+"。",
+"。",
+"。",
+"。"
+],
+"a": 0
+}
+]
+},
+{
+"id": "number",
+"name": "數字街",
+"icon": "🔢",
+"img": "",
+"qPerRound": 6,
+"questions": [
+{
+"t": "一__反三",
+"h": "空格填入什麼字？",
+"c": [
+"二",
+"三",
+"四",
+"五"
+],
+"a": 0
+},
+{
+"t": "火冒__丈",
+"h": "空格填入的數字是？",
+"c": [
+"一",
+"二",
+"三",
+"四"
+],
+"a": 2
+},
+{
+"t": "__言為定",
+"h": "空格填入的數字是？",
+"c": [
+"一",
+"二",
+"三",
+"四"
+],
+"a": 0
+},
+{
+"t": "__箭雙鵰",
+"h": "一舉兩得，空格填入？",
+"c": [
+"一",
+"二",
+"三",
+"四"
+],
+"a": 0
+},
+{
+"t": "__心__用",
+"h": "同時做兩件事，完整成語是？",
+"c": [
+"一心二用",
+"二心三用",
+"一心一用",
+"三心兩用"
+],
+"a": 0
+},
+{
+"t": "十全十美",
+"h": "這個成語的意思是？",
+"c": [
+"有十個優點",
+"非常完美完善",
+"十件都完成了",
+"全部都很美"
+],
+"a": 1
+},
+{
+"t": "三頭六臂",
+"h": "形容本領高強，正確成語是？",
+"c": [
+"七頭八臂",
+"三頭六臂",
+"四頭八臂",
+"五頭十臂"
+],
+"a": 1
+},
+{
+"t": "九牛一毛",
+"h": "形容數量極少，正確成語是？",
+"c": [
+"一牛一毛",
+"九牛一毛",
+"三牛三毛",
+"百牛百毛"
+],
+"a": 1
+},
+{
+"t": "舉一反三",
+"h": "這個成語的意思是？",
+"c": [
+"舉起一樣東西",
+"由一件事推知其他",
+"反覆做三次",
+"只做一件事"
+],
+"a": 1
+},
+{
+"t": "一刀兩斷",
+"h": "這個成語的意思是？",
+"c": [
+"刀切兩半",
+"徹底斷絕關係",
+"切了一刀",
+"斷了兩刀"
+],
+"a": 1
+},
+{
+"t": "百花齊放",
+"h": "形容什麼景象？",
+"c": [
+"只有百種花",
+"各種事物一起發展繁榮",
+"花開了一百朵",
+"所有花一起開"
+],
+"a": 1
+},
+{
+"t": "七嘴八舌",
+"h": "形容什麼情況？",
+"c": [
+"嘴巴和舌頭的數量",
+"大家同時說話很熱鬧",
+"只有七個人說話",
+"說話非常清楚"
+],
+"a": 1
+}
+]
+},
+{
+"id": "color",
+"name": "顏色坊",
+"icon": "🎨",
+"img": "",
+"qPerRound": 6,
+"questions": [
+{
+"t": "青出於藍",
+"h": "這個成語的意思是？",
+"c": [
+"顏色非常漂亮",
+"後來居上超越師長",
+"天空很藍很美",
+"出外旅行玩耍"
+],
+"a": 1
+},
+{
+"t": "黑白不分",
+"h": "比喻什麼？",
+"c": [
+"眼睛看不清楚顏色",
+"是非不分糊塗",
+"沒有任何顏色",
+"夜晚和白天"
+],
+"a": 1
+},
+{
+"t": "萬紫千紅",
+"h": "形容什麼景象？",
+"c": [
+"百花盛開五彩繽紛",
+"只有紅色和紫色",
+"天上的美麗彩虹",
+"畫畫用的顏料"
+],
+"a": 0
+},
+{
+"t": "白手起家",
+"h": "這個成語的意思是？",
+"c": [
+"手是白色的",
+"從一無所有開始創業",
+"做事情要洗手",
+"白色的家很漂亮"
+],
+"a": 1
+},
+{
+"t": "紅顏薄命",
+"h": "這個成語形容什麼？",
+"c": [
+"臉紅的人命不好",
+"美麗的人往往命運多舛",
+"臉色很紅很健康",
+"長得漂亮很幸運"
+],
+"a": 1
+},
+{
+"t": "綠樹成蔭",
+"h": "形容什麼樣的景色？",
+"c": [
+"樹木長得很茂盛",
+"綠色的樹很好看",
+"種很多棵樹",
+"樹上有影子"
+],
+"a": 0
+},
+{
+"t": "黃粱一夢",
+"h": "這個成語形容什麼？",
+"c": [
+"夢見黃色的稻子",
+"比喻美夢成空",
+"睡得很好的夢",
+"黃金做的夢"
+],
+"a": 1
+},
+{
+"t": "一片丹心",
+"h": "形容什麼？",
+"c": [
+"到處都是紅色",
+"一心一意忠誠",
+"紅色的心形",
+"很多顆紅心"
+],
+"a": 1
+}
+]
+},
+{
+"id": "body",
+"name": "身體道",
+"icon": "💪",
+"img": "",
+"qPerRound": 6,
+"questions": [
+{
+"t": "一心一意",
+"h": "這個成語的意思是？",
+"c": [
+"三心二意猶豫不決",
+"全心全意專注做一件事",
+"心臟很健康",
+"用心思考問題"
+],
+"a": 1
+},
+{
+"t": "三頭六臂",
+"h": "形容什麼樣的能力？",
+"c": [
+"人有三個頭",
+"本領高強能力超凡",
+"六隻手臂很有力",
+"長相很奇特"
+],
+"a": 1
+},
+{
+"t": "手忙腳亂",
+"h": "形容什麼？",
+"c": [
+"手腳都受傷了",
+"非常忙碌慌張不知所措",
+"手和腳在運動",
+"做事情很有條理"
+],
+"a": 1
+},
+{
+"t": "眼高手低",
+"h": "這個成語的意思是？",
+"c": [
+"眼睛比手還要高",
+"眼光高但能力不足",
+"視力非常好",
+"手舉得比眼睛高"
+],
+"a": 1
+},
+{
+"t": "口是心非",
+"h": "形容什麼樣的人？",
+"c": [
+"嘴巴和心臟的位置",
+"說一套心裡想另一套",
+"說話非常誠實",
+"心情很好開口說話"
+],
+"a": 1
+},
+{
+"t": "手到擒來",
+"h": "這個成語的意思是？",
+"c": [
+"用手去抓東西",
+"輕而易舉就能做到",
+"慢慢伸手去拿",
+"需要很多人幫忙"
+],
+"a": 1
+},
+{
+"t": "胸有成竹",
+"h": "這個成語的意思是？",
+"c": [
+"胸口有竹子的圖案",
+"做事前已有完整計畫",
+"很喜歡竹子",
+"胸口很寬廣"
+],
+"a": 1
+},
+{
+"t": "目瞪口呆",
+"h": "形容什麼樣的表情？",
+"c": [
+"眼睛和嘴巴都很大",
+"震驚得說不出話來",
+"目光炯炯有神",
+"大口吃東西"
+],
+"a": 1
+},
+{
+"t": "耳聰目明",
+"h": "這個成語的意思是？",
+"c": [
+"耳朵和眼睛都很大",
+"聽覺和視覺都很好",
+"很喜歡聽音樂",
+"眼睛看得很清楚"
+],
+"a": 1
+},
+{
+"t": "七嘴八舌",
+"h": "形容什麼情況？",
+"c": [
+"嘴巴和舌頭",
+"大家同時說話很熱鬧",
+"只有七個人說話",
+"說話非常清楚"
+],
+"a": 1
+}
+]
+},
+{
+"id": "emotion",
+"name": "情緒橋",
+"icon": "😊",
+"img": "",
+"qPerRound": 6,
+"questions": [
+{
+"t": "喜出望外",
+"h": "這個成語形容什麼感受？",
+"c": [
+"很開心但有點失望",
+"遇到意外的驚喜非常高興",
+"出去外面玩很開心",
+"看到外面的景色很美"
+],
+"a": 1
+},
+{
+"t": "義憤填膺",
+"h": "形容什麼情緒？",
+"c": [
+"因為正義的事情非常憤怒",
+"填滿食物很滿足",
+"義氣很重的人",
+"胸口很寬廣"
+],
+"a": 0
+},
+{
+"t": "悶悶不樂",
+"h": "形容人怎麼了？",
+"c": [
+"很悶熱不舒服",
+"心情不好悶悶的不開心",
+"很快樂很悶很開心",
+"悶在家裡很快樂"
+],
+"a": 1
+},
+{
+"t": "心花怒放",
+"h": "這個成語形容什麼？",
+"c": [
+"心裡的花很生氣",
+"心情非常愉快興奮",
+"心中的花開放了",
+"怒氣衝天的樣子"
+],
+"a": 1
+},
+{
+"t": "愁眉苦臉",
+"h": "形容人怎麼樣？",
+"c": [
+"眉毛很漂亮",
+"表情憂愁痛苦",
+"眉毛和臉都很苦",
+"很認真思考的表情"
+],
+"a": 1
+},
+{
+"t": "歡天喜地",
+"h": "形容什麼場面？",
+"c": [
+"天氣很好，地面乾淨",
+"非常歡樂喜悅的氣氛",
+"到天空和土地玩耍",
+"歡迎貴賓到來"
+],
+"a": 1
+},
+{
+"t": "垂頭喪氣",
+"h": "形容人怎麼了？",
+"c": [
+"頭低下來在找東西",
+"因失敗或失望而沮喪",
+"垂著頭很危險",
+"非常生氣的樣子"
+],
+"a": 1
+},
+{
+"t": "忐忑不安",
+"h": "形容什麼心情？",
+"c": [
+"非常平靜安心",
+"心裡不踏實非常不安",
+"走路走不穩",
+"坐不安靜"
+],
+"a": 1
+},
+{
+"t": "樂不思蜀",
+"h": "形容什麼狀況？",
+"c": [
+"在四川很開心",
+"玩得太開心忘了回家",
+"思念四川的食物",
+"很開心地思考"
+],
+"a": 1
+},
+{
+"t": "怒髮衝冠",
+"h": "形容人怎麼樣？",
+"c": [
+"頭髮很長頂到帽子",
+"非常憤怒",
+"頭髮很多很蓬鬆",
+"帽子戴歪了"
+],
+"a": 1
+},
+{
+"t": "欣喜若狂",
+"h": "形容什麼情緒？",
+"c": [
+"高興得像瘋了一樣",
+"若無其事地微笑",
+"稍微有點開心",
+"若隱若現的喜悅"
+],
+"a": 0
+},
+{
+"t": "哭笑不得",
+"h": "形容什麼狀況？",
+"c": [
+"又哭又笑很開心",
+"遇到尷尬的事不知如何反應",
+"表情很豐富",
+"哭完就笑了"
+],
+"a": 1
+}
+]
+},
+{
+"id": "boss",
+"name": "挑戰塔",
+"icon": "⭐",
+"img": "",
+"qPerRound": 6,
+"questions": [
+{
+"t": "一箭雙鵰",
+"h": "這個成語的意思是？",
+"c": [
+"射箭技術很好",
+"一舉兩得同時達成兩個目標",
+"兩隻老鷹在打架",
+"雙倍的獎勵很棒"
+],
+"a": 1
+},
+{
+"t": "亡羊補牢",
+"h": "這個成語給我們什麼啟示？",
+"c": [
+"羊跑掉不用管",
+"犯錯後及時補救還不算晚",
+"修羊圈很重要",
+"羊不要亂跑"
+],
+"a": 1
+},
+{
+"t": "畫蛇添足",
+"h": "這個成語的道理是？",
+"c": [
+"蛇本來就有腳",
+"多此一舉反而壞事",
+"畫畫技術很好",
+"蛇的腳很好看"
+],
+"a": 1
+},
+{
+"t": "龍飛鳳舞",
+"h": "現在多用來形容什麼？",
+"c": [
+"龍和鳳在飛舞",
+"字跡飛揚生動有力",
+"動作非常靈活",
+"天空中的動物"
+],
+"a": 1
+},
+{
+"t": "半途而廢",
+"h": "形容什麼行為？",
+"c": [
+"走到一半很累",
+"做事做到一半就放棄",
+"路途很遙遠",
+"廢棄的道路"
+],
+"a": 1
+},
+{
+"t": "馬到成功",
+"h": "形容什麼？",
+"c": [
+"馬跑得很快",
+"形容很快就成功",
+"馬來了就成功",
+"馬的到來"
+],
+"a": 1
+},
+{
+"t": "破釜沉舟",
+"h": "形容什麼精神？",
+"c": [
+"打破鍋子沉船",
+"背水一戰決心到底",
+"很浪費的行為",
+"害怕失敗的心情"
+],
+"a": 1
+},
+{
+"t": "臥薪嚐膽",
+"h": "表達什麼精神？",
+"c": [
+"睡在薪水上",
+"忍辱負重努力雪恥",
+"非常辛苦工作",
+"吃很苦的食物"
+],
+"a": 1
+},
+{
+"t": "塞翁失馬",
+"h": "告訴我們什麼？",
+"c": [
+"塞翁的馬跑掉了",
+"禍福相倚不要輕易下定論",
+"失去馬很可惜",
+"邊塞的老人"
+],
+"a": 1
+},
+{
+"t": "名落孫山",
+"h": "這個成語的意思是？",
+"c": [
+"名字排在孫山前面",
+"考試或選拔落榜",
+"名字叫孫山",
+"山很有名"
+],
+"a": 1
+}
+]
+}
+],
+"cfg": {
+"rewards": [
+"加 1 分！",
+"全隊站起來歡呼！",
+"老師說一個笑話！",
+"隊長帶全隊跳一下！",
+"免做一題！"
+],
+"punishments": [
+"扣 1 分！",
+"全隊拍手三下！",
+"站起來轉一圈！",
+"學鴨子叫三聲！",
+"幫對手鼓掌！"
+],
+"txt": {
+"start": "🗺️ 開始探險",
+"resetProgress": "🔄 重置本回合進度",
+"admin": "⚙️ 後台管理",
+"next": "下一題 →",
+"back": "回主題選單"
+}
+}
+}
 ];
-const CZmap={};ZONES.forEach(z=>z.cells.forEach(c=>{CZmap[c]=z.id;}));
-// ZONEIMG/ZONENAME 在 _initFid 定義後初始化（見下方）
+
+function seedDefaultFoldersIfNeeded(){
+  if(localStorage.getItem('cy_folders'))return; // 已有資料夾（不管是舊版或新版），不覆蓋
+  const list=[];
+  SEED_FOLDERS.forEach((f,i)=>{
+    const fid='folder_seed_'+i+'_'+Date.now();
+    localStorage.setItem('cy_topics_'+fid, JSON.stringify(f.topics));
+    localStorage.setItem('cy_cfg2_'+fid, JSON.stringify(f.cfg));
+    list.push({id:fid, name:f.name});
+  });
+  saveFolderMeta({list, current:list[0].id});
+}
 
 // ════════════════════════════════════
 // 狀態
 // ════════════════════════════════════
-let S = JSON.parse(localStorage.getItem('cy_v5')||'null') || {sA:0,sB:0,nA:'隊伍 A',nB:'隊伍 B',cleared:[]};
-// 從資料夾系統載入
-const _initMeta=(()=>{let m=JSON.parse(localStorage.getItem('cy_folders')||'null');if(!m){m={list:[{id:'default',name:'預設資料夾'}],current:'default'};localStorage.setItem('cy_folders',JSON.stringify(m));}return m;})();
-const _initFid=_initMeta.current;
-window.ZONEIMG=JSON.parse(localStorage.getItem('cy_zimg_'+_initFid)||localStorage.getItem('cy_zimg')||'{}');
-window.ZONENAME=JSON.parse(localStorage.getItem('cy_zname_'+_initFid)||localStorage.getItem('cy_zname')||'{}');
-let QB = JSON.parse(localStorage.getItem('cy_qb_'+_initFid)||localStorage.getItem('cy_qb2')||'null') || JSON.parse(JSON.stringify(DQ));
-let CFG = JSON.parse(localStorage.getItem('cy_cfg_'+_initFid)||localStorage.getItem('cy_cfg')||'null') || {
-  qPerZone:{animal:6,number:6,color:6,body:6,emotion:6,boss:6},
-  streakWin:5, streakLose:5,
-  rewards:['加 1 分！','全隊站起來歡呼！','老師說一個笑話！','隊長帶全隊跳一下！','免做一題！'],
-  punishments:['扣 1 分！','全隊拍手三下！','站起來轉一圈！','學鴨子叫三聲！','幫對手鼓掌！'],
-  txt:{start:'🗺️ 開始探險',reset:'🔄 清零分數',admin:'⚙️ 後台管理',teamA:'隊伍 A',teamB:'隊伍 B',addA:'＋1',addB:'＋1',next:'下一題 →',back:'回地圖'}
-};
+let TOPICS = [];   // [{id,name,icon,img,qPerRound,questions:[{t,h,c,a}]}]
+let CFG = { rewards:[], punishments:[], txt:{} };
+let CLEARED = [];  // 已完成的主題 id
 
-let CZ=null,Qi=0,Ql=[],answered=false;
-let streakA=0,streakB=0; // 連續答對/錯（正=答對，負=答錯）
-let lastTeam=''; // 上一個加分的隊伍
-let azone='animal',sela=-1,curAtab='q';
+let CT=null, Qi=0, Ql=[], answered=false, lastWasCorrect=false;
+let curTopicId=null, sela=-1, curAtab='q';
+
+function _fid(){ return getFolders().current; }
 
 // ════════════════════════════════════
-// 地圖
+// 資料載入／自動轉換舊格式
 // ════════════════════════════════════
-function buildMap(){
-  // 更新地圖背景圖
-  const mapBg=document.getElementById('mapBg');
-  if(mapBg){
-    const bgImg=localStorage.getItem('cy_mapbg_'+_fid())||localStorage.getItem('cy_mapbg')||'';
-    mapBg.style.backgroundImage=bgImg?`url(${bgImg})`:'none';
-    mapBg.style.backgroundColor=bgImg?'transparent':'#2a1a0e';
-  }
-  const g=document.getElementById('mapGrid');g.innerHTML='';
-  const occ={};
-  ZONES.forEach(z=>{for(let dr=0;dr<2;dr++)for(let dc=0;dc<2;dc++)occ[`${z.btnRow+dr}-${z.btnCol+dc}`]=true;});
-  for(let r=1;r<=8;r++){
-    for(let c=1;c<=8;c++){
-      const k=`${r}-${c}`;
-      const bz=ZONES.find(z=>z.btnRow===r&&z.btnCol===c);
-      if(bz){
-        const w=document.createElement('div');w.className='zbw';
-        w.style.cssText=`grid-column:${c}/span 2;grid-row:${r}/span 2`;
-        const b=document.createElement('button');
-        const isBoss=bz.isBoss;
-        b.className='zb'+(isBoss?' zb-boss':'')+(S.cleared.includes(bz.id)?' cleared':'');
-        b.style.background='none';
-        const iconSize=isBoss?'clamp(2rem,4.5vw,3.5rem)':'clamp(1.5rem,3.5vw,2.6rem)';
-        const custImg=(window.ZONEIMG&&ZONEIMG[bz.id])||'';
-        const custName=(window.ZONENAME&&ZONENAME[bz.id])||bz.name;
-        if(custImg){
-          // 純圖片，無圓形框，無名稱標籤，圖片佔滿整個按鈕區
-          b.innerHTML=`<img src="${custImg}" style="width:95%;height:95%;object-fit:contain;filter:drop-shadow(0 3px 10px rgba(0,0,0,.6))">`;
-        } else {
-          b.innerHTML=`<span class="zbi" style="font-size:${iconSize}">${bz.icon}</span><span class="zbl">${custName}</span>`;
-        }
-        b.onclick=()=>startQ(bz.id);w.appendChild(b);g.appendChild(w);continue;
-      }
-      if(occ[k])continue;
-      const n=(r-1)*8+c;
-      const el=document.createElement('div');el.className='mc';
-      el.style.cssText=`grid-column:${c};grid-row:${r}`;
-      if(CZmap[n])el.classList.add('zone-'+CZmap[n]);
-      const num=document.createElement('span');num.className='cn';num.textContent=n;
-      el.appendChild(num);g.appendChild(el);
+function loadFolderData(){
+  const fid=_fid();
+  const topicsRaw=localStorage.getItem('cy_topics_'+fid);
+  if(topicsRaw){
+    TOPICS=JSON.parse(topicsRaw);
+  }else{
+    const legacyQB=JSON.parse(localStorage.getItem('cy_qb_'+fid)||'null');
+    const legacyCFG=JSON.parse(localStorage.getItem('cy_cfg_'+fid)||'null');
+    const legacyZName=JSON.parse(localStorage.getItem('cy_zname_'+fid)||'{}');
+    const legacyZImg=JSON.parse(localStorage.getItem('cy_zimg_'+fid)||'{}');
+    if(legacyQB){
+      TOPICS=LEGACY_ZONES.map(z=>({
+        id:z.id,
+        name:legacyZName[z.id]||z.name,
+        icon:z.icon,
+        img:legacyZImg[z.id]||'',
+        qPerRound:(legacyCFG&&legacyCFG.qPerZone&&legacyCFG.qPerZone[z.id])||6,
+        questions:legacyQB[z.id]||[]
+      }));
+    }else{
+      TOPICS=[];
     }
+    saveTopics();
   }
+
+  const cfgRaw=JSON.parse(localStorage.getItem('cy_cfg2_'+fid)||'null');
+  if(cfgRaw){
+    CFG=cfgRaw;
+  }else{
+    const legacyCFG=JSON.parse(localStorage.getItem('cy_cfg_'+fid)||'null');
+    CFG={
+      rewards:(legacyCFG&&legacyCFG.rewards)||['加 1 分！','全隊站起來歡呼！','老師說一個笑話！'],
+      punishments:(legacyCFG&&legacyCFG.punishments)||['站起來轉一圈！','學鴨子叫三聲！'],
+      txt:{
+        start:(legacyCFG&&legacyCFG.txt&&legacyCFG.txt.start)||'🗺️ 開始探險',
+        resetProgress:'🔄 重置本回合進度',
+        admin:(legacyCFG&&legacyCFG.txt&&legacyCFG.txt.admin)||'⚙️ 後台管理',
+        next:(legacyCFG&&legacyCFG.txt&&legacyCFG.txt.next)||'下一題 →',
+        back:'回主題選單'
+      }
+    };
+    saveCFG();
+  }
+  if(!CFG.txt)CFG.txt={};
+  CFG.txt.resetProgress=CFG.txt.resetProgress||'🔄 重置本回合進度';
+  CFG.txt.back=CFG.txt.back||'回主題選單';
+
+  CLEARED=JSON.parse(localStorage.getItem('cy_cleared_'+fid)||'[]');
+  if(!curTopicId || !TOPICS.find(t=>t.id===curTopicId)) curTopicId=TOPICS[0]?TOPICS[0].id:null;
+}
+
+function saveTopics(){localStorage.setItem('cy_topics_'+_fid(),JSON.stringify(TOPICS));}
+function saveCFG(){localStorage.setItem('cy_cfg2_'+_fid(),JSON.stringify(CFG));}
+function saveCleared(){localStorage.setItem('cy_cleared_'+_fid(),JSON.stringify(CLEARED));}
+
+// ════════════════════════════════════
+// 主題選單
+// ════════════════════════════════════
+function buildTopics(){
+  const g=document.getElementById('topicGrid');g.innerHTML='';
+  if(!TOPICS.length){
+    g.innerHTML='<div class="topic-empty">這個資料夾還沒有任何主題喔<br>請到「⚙️ 後台管理 → 主題管理」新增一個吧！</div>';
+    return;
+  }
+  TOPICS.forEach(t=>{
+    const card=document.createElement('div');
+    card.className='topic-card'+(CLEARED.includes(t.id)?' cleared':'');
+    card.innerHTML=`
+      <div class="topic-icon-wrap">${t.img?`<img src="${t.img}">`:`<span>${t.icon||'📚'}</span>`}</div>
+      <div class="topic-name">${t.name}</div>
+      ${CLEARED.includes(t.id)?'<div class="topic-check">✓</div>':''}
+    `;
+    card.onclick=()=>startQ(t.id);
+    g.appendChild(card);
+  });
 }
 
 // ════════════════════════════════════
 // 畫面切換
 // ════════════════════════════════════
 function showScreen(id){
-  ['s-title','s-map','s-quest','s-admin'].forEach(s=>{
+  ['s-title','s-topics','s-quest','s-admin'].forEach(s=>{
     const el=document.getElementById(s);
     if(!el) return;
     if(s===id){
@@ -625,27 +2115,25 @@ function showScreen(id){
     }
   });
 }
-function goTitle(){saveN();showScreen('s-title');upUI();}
-function goMap(){saveN();showScreen('s-map');buildMap();upUI();}
+function goTitle(){showScreen('s-title');upUI();}
+function goTopics(){showScreen('s-topics');buildTopics();}
 function goAdmin(){showScreen('s-admin');switchAtab(curAtab);renderAdmin();}
-function saveN(){
-  const a=document.getElementById('inA').value.trim();
-  const b=document.getElementById('inB').value.trim();
-  if(a)S.nA=a;if(b)S.nB=b;sv();
-}
 
 // ════════════════════════════════════
 // 關卡
 // ════════════════════════════════════
 function startQ(id){
-  CZ=ZONES.find(z=>z.id===id);
-  const pool=[...(QB[id]||[])];shuf(pool);
-  const num=CFG.qPerZone[id]||6;
+  CT=TOPICS.find(t=>t.id===id);
+  if(!CT)return;
+  const pool=[...(CT.questions||[])];
+  if(!pool.length){alert('這個主題還沒有題目喔，請先到後台新增！');return;}
+  shuf(pool);
+  const num=CT.qPerRound||6;
   Ql=pool.slice(0,Math.min(num,pool.length));
   Qi=0;
   showScreen('s-quest');
-  document.getElementById('questTitle').textContent=CZ.icon+' '+CZ.name;
-  rQ();upUI();
+  document.getElementById('questTitle').textContent=(CT.icon||'📚')+' '+CT.name;
+  rQ();
 }
 
 function rQ(){
@@ -655,8 +2143,6 @@ function rQ(){
   document.getElementById('qTxt').textContent=q.t;
   document.getElementById('qHint').textContent=q.h;
   document.getElementById('nextBtn').style.display='none';
-  // 連擊條
-  renderStreakBar();
   const box=document.getElementById('choices');box.innerHTML='';
   q.c.forEach((c,i)=>{
     const b=document.createElement('button');b.className='cb';b.textContent=c;
@@ -664,73 +2150,39 @@ function rQ(){
   });
 }
 
-// 記錄這題是否答對，供加分按鈕使用
-let lastWasCorrect = false;
-
 function pick(idx,ans){
   if(answered)return;answered=true;
-  lastWasCorrect = (idx===ans);
+  lastWasCorrect=(idx===ans);
   document.querySelectorAll('.cb').forEach((b,i)=>{
     if(i===ans)b.classList.add('correct');else if(i===idx)b.classList.add('wrong');
   });
   document.getElementById('nextBtn').style.display='inline-block';
-  // 答題當下直接觸發雙方連擊更新（以這題是否答對為準）
-  updateBothStreaks(lastWasCorrect);
+  maybeTriggerLottery();
 }
 
 function nextQ(){
   Qi++;
   if(Qi>=Ql.length){
-    if(!S.cleared.includes(CZ.id)){S.cleared.push(CZ.id);sv();}
-    document.getElementById('popTitle').textContent=CZ.name+' 全部完成！';
+    if(!CLEARED.includes(CT.id)){CLEARED.push(CT.id);saveCleared();}
+    document.getElementById('popTitle').textContent=CT.name+' 全部完成！';
+    document.getElementById('result-back-btn').textContent=(CFG.txt&&CFG.txt.back)||'回主題選單';
     document.getElementById('ovResult').classList.add('show');
   }else rQ();
 }
 
-function addScore(team, delta){
-  delta = (delta===undefined) ? 1 : delta;
-  if(team==='A') S.sA = S.sA + delta;
-  else S.sB = S.sB + delta;
-  sv(); upUI();
-}
-
-// 答題時同步更新雙方連擊（老師選擇哪隊加分前先觸發）
-function updateBothStreaks(correct){
-  // 每次答題後，各有 20% 機率隨機觸發獎勵或懲罰
-  renderStreakBar();
-  const roll = Math.random();
-  if(roll < 0.10){
-    // 10% 觸發獎勵
-    setTimeout(()=>openLottery('A','win'), 600);
-  } else if(roll < 0.20){
-    // 10% 觸發懲罰
-    setTimeout(()=>openLottery('A','lose'), 600);
-  }
-}
-
-// streak 正數=連續答對，負數=連續答錯（已不需要舊版 recordStreak/checkStreak）
-
-function renderStreakBar(){
-  const bar=document.getElementById('streakBarA');
-  bar.innerHTML='';
-  const streak=Math.max(Math.abs(streakA),Math.abs(streakB));
-  const maxN=Math.max(CFG.streakWin,CFG.streakLose);
-  for(let i=0;i<maxN;i++){
-    const d=document.createElement('div');d.className='streak-dot';
-    if(i<Math.abs(streakA)||i<Math.abs(streakB)){
-      d.classList.add(streakA>0||streakB>0?'hit':'miss');
-    }
-    bar.appendChild(d);
-  }
+// 每次答題後有機率觸發妙不妙轉盤（與答對答錯無關）
+function maybeTriggerLottery(){
+  const roll=Math.random();
+  if(roll<0.10){ setTimeout(()=>openLottery('win'),600); }
+  else if(roll<0.20){ setTimeout(()=>openLottery('lose'),600); }
 }
 
 // ════════════════════════════════════
 // 抽獎
 // ════════════════════════════════════
-let lotType='win',lotTeam='A',lotSpinning=false;
-function openLottery(team,type){
-  lotType=type;lotTeam=team;lotSpinning=false;
-  const na=team==='A'?S.nA:S.nB;
+let lotSpinning=false;
+function openLottery(type){
+  lotSpinning=false;
   document.getElementById('lot-emoji').textContent='🎡';
   document.getElementById('lot-title').textContent='超級妙不妙大轉盤！！';
   document.getElementById('lot-sub').textContent='恭喜你觸發了超級妙不妙大轉盤！！\n請按下抽獎看看是妙什麼妙還是妙不妙吧～';
@@ -785,39 +2237,47 @@ function spawnConfetti(){
 }
 
 // ════════════════════════════════════
-// 後台
+// 後台：分頁切換
 // ════════════════════════════════════
 function switchAtab(tab){
   curAtab=tab;
-  ['q','z','t','r','f','x'].forEach(t=>{
+  ['q','z','t','r','x'].forEach(t=>{
     const tabEl=document.getElementById('atab-'+t);
     const panEl=document.getElementById('apanel-'+t);
     if(tabEl)tabEl.classList.toggle('on',t===tab);
     if(panEl)panEl.style.display=t===tab?'block':'none';
   });
   if(tab==='q')renderAdmin();
-  if(tab==='z')renderZoneSettings();
+  if(tab==='z')renderTopicAdmin();
   if(tab==='t')renderTxtAdmin();
   if(tab==='r')renderRewardAdmin();
-  if(tab==='f')renderFolders();
 }
 
+// ════════════════════════════════════
+// 後台：題目管理（主題頁籤即時反映主題管理的名稱／圖示）
+// ════════════════════════════════════
 function renderAdmin(){
-  // 分頁按鈕
   const tabs=document.getElementById('zoneTabs');tabs.innerHTML='';
-  ZONES.forEach(z=>{
-    const t=document.createElement('button');t.className='ztab'+(azone===z.id?' active':'');
-    t.textContent=z.icon+' '+z.name+' ('+(QB[z.id]||[]).length+')';
-    if(azone===z.id)t.style.cssText=`background:${z.color};color:white;border-color:${z.color}`;
-    t.onclick=()=>{azone=z.id;cancelEdit();renderAdmin();};tabs.appendChild(t);
+  if(!TOPICS.length){
+    tabs.innerHTML='<div style="color:#bbb;font-size:.85rem;padding:.4rem">尚未建立主題，請先到「主題管理」新增</div>';
+    document.getElementById('qList').innerHTML='';
+    document.getElementById('addForm').style.display='none';
+    return;
+  }
+  document.getElementById('addForm').style.display='block';
+  if(!curTopicId||!TOPICS.find(t=>t.id===curTopicId))curTopicId=TOPICS[0].id;
+  TOPICS.forEach(t=>{
+    const btn=document.createElement('button');btn.className='ztab';
+    btn.textContent=(t.img?'🖼️':(t.icon||'📚'))+' '+t.name+' ('+(t.questions||[]).length+')';
+    if(curTopicId===t.id)btn.style.cssText='background:var(--pd);color:white;border-color:var(--pd)';
+    btn.onclick=()=>{curTopicId=t.id;cancelEdit();renderAdmin();};
+    tabs.appendChild(btn);
   });
-  // 題數
-  const qn=CFG.qPerZone[azone]||6;
-  document.getElementById('qnum-display').value=qn;
-  // 題目列表
+  const ct=TOPICS.find(t=>t.id===curTopicId);
+  document.getElementById('qnum-display').value=ct.qPerRound||6;
   const list=document.getElementById('qList');list.innerHTML='';
-  const qs=QB[azone]||[];
-  if(!qs.length){list.innerHTML='<div style="text-align:center;color:#bbb;padding:.8rem;font-size:.85rem">這個關卡還沒有題目</div>';return;}
+  const qs=ct.questions||[];
+  if(!qs.length){list.innerHTML='<div style="text-align:center;color:#bbb;padding:.8rem;font-size:.85rem">這個主題還沒有題目</div>';return;}
   qs.forEach((q,i)=>{
     const el=document.createElement('div');el.className='qi';
     el.innerHTML=`<div class="qi-top"><div><div class="qi-t">${q.t}</div><div class="qi-h">${q.h}</div></div><div style="display:flex;gap:.3rem"><button class="editbtn" onclick="editQ(${i})">✏️ 編輯</button><button class="delbtn" onclick="delQ(${i})">🗑 刪除</button></div></div><div class="cg">${q.c.map((c,ci)=>`<span class="cc${ci===q.a?' ans':''}">${ci===q.a?'✓ ':''}${c}</span>`).join('')}</div>`;
@@ -826,7 +2286,8 @@ function renderAdmin(){
 }
 
 function editQ(idx){
-  const q=(QB[azone]||[])[idx];if(!q)return;
+  const ct=TOPICS.find(t=>t.id===curTopicId);
+  const q=(ct.questions||[])[idx];if(!q)return;
   document.getElementById('editIdx').value=idx;
   document.getElementById('f-t').value=q.t;
   document.getElementById('f-h').value=q.h;
@@ -854,87 +2315,148 @@ function selA(i){
 }
 
 function saveQ(){
+  if(!curTopicId){alert('請先建立一個主題');return;}
   const t=document.getElementById('f-t').value.trim();
   const h=document.getElementById('f-h').value.trim();
   const cs=[0,1,2,3].map(i=>document.getElementById('c'+i).value.trim());
-  if(!t){alert('請填入成語或題目文字');return;}
+  if(!t){alert('請填入題目文字');return;}
   if(!h){alert('請填入提示說明');return;}
   if(cs.some(c=>!c)){alert('請填入全部四個選項');return;}
   if(sela<0){alert('請選擇正確答案');return;}
-  if(!QB[azone])QB[azone]=[];
+  const ct=TOPICS.find(x=>x.id===curTopicId);
+  if(!ct.questions)ct.questions=[];
   const idx=parseInt(document.getElementById('editIdx').value);
   const entry={t,h,c:cs,a:sela};
-  if(idx>=0){QB[azone][idx]=entry;}else{QB[azone].push(entry);}
-  svQB();cancelEdit();renderAdmin();
+  if(idx>=0){ct.questions[idx]=entry;}else{ct.questions.push(entry);}
+  saveTopics();cancelEdit();renderAdmin();
 }
 
 function delQ(i){
   if(!confirm('確定刪除這個題目？'))return;
-  QB[azone].splice(i,1);svQB();renderAdmin();
+  const ct=TOPICS.find(x=>x.id===curTopicId);
+  ct.questions.splice(i,1);saveTopics();renderAdmin();
 }
 
 function changeQNum(d){
-  const cur=CFG.qPerZone[azone]||6;
-  CFG.qPerZone[azone]=Math.max(1,cur+d);
-  svCFG();document.getElementById('qnum-display').value=CFG.qPerZone[azone];
+  const ct=TOPICS.find(x=>x.id===curTopicId);
+  if(!ct)return;
+  ct.qPerRound=Math.max(1,(ct.qPerRound||6)+d);
+  saveTopics();document.getElementById('qnum-display').value=ct.qPerRound;
 }
-
 function setQNumDirect(val){
-  const n=Math.max(1,parseInt(val)||1);
-  CFG.qPerZone[azone]=n;
-  svCFG();
+  const ct=TOPICS.find(x=>x.id===curTopicId);
+  if(!ct)return;
+  ct.qPerRound=Math.max(1,parseInt(val)||1);
+  saveTopics();
 }
 
-// 分數設定已移除
-
-
-
 // ════════════════════════════════════
-// 地圖背景圖片
+// 後台：主題管理（新增／刪除／排序／改名／圖示）
 // ════════════════════════════════════
-function uploadMapBg(input){
+function renderTopicAdmin(){
+  const box=document.getElementById('topic-admin-list');
+  box.innerHTML='';
+  if(!TOPICS.length){
+    box.innerHTML='<div style="text-align:center;color:#bbb;padding:1rem;font-size:.85rem">還沒有主題，請在下方新增第一個吧！</div>';
+    return;
+  }
+  TOPICS.forEach((t,i)=>{
+    const row=document.createElement('div');row.className='topic-admin-item';
+    row.innerHTML=`
+      <label class="topic-admin-icon" title="點擊上傳圖示">
+        ${t.img?`<img src="${t.img}">`:`<span>${t.icon||'📚'}</span>`}
+        <input type="file" accept="image/*" style="display:none" onchange="uploadTopicIcon('${t.id}',this)">
+      </label>
+      <div class="topic-admin-info">
+        <input class="topic-admin-name-inp" value="${t.name}" onchange="renameTopic('${t.id}',this)">
+        <div class="topic-admin-meta">${(t.questions||[]).length} 題・每次出 ${t.qPerRound||6} 題${t.img?' ・已設定圖示':''}</div>
+        <div style="display:flex;gap:.4rem;align-items:center;margin-top:.4rem">
+          <span style="font-size:.72rem;color:#a0a0a0">Emoji圖示</span>
+          <input class="icon-emoji-inp" value="${t.img?'':(t.icon||'')}" maxlength="2" onchange="setTopicEmoji('${t.id}',this)">
+          ${t.img?`<button class="tab-btn-sm danger" onclick="clearTopicIcon('${t.id}')" title="清除上傳圖片">🗑</button>`:''}
+        </div>
+      </div>
+      <div class="topic-admin-btns">
+        <button class="tab-btn-sm" onclick="moveTopic('${t.id}',-1)" ${i===0?'disabled style="opacity:.3"':''}>↑</button>
+        <button class="tab-btn-sm" onclick="moveTopic('${t.id}',1)" ${i===TOPICS.length-1?'disabled style="opacity:.3"':''}>↓</button>
+        <button class="tab-btn-sm danger" onclick="deleteTopic('${t.id}')">🗑</button>
+      </div>
+    `;
+    box.appendChild(row);
+  });
+}
+
+function addTopicFromInput(){
+  const inp=document.getElementById('new-topic-name');
+  const name=inp.value.trim();
+  if(!name){alert('請輸入主題名稱');return;}
+  TOPICS.push({id:'topic_'+Date.now()+'_'+Math.floor(Math.random()*1000),name,icon:'📚',img:'',qPerRound:6,questions:[]});
+  inp.value='';
+  saveTopics();renderTopicAdmin();
+}
+
+function deleteTopic(id){
+  if(!confirm('確定刪除這個主題？裡面的題目也會一併刪除，此操作無法復原。'))return;
+  TOPICS=TOPICS.filter(t=>t.id!==id);
+  CLEARED=CLEARED.filter(c=>c!==id);
+  saveTopics();saveCleared();
+  if(curTopicId===id)curTopicId=TOPICS[0]?TOPICS[0].id:null;
+  renderTopicAdmin();
+}
+
+function moveTopic(id,dir){
+  const idx=TOPICS.findIndex(t=>t.id===id);
+  const newIdx=idx+dir;
+  if(newIdx<0||newIdx>=TOPICS.length)return;
+  [TOPICS[idx],TOPICS[newIdx]]=[TOPICS[newIdx],TOPICS[idx]];
+  saveTopics();renderTopicAdmin();
+}
+
+function renameTopic(id,input){
+  const t=TOPICS.find(x=>x.id===id);
+  if(!t)return;
+  const val=input.value.trim();
+  if(!val){input.value=t.name;return;}
+  t.name=val;saveTopics();renderTopicAdmin();
+}
+
+function setTopicEmoji(id,input){
+  const t=TOPICS.find(x=>x.id===id);
+  if(!t)return;
+  t.icon=input.value.trim()||'📚';
+  saveTopics();renderTopicAdmin();
+}
+
+function uploadTopicIcon(id,input){
   const file=input.files[0];if(!file)return;
   const reader=new FileReader();
   reader.onload=e=>{
-    localStorage.setItem('cy_mapbg_'+_fid(),e.target.result);
-    buildMap();
-    renderZoneSettings(); // 刷新預覽
+    const t=TOPICS.find(x=>x.id===id);
+    t.img=e.target.result;saveTopics();renderTopicAdmin();
   };
   reader.readAsDataURL(file);
 }
-
-function clearMapBg(){
-  localStorage.removeItem('cy_mapbg_'+_fid());
-  buildMap();
-  renderZoneSettings(); // 刷新預覽
+function clearTopicIcon(id){
+  const t=TOPICS.find(x=>x.id===id);
+  t.img='';saveTopics();renderTopicAdmin();
 }
-
 
 // ════════════════════════════════════
 // 文字設定
 // ════════════════════════════════════
 function applyTxt(){
   const t=CFG.txt||{};
-  // 首頁按鈕
   const btnStart=document.querySelector('#s-title .bm');
   if(btnStart&&t.start)btnStart.textContent=t.start;
   const bsAll=document.querySelectorAll('#s-title .bs');
-  if(bsAll[0]&&t.reset)bsAll[0].textContent=t.reset;
+  if(bsAll[0]&&t.resetProgress)bsAll[0].textContent=t.resetProgress;
   if(bsAll[1]&&t.admin)bsAll[1].textContent=t.admin;
-  // 隊伍預設名稱（只有還沒改過才套）
-  if(!S.nA||S.nA==='隊伍 A')S.nA=t.teamA||'隊伍 A';
-  if(!S.nB||S.nB==='隊伍 B')S.nB=t.teamB||'隊伍 B';
-  // 答題畫面
-  const qa=document.getElementById('qa-label');if(qa&&t.addA)qa.textContent=t.addA;
-  const qb=document.getElementById('qb-label');if(qb&&t.addB)qb.textContent=t.addB;
   const nb=document.getElementById('nextBtn');if(nb&&t.next)nb.textContent=t.next;
-  const bb=document.getElementById('result-back-btn');if(bb&&t.back)bb.textContent=t.back;
 }
 
 function renderTxtAdmin(){
   const t=CFG.txt||{};
-  const fields=['start','reset','admin','teamA','teamB','addA','addB','next','back'];
-  fields.forEach(k=>{
+  ['start','resetProgress','admin','next','back'].forEach(k=>{
     const el=document.getElementById('txt-'+k);
     if(el)el.value=t[k]||'';
   });
@@ -942,109 +2464,23 @@ function renderTxtAdmin(){
 
 function saveTxt(){
   if(!CFG.txt)CFG.txt={};
-  ['start','reset','admin','teamA','teamB','addA','addB','next','back'].forEach(k=>{
+  ['start','resetProgress','admin','next','back'].forEach(k=>{
     const el=document.getElementById('txt-'+k);
     if(el&&el.value.trim())CFG.txt[k]=el.value.trim();
   });
-  svCFG();applyTxt();upUI();
+  saveCFG();applyTxt();
   alert('✅ 文字設定已儲存！');
 }
 
 // ════════════════════════════════════
-// 關卡設定（名稱＋圖片）
+// 妙不妙轉盤設定
 // ════════════════════════════════════
-function renderZoneSettings(){
-  if(!window.ZONEIMG) window.ZONEIMG = JSON.parse(localStorage.getItem('cy_zimg')||'{}');
-  if(!window.ZONENAME) window.ZONENAME = JSON.parse(localStorage.getItem('cy_zname')||'{}');
-  const box=document.getElementById('zone-settings-list');
-  box.innerHTML='';
-
-  // 地圖背景上傳區塊
-  const bgImg=localStorage.getItem('cy_mapbg_'+_fid())||localStorage.getItem('cy_mapbg')||'';
-  const bgCard=document.createElement('div');
-  bgCard.className='aform';bgCard.style.marginBottom='.8rem';
-  bgCard.innerHTML=`
-    <h3 style="font-size:.9rem;color:var(--pd);font-weight:700;margin-bottom:.8rem">🗺️ 地圖背景圖片</h3>
-    ${bgImg?`<img src="${bgImg}" style="width:100%;border-radius:10px;margin-bottom:.6rem;max-height:160px;object-fit:cover">`:'<div style="background:#f5f5f5;border-radius:10px;height:80px;display:flex;align-items:center;justify-content:center;color:#bbb;margin-bottom:.6rem;font-size:.9rem">尚未上傳地圖背景</div>'}
-    <div style="display:flex;gap:.6rem">
-      <label style="flex:1;display:flex;align-items:center;justify-content:center;gap:.5rem;background:#fde8ec;border-radius:10px;padding:.6rem;cursor:pointer;font-size:.85rem;color:var(--pd);font-weight:600">
-        📷 上傳地圖背景
-        <input type="file" accept="image/*" style="display:none" onchange="uploadMapBg(this)">
-      </label>
-      ${bgImg?`<button onclick="clearMapBg()" style="background:#ffebee;color:#ef5350;border:none;border-radius:10px;padding:.6rem .9rem;font-size:.82rem;cursor:pointer;white-space:nowrap">清除</button>`:''}
-    </div>
-  `;
-  box.appendChild(bgCard);
-  ZONES.forEach(z=>{
-    const customName=ZONENAME[z.id]||z.name;
-    const customImg=ZONEIMG[z.id]||'';
-    const card=document.createElement('div');
-    card.className='aform';
-    card.style.marginBottom='.8rem';
-    card.innerHTML=`
-      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.8rem">
-        <div id="zone-preview-${z.id}" style="width:60px;height:60px;border-radius:50%;background:${z.color};display:flex;align-items:center;justify-content:center;font-size:1.8rem;overflow:hidden;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.15)">
-          ${customImg?`<img src="${customImg}" style="width:100%;height:100%;object-fit:cover">`:`${z.icon}`}
-        </div>
-        <div style="flex:1">
-          <div style="font-size:.78rem;color:#a06070;margin-bottom:.3rem">關卡名稱</div>
-          <input id="zname-${z.id}" type="text" value="${customName}"
-            style="width:100%;border:2px solid #f0d0d8;border-radius:10px;padding:.5rem .8rem;font-size:.95rem;font-family:'Noto Sans TC',sans-serif;color:var(--br);outline:none"
-            onfocus="this.style.borderColor='var(--pd)'" onblur="this.style.borderColor='#f0d0d8'">
-        </div>
-      </div>
-      <div style="display:flex;gap:.6rem;align-items:center">
-        <label style="flex:1;display:flex;align-items:center;gap:.5rem;background:#fde8ec;border-radius:10px;padding:.5rem .8rem;cursor:pointer;font-size:.85rem;color:var(--pd);font-weight:600">
-          📷 上傳關卡圖示
-          <input type="file" accept="image/*" style="display:none" onchange="uploadZoneImg('${z.id}',this)">
-        </label>
-        ${customImg?`<button onclick="clearZoneImg('${z.id}')" style="background:#ffebee;color:#ef5350;border:none;border-radius:10px;padding:.5rem .8rem;font-size:.82rem;cursor:pointer;white-space:nowrap">清除圖片</button>`:''}
-      </div>
-      <button onclick="saveZoneName('${z.id}')" class="bm" style="margin-top:.7rem;font-size:.9rem;padding:.6rem">儲存名稱</button>
-    `;
-    box.appendChild(card);
-  });
-}
-
-function uploadZoneImg(zoneId, input){
-  const file=input.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    if(!window.ZONEIMG)window.ZONEIMG={};
-    ZONEIMG[zoneId]=e.target.result;
-    svZimg();
-    renderZoneSettings();
-    buildMap(); // 更新地圖上的圖示
-  };
-  reader.readAsDataURL(file);
-}
-
-function clearZoneImg(zoneId){
-  if(!window.ZONEIMG)window.ZONEIMG={};
-  delete ZONEIMG[zoneId];
-  localStorage.setItem('cy_zimg',JSON.stringify(ZONEIMG));svZimg();
-  renderZoneSettings();buildMap();
-}
-
-function saveZoneName(zoneId){
-  const val=document.getElementById('zname-'+zoneId).value.trim();
-  if(!val){alert('名稱不能為空');return;}
-  if(!window.ZONENAME)window.ZONENAME={};
-  ZONENAME[zoneId]=val;
-  localStorage.setItem('cy_zname_'+_fid(),JSON.stringify(ZONENAME));svZname();
-  buildMap(); // 更新地圖按鈕名稱
-  alert('✅ 已儲存！');
-}
-
-function renderRewardAdmin(){
-  renderMiaoList();
-}
+function renderRewardAdmin(){renderMiaoList();}
 
 function renderMiaoList(){
   const list=document.getElementById('miao-list');
   if(!list)return;
   list.innerHTML='';
-  // 合併 rewards + punishments 為統一列表
   const all=[...CFG.rewards,...CFG.punishments];
   if(!all.length){list.innerHTML='<div style="color:#bbb;font-size:.85rem;padding:.4rem">尚未設定任何項目</div>';return;}
   all.forEach((item,i)=>{
@@ -1059,34 +2495,23 @@ function addMiao(){
   const val=inp.value.trim();
   if(!val){alert('請輸入項目內容');return;}
   CFG.rewards.push(val);
-  inp.value='';svCFG();renderMiaoList();
+  inp.value='';saveCFG();renderMiaoList();
 }
 
 function delMiao(i){
-  // 合併後的 index，先刪 rewards 再刪 punishments
   const all=[...CFG.rewards,...CFG.punishments];
   const item=all[i];
   const ri=CFG.rewards.indexOf(item);
   if(ri!==-1)CFG.rewards.splice(ri,1);
   else{const pi=CFG.punishments.indexOf(item);if(pi!==-1)CFG.punishments.splice(pi,1);}
-  svCFG();renderMiaoList();
+  saveCFG();renderMiaoList();
 }
-
 
 // ════════════════════════════════════
 // 資料夾管理
 // ════════════════════════════════════
-
-// ════════════════════════════════════
-// 資料夾切換（首頁彈窗版）
-// ════════════════════════════════════
-function showFolderSwitch(){
-  renderFolderModal();
-  document.getElementById('ov-folder').classList.add('show');
-}
-function closeFolderSwitch(){
-  document.getElementById('ov-folder').classList.remove('show');
-}
+function showFolderSwitch(){renderFolderModal();document.getElementById('ov-folder').classList.add('show');}
+function closeFolderSwitch(){document.getElementById('ov-folder').classList.remove('show');}
 
 function renderFolderModal(){
   const meta=getFolders();
@@ -1125,7 +2550,7 @@ function switchFolderModal(id){
 }
 
 function deleteFolderModal(id){
-  if(!confirm('確定刪除這個資料夾？題庫和設定都會消失。'))return;
+  if(!confirm('確定刪除這個資料夾？主題和題庫都會消失。'))return;
   const meta=getFolders();
   meta.list=meta.list.filter(f=>f.id!==id);
   saveFolderMeta(meta);
@@ -1137,96 +2562,27 @@ function getFolders(){
 }
 function saveFolderMeta(meta){localStorage.setItem('cy_folders',JSON.stringify(meta));}
 
-function getCurrentFolderName(){
-  const meta=getFolders();
-  const cur=meta.list.find(f=>f.id===meta.current);
-  return cur?cur.name:'預設資料夾';
-}
-
-function renderFolders(){
-  const meta=getFolders();
-  const box=document.getElementById('folder-list');
-  box.innerHTML='';
-  meta.list.forEach(f=>{
-    const row=document.createElement('div');
-    row.style.cssText='display:flex;align-items:center;gap:.5rem;background:'+(f.id===meta.current?'#fde8ec':'#fafafa')+';border-radius:12px;padding:.6rem .9rem;margin-bottom:.5rem;border:2px solid '+(f.id===meta.current?'#f4a0b0':'#eee');
-    row.innerHTML=`
-      <span style="font-size:.85rem;font-weight:${f.id===meta.current?'700':'400'};color:${f.id===meta.current?'var(--pd)':'#555'};flex:1">
-        ${f.id===meta.current?'▶ ':''} ${f.name}
-      </span>
-      ${f.id!==meta.current?`<button onclick="switchFolder('${f.id}')" style="background:var(--pd);color:white;border:none;border-radius:8px;padding:.3rem .7rem;font-size:.8rem;cursor:pointer">切換</button>`:'<span style="font-size:.75rem;color:#f4a0b0">使用中</span>'}
-      ${meta.list.length>1&&f.id!==meta.current?`<button onclick="deleteFolder('${f.id}')" style="background:#ffebee;color:#ef5350;border:none;border-radius:8px;padding:.3rem .6rem;font-size:.8rem;cursor:pointer">刪除</button>`:''}
-    `;
-    box.appendChild(row);
-  });
-}
-
-function createFolder(){
-  const name=document.getElementById('new-folder-name').value.trim();
-  if(!name){alert('請輸入資料夾名稱');return;}
-  const meta=getFolders();
-  const id='folder_'+Date.now();
-  meta.list.push({id,name});
-  saveFolderMeta(meta);
-  document.getElementById('new-folder-name').value='';
-  renderFolders();
-}
-
-function switchFolder(id){
-  // 先儲存目前資料
-  const meta=getFolders();
-  meta.current=id;
-  saveFolderMeta(meta);
-  // 載入該資料夾的題庫和設定
-  QB=JSON.parse(localStorage.getItem('cy_qb_'+id)||'null')||JSON.parse(JSON.stringify(DQ));
-  CFG=JSON.parse(localStorage.getItem('cy_cfg_'+id)||'null')||{
-    qPerZone:{animal:6,number:6,color:6,body:6,emotion:6,boss:6},
-    streakWin:5,streakLose:5,
-    rewards:['加 1 分！','全隊站起來歡呼！','免做一題！'],
-    punishments:['扣 1 分！','學鴨子叫三聲！','幫對手鼓掌！']
-  };
-  window.ZONEIMG=JSON.parse(localStorage.getItem('cy_zimg_'+id)||'{}');
-  window.ZONENAME=JSON.parse(localStorage.getItem('cy_zname_'+id)||'{}');
-  alert('已切換到「'+meta.list.find(f=>f.id===id).name+'」！');
-  renderFolders();
-  renderAdmin();
-}
-
-function deleteFolder(id){
-  if(!confirm('確定刪除這個資料夾？此操作無法復原。'))return;
-  const meta=getFolders();
-  meta.list=meta.list.filter(f=>f.id!==id);
-  saveFolderMeta(meta);
-  // 清除該資料夾的localStorage
-  ['cy_qb_','cy_cfg_','cy_zimg_','cy_zname_'].forEach(k=>localStorage.removeItem(k+id));
-  renderFolders();
-}
-
 // ════════════════════════════════════
 // 彈窗
 // ════════════════════════════════════
-function closeResult(){document.getElementById('ovResult').classList.remove('show');goMap();}
-function showReset(){document.getElementById('ovReset').classList.add('show');}
-function closeReset(){document.getElementById('ovReset').classList.remove('show');}
-function doReset(){S.sA=0;S.sB=0;S.cleared=[];sv();upUI();closeReset();}
+function closeResult(){document.getElementById('ovResult').classList.remove('show');goTopics();}
+function showResetProgress(){document.getElementById('ovReset').classList.add('show');}
+function closeResetProgress(){document.getElementById('ovReset').classList.remove('show');}
+function doResetProgress(){CLEARED=[];saveCleared();closeResetProgress();}
 function showPw(){document.getElementById('pwIn').value='';document.getElementById('pwErr').textContent='';document.getElementById('ovPw').classList.add('show');setTimeout(()=>document.getElementById('pwIn').focus(),300);}
 function closePw(){document.getElementById('ovPw').classList.remove('show');}
 function checkPw(){if(document.getElementById('pwIn').value===ADMIN_PW){closePw();goAdmin();}else{document.getElementById('pwErr').textContent='密碼錯誤，請再試一次';document.getElementById('pwIn').value='';}}
-
 
 // ════════════════════════════════════
 // 匯出 / 匯入
 // ════════════════════════════════════
 function exportData(){
-  const fid=_fid();
   const payload={
-    version:2,
+    version:3,
     exportedAt:new Date().toISOString(),
-    folderName: (getFolders().list.find(f=>f.id===fid)||{}).name||'未知資料夾',
-    QB: QB,
-    CFG: CFG,
-    ZONENAME: window.ZONENAME||{},
-    // 圖片不匯出（體積太大）
+    folderName:(getFolders().list.find(f=>f.id===_fid())||{}).name||'未知資料夾',
+    TOPICS: TOPICS.map(t=>({id:t.id,name:t.name,icon:t.icon,qPerRound:t.qPerRound,questions:t.questions})), // 圖片不匯出
+    CFG: CFG
   };
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
@@ -1235,6 +2591,32 @@ function exportData(){
   a.download='成之於語_'+payload.folderName+'_'+new Date().toLocaleDateString('zh-TW').replace(/\//g,'-')+'.json';
   document.body.appendChild(a);a.click();
   setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},1000);
+}
+
+function convertLegacyExport(data){
+  const zn=data.ZONENAME||{};
+  const topics=LEGACY_ZONES.map(z=>({
+    id:z.id,
+    name:zn[z.id]||z.name,
+    icon:z.icon,
+    img:'',
+    qPerRound:(data.CFG&&data.CFG.qPerZone&&data.CFG.qPerZone[z.id])||6,
+    questions:(data.QB&&data.QB[z.id])||[]
+  }));
+  return {
+    TOPICS:topics,
+    CFG:{
+      rewards:(data.CFG&&data.CFG.rewards)||[],
+      punishments:(data.CFG&&data.CFG.punishments)||[],
+      txt:{
+        start:(data.CFG&&data.CFG.txt&&data.CFG.txt.start)||'🗺️ 開始探險',
+        resetProgress:'🔄 重置本回合進度',
+        admin:(data.CFG&&data.CFG.txt&&data.CFG.txt.admin)||'⚙️ 後台管理',
+        next:(data.CFG&&data.CFG.txt&&data.CFG.txt.next)||'下一題 →',
+        back:'回主題選單'
+      }
+    }
+  };
 }
 
 function importData(input){
@@ -1246,18 +2628,24 @@ function importData(input){
   reader.onload=e=>{
     try{
       const data=JSON.parse(e.target.result);
-      if(!data.QB||!data.CFG){throw new Error('檔案格式不正確');}
-      if(!confirm('確定要匯入？目前的題庫和設定將被覆蓋。')){status.textContent='已取消';return;}
-      // 寫入
-      QB=data.QB;
-      CFG=data.CFG;
-      if(data.ZONENAME)window.ZONENAME=data.ZONENAME;
-      svQB();svCFG();
-      if(data.ZONENAME)localStorage.setItem('cy_zname_'+_fid(),JSON.stringify(data.ZONENAME));
+      let converted;
+      if(data.TOPICS){
+        converted={TOPICS:data.TOPICS,CFG:data.CFG};
+      }else if(data.QB){
+        converted=convertLegacyExport(data);
+      }else{
+        throw new Error('檔案格式不正確');
+      }
+      if(!confirm('確定要匯入？目前資料夾的主題和設定將被覆蓋。')){status.textContent='已取消';return;}
+      TOPICS=converted.TOPICS.map(t=>({img:'',...t}));
+      CFG=converted.CFG;
+      CLEARED=[];
+      saveTopics();saveCFG();saveCleared();
       status.textContent='✅ 匯入成功！';status.style.color='#4caf50';
       input.value='';
-      // 重新渲染
-      upUI();buildMap();
+      curTopicId=TOPICS[0]?TOPICS[0].id:null;
+      renderTopicAdmin();
+      if(curAtab==='q')renderAdmin();
     }catch(err){
       status.textContent='❌ 匯入失敗：'+err.message;
       status.style.color='#ef5350';
@@ -1269,33 +2657,22 @@ function importData(input){
 // ════════════════════════════════════
 // 工具
 // ════════════════════════════════════
-function sv(){localStorage.setItem('cy_v5',JSON.stringify(S));}
-function _fid(){return getFolders().current;}
-function svQB(){localStorage.setItem('cy_qb_'+_fid(),JSON.stringify(QB));}
-function svCFG(){localStorage.setItem('cy_cfg_'+_fid(),JSON.stringify(CFG));}
-function svZimg(){localStorage.setItem('cy_zimg_'+_fid(),JSON.stringify(window.ZONEIMG||{}));}
-function svZname(){localStorage.setItem('cy_zname_'+_fid(),JSON.stringify(window.ZONENAME||{}));}
 function shuf(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
 function upUI(){
-  // 更新首頁資料夾名稱
-  const _curFolder=getFolders();
-  const _curFolderName=(_curFolder.list.find(f=>f.id===_curFolder.current)||{}).name||'預設資料夾';
-  const _cfEl=document.getElementById('cur-folder-name');
-  if(_cfEl)_cfEl.textContent=_curFolderName;
-  const na=S.nA||'隊伍 A',nb=S.nB||'隊伍 B';
-  ['hn-a','mn-a','qn-a'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=na;});
-  ['hn-b','mn-b','qn-b'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=nb;});
-  ['hs-a','ms-a','qs-a','qa-s'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=S.sA;});
-  ['hs-b','ms-b','qs-b','qb-s'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=S.sB;});
-  const qan=document.getElementById('qa-n');if(qan)qan.textContent=na;
-  const qbn=document.getElementById('qb-n');if(qbn)qbn.textContent=nb;
-  document.getElementById('inA').value=S.nA==='隊伍 A'?'':S.nA;
-  document.getElementById('inB').value=S.nB==='隊伍 B'?'':S.nB;
+  const meta=getFolders();
+  const name=(meta.list.find(f=>f.id===meta.current)||{}).name||'預設資料夾';
+  const el=document.getElementById('cur-folder-name');
+  if(el)el.textContent=name;
 }
 
+// ════════════════════════════════════
+// 啟動
+// ════════════════════════════════════
+seedDefaultFoldersIfNeeded();
+loadFolderData();
 applyTxt();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
 upUI();
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
 </script>
 </body>
 </html>
