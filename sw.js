@@ -1,4 +1,4 @@
-const CACHE = 'chengyu-v1';
+const CACHE = 'chengyu-v3';
 const ASSETS = [
   './index.html',
   './manifest.json'
