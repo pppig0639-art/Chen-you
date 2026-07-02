@@ -22,6 +22,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 .bb{background:#fde8ec;border:none;border-radius:50%;width:42px;height:42px;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .hdr{display:flex;align-items:center;padding:.7rem 1rem;background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);gap:.5rem;position:sticky;top:0;z-index:10}
 .hdr-t{font-family:'Noto Serif TC',serif;font-size:1.1rem;color:var(--pd);font-weight:900;flex:1}
+.score-badge{background:#fff3d6;color:#c98a1f;border-radius:20px;padding:.35rem .9rem;font-size:.85rem;font-weight:700;white-space:nowrap;flex-shrink:0}
 
 /* ─── 標題 ─── */
 #s-title{display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#fde8ec,#fdf0e0);padding:1.5rem;min-height:100vh}
@@ -113,6 +114,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 .topic-admin-btns{display:flex;gap:.3rem;flex-shrink:0;align-items:center}
 .tab-btn-sm{background:#f5f5f5;border:none;border-radius:8px;width:30px;height:30px;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .tab-btn-sm.danger{background:#ffebee;color:#ef5350}
+.tab-btn-sm.boss-selected{background:#ff7043;color:white}
 .icon-emoji-inp{width:44px;border:2px solid #eee;border-radius:8px;text-align:center;font-size:1.1rem;padding:.3rem 0}
 .add-topic-row{display:flex;gap:.5rem;margin-top:.5rem}
 
@@ -150,7 +152,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
   <div class="logo">成之於語</div>
   <div class="sub">成語地圖探險</div>
   <div class="btns">
-    <button class="bm" onclick="goTopics()">🗺️ 開始探險</button>
+    <button class="bm" onclick="startSession()">🗺️ 開始探險</button>
     <button class="bs" onclick="showResetProgress()" style="border-color:#f4a0b0">🔄 重置本回合進度</button>
     <button class="bs" onclick="showPw()" style="border-color:#b48ef4;color:#7c52c8">⚙️ 後台管理</button>
     <button class="bs" id="switch-folder-btn" onclick="showFolderSwitch()" style="border-color:#6aabf7;color:#2a7fd5">📁 切換資料夾（<span id="cur-folder-name">預設資料夾</span>）</button>
@@ -162,6 +164,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
   <div class="hdr">
     <button class="bb" onclick="goTitle()">←</button>
     <div class="hdr-t">選擇主題</div>
+    <div class="score-badge">🏆 0 分</div>
   </div>
   <div class="topic-body">
     <div class="topic-grid" id="topicGrid"></div>
@@ -173,6 +176,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
   <div class="hdr">
     <button class="bb" onclick="goTopics()">←</button>
     <div class="hdr-t" id="questTitle">關卡</div>
+    <div class="score-badge">🏆 0 分</div>
   </div>
   <div class="qbody">
     <div class="qcard">
@@ -274,12 +278,29 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
     <div id="apanel-r" style="display:none">
       <div class="aform">
         <h3>🎡 妙不妙大轉盤項目</h3>
-        <p style="font-size:.82rem;color:#a0a0a0;margin-bottom:.9rem;line-height:1.6">答題後有機率觸發轉盤，項目在這裡設定。</p>
+        <p style="font-size:.82rem;color:#a0a0a0;margin-bottom:.9rem;line-height:1.6">答題後有機率觸發轉盤。「加分／扣分」項目抽中後會進一步觸發🔥魔王關卡，答對可翻倍／翻盤，答錯扣更多；「純效果」項目只是氣氛效果，不影響分數。</p>
         <div class="reward-list" id="miao-list"></div>
-        <div class="reward-add-row">
-          <input class="reward-input" id="miao-input" type="text" placeholder="輸入項目，例：全班一起跳舞">
-          <button class="reward-add-btn" onclick="addMiao()">＋ 新增</button>
+        <div class="fl"><label>項目文字</label><input class="fi" id="miao-text" type="text" placeholder="例：全班一起跳舞 / 加2分 / 扣1分"></div>
+        <div class="fl">
+          <label>類型</label>
+          <div class="asel">
+            <button class="ab2" id="mt-reward" onclick="selMiaoType('reward')">🎁 加分</button>
+            <button class="ab2" id="mt-punishment" onclick="selMiaoType('punishment')">💥 扣分</button>
+            <button class="ab2" id="mt-flavor" onclick="selMiaoType('flavor')">✨ 純效果</button>
+          </div>
         </div>
+        <div class="fl" id="miao-points-row">
+          <label>分數（每次的基本分數，魔王關卡會依此加倍或翻盤）</label>
+          <input class="fi" id="miao-points" type="number" min="1" value="1">
+        </div>
+        <div style="display:flex;gap:.6rem">
+          <button class="bm" onclick="saveMiao()">儲存項目</button>
+          <button class="bc" id="miao-cancel-btn" style="display:none;border-radius:50px;padding:.9rem" onclick="cancelMiaoEdit()">取消編輯</button>
+        </div>
+      </div>
+      <div class="aform">
+        <h3 style="margin-bottom:.4rem">🔥 魔王關卡題庫</h3>
+        <p style="font-size:.82rem;color:#a0a0a0;line-height:1.6">請到「主題管理」分頁，點主題卡片上的 🔥 按鈕，把要當作魔王關卡出題來源的主題設起來（通常是挑戰塔／較難的主題）。</p>
       </div>
     </div>
 
@@ -306,7 +327,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 
 <!-- 完成彈窗 -->
 <div class="ov" id="ovResult">
-  <div class="pop"><span class="pe">🎊</span><div class="pt" id="popTitle">完成！</div><div class="ps">這個主題的題目都答完囉</div><button class="bm" id="result-back-btn" onclick="closeResult()">回主題選單</button></div>
+  <div class="pop"><span class="pe">🎊</span><div class="pt" id="popTitle">完成！</div><div class="ps" id="result-score-line">這個主題的題目都答完囉</div><button class="bm" id="result-back-btn" onclick="closeResult()">回主題選單</button></div>
 </div>
 
 <!-- 重置進度確認 -->
@@ -341,13 +362,25 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 <!-- 抽獎彈窗 -->
 <div class="ov" id="ov-lottery">
   <div class="pop">
-    <span class="pe" id="lot-emoji">🎉</span>
-    <div class="lottery-title" id="lot-title">超級妙不妙大轉盤！！</div>
-    <div class="lottery-sub" id="lot-sub">恭喜你觸發了超級妙不妙大轉盤！！<br>請按下抽獎看看是妙什麼妙<br>還是妙不妙吧～</div>
-    <div class="lottery-reel" id="lot-reel">按下抽獎！</div>
-    <div class="lottery-result" id="lot-result"></div>
-    <button class="bm" id="lot-btn" onclick="spinLottery()" style="margin-top:1rem">🎡 妙不妙！按這裡！</button>
-    <button class="bc" id="lot-close" style="display:none;margin-top:.6rem;border-radius:50px;padding:.8rem" onclick="closeLottery()">繼續遊戲</button>
+    <div id="lot-stage-main">
+      <span class="pe" id="lot-emoji">🎉</span>
+      <div class="lottery-title" id="lot-title">超級妙不妙大轉盤！！</div>
+      <div class="lottery-sub" id="lot-sub">恭喜你觸發了超級妙不妙大轉盤！！<br>請按下抽獎看看是妙什麼妙<br>還是妙不妙吧～</div>
+      <div class="lottery-reel" id="lot-reel">按下抽獎！</div>
+      <div class="lottery-result" id="lot-result" style="white-space:pre-line"></div>
+      <button class="bm" id="lot-btn" onclick="spinLottery()" style="margin-top:1rem">🎡 妙不妙！按這裡！</button>
+      <button class="bm" id="lot-boss-btn" style="display:none;margin-top:1rem;background:linear-gradient(135deg,#ff7043,#ff3d00)">🔥 挑戰魔王關卡！</button>
+      <button class="bc" id="lot-close" style="display:none;margin-top:.6rem;border-radius:50px;padding:.8rem" onclick="closeLottery()">繼續遊戲</button>
+    </div>
+    <div id="lot-stage-boss" style="display:none">
+      <span class="pe">🔥</span>
+      <div class="lottery-title">魔王關卡登場！</div>
+      <div class="lottery-sub" id="boss-q-hint"></div>
+      <div class="qtxt" id="boss-q-txt" style="font-size:1.5rem;margin:.6rem 0 1rem"></div>
+      <div class="choices" id="boss-choices" style="margin-bottom:.5rem"></div>
+      <div class="lottery-result" id="boss-result"></div>
+      <button class="bc" id="boss-close" style="display:none;margin-top:1rem;border-radius:50px;padding:.8rem" onclick="closeLottery()">繼續遊戲</button>
+    </div>
   </div>
 </div>
 
@@ -2060,8 +2093,18 @@ let CLEARED = [];  // 已完成的主題 id
 
 let CT=null, Qi=0, Ql=[], answered=false, lastWasCorrect=false;
 let curTopicId=null, sela=-1, curAtab='q';
+let SCORE=0;
 
 function _fid(){ return getFolders().current; }
+
+// ════════════════════════════════════
+// 分數（單一隊伍，開始探險時歸零）
+// ════════════════════════════════════
+function loadScore(){ SCORE=parseInt(localStorage.getItem('cy_score_'+_fid())||'0'); updateScoreUI(); }
+function saveScore(){ localStorage.setItem('cy_score_'+_fid(), String(SCORE)); updateScoreUI(); }
+function resetScore(){ SCORE=0; saveScore(); }
+function updateScoreUI(){ document.querySelectorAll('.score-badge').forEach(el=>el.textContent='🏆 '+SCORE+' 分'); }
+function startSession(){ resetScore(); goTopics(); }
 
 // ════════════════════════════════════
 // 資料載入／自動轉換舊格式
@@ -2113,8 +2156,31 @@ function loadFolderData(){
   CFG.txt.resetProgress=CFG.txt.resetProgress||'🔄 重置本回合進度';
   CFG.txt.back=CFG.txt.back||'回主題選單';
 
+  migrateMiao();
+  if(!CFG.bossTopicId){
+    const b=TOPICS.find(t=>t.id==='boss');
+    if(b){CFG.bossTopicId=b.id;saveCFG();}
+  }
+
   CLEARED=JSON.parse(localStorage.getItem('cy_cleared_'+fid)||'[]');
   if(!curTopicId || !TOPICS.find(t=>t.id===curTopicId)) curTopicId=TOPICS[0]?TOPICS[0].id:null;
+}
+
+// 把舊版純文字的 rewards/punishments 轉成結構化的 miao 陣列（類型＋分數）
+function migrateMiao(){
+  if(CFG.miao)return;
+  const parse=(str)=>{
+    let m=str.match(/加\s*(\d+)\s*分/);
+    if(m)return{text:str,type:'reward',points:parseInt(m[1])};
+    m=str.match(/扣\s*(\d+)\s*分/);
+    if(m)return{text:str,type:'punishment',points:parseInt(m[1])};
+    return{text:str,type:'flavor',points:0};
+  };
+  const miao=[];
+  (CFG.rewards||[]).forEach(s=>miao.push(parse(s)));
+  (CFG.punishments||[]).forEach(s=>miao.push(parse(s)));
+  CFG.miao=miao;
+  saveCFG();
 }
 
 function saveTopics(){localStorage.setItem('cy_topics_'+_fid(),JSON.stringify(TOPICS));}
@@ -2202,6 +2268,8 @@ function pick(idx,ans){
   document.querySelectorAll('.cb').forEach((b,i)=>{
     if(i===ans)b.classList.add('correct');else if(i===idx)b.classList.add('wrong');
   });
+  SCORE += lastWasCorrect ? 1 : -1;
+  saveScore();
   document.getElementById('nextBtn').style.display='inline-block';
   maybeTriggerLottery();
 }
@@ -2211,6 +2279,7 @@ function nextQ(){
   if(Qi>=Ql.length){
     if(!CLEARED.includes(CT.id)){CLEARED.push(CT.id);saveCleared();}
     document.getElementById('popTitle').textContent=CT.name+' 全部完成！';
+    document.getElementById('result-score-line').textContent='目前總分：🏆 '+SCORE+' 分';
     document.getElementById('result-back-btn').textContent=(CFG.txt&&CFG.txt.back)||'回主題選單';
     document.getElementById('ovResult').classList.add('show');
   }else rQ();
@@ -2218,17 +2287,17 @@ function nextQ(){
 
 // 每次答題後有機率觸發妙不妙轉盤（與答對答錯無關）
 function maybeTriggerLottery(){
-  const roll=Math.random();
-  if(roll<0.10){ setTimeout(()=>openLottery('win'),600); }
-  else if(roll<0.20){ setTimeout(()=>openLottery('lose'),600); }
+  if(Math.random()<0.2){ setTimeout(()=>openLottery(),600); }
 }
 
 // ════════════════════════════════════
 // 抽獎
 // ════════════════════════════════════
 let lotSpinning=false;
-function openLottery(type){
+function openLottery(){
   lotSpinning=false;
+  document.getElementById('lot-stage-main').style.display='block';
+  document.getElementById('lot-stage-boss').style.display='none';
   document.getElementById('lot-emoji').textContent='🎡';
   document.getElementById('lot-title').textContent='超級妙不妙大轉盤！！';
   document.getElementById('lot-sub').textContent='恭喜你觸發了超級妙不妙大轉盤！！\n請按下抽獎看看是妙什麼妙還是妙不妙吧～';
@@ -2236,37 +2305,118 @@ function openLottery(type){
   document.getElementById('lot-reel').classList.remove('spinning');
   document.getElementById('lot-result').textContent='';
   document.getElementById('lot-btn').style.display='block';
+  document.getElementById('lot-boss-btn').style.display='none';
   document.getElementById('lot-close').style.display='none';
   document.getElementById('ov-lottery').classList.add('show');
-  if(type==='win')spawnConfetti();
 }
 
 function spinLottery(){
   if(lotSpinning)return;
-  lotSpinning=true;
-  const pool=[...CFG.rewards,...CFG.punishments];
-  if(!pool.length){
+  if(!CFG.miao||!CFG.miao.length){
     document.getElementById('lot-reel').textContent='（尚未設定項目）';
     document.getElementById('lot-btn').style.display='none';
     document.getElementById('lot-close').style.display='block';
     return;
   }
+  lotSpinning=true;
   const reel=document.getElementById('lot-reel');
   reel.classList.add('spinning');
   let count=0;
   const interval=setInterval(()=>{
-    reel.textContent=pool[Math.floor(Math.random()*pool.length)];
+    reel.textContent=CFG.miao[Math.floor(Math.random()*CFG.miao.length)].text;
     count++;
     if(count>18){
       clearInterval(interval);
       reel.classList.remove('spinning');
-      const result=pool[Math.floor(Math.random()*pool.length)];
-      reel.textContent=result;
-      document.getElementById('lot-result').textContent='🎯 ' + result;
-      document.getElementById('lot-btn').style.display='none';
-      document.getElementById('lot-close').style.display='block';
+      const item=CFG.miao[Math.floor(Math.random()*CFG.miao.length)];
+      reel.textContent=item.text;
+      showLotteryBaseResult(item);
     }
   },80);
+}
+
+// 顯示轉盤基本結果；如果是加分/扣分項目，提供魔王關卡挑戰按鈕
+function showLotteryBaseResult(item){
+  document.getElementById('lot-btn').style.display='none';
+  if(item.type==='reward'){
+    document.getElementById('lot-result').textContent='🎯 '+item.text+'（+'+item.points+' 分）';
+  }else if(item.type==='punishment'){
+    document.getElementById('lot-result').textContent='🎯 '+item.text+'（-'+item.points+' 分）';
+  }else{
+    document.getElementById('lot-result').textContent='🎯 '+item.text;
+  }
+
+  if(item.type==='flavor'){
+    document.getElementById('lot-close').style.display='block';
+    return;
+  }
+
+  const bossPool=getBossPool();
+  if(!bossPool.length){
+    // 沒有設定魔王關卡題庫，直接套用原始分數
+    applyMiaoScore(item,false,false);
+    document.getElementById('lot-result').textContent+='\n（尚未設定魔王關卡題庫，已直接套用結果）';
+    if(item.type==='reward')spawnConfetti();
+    document.getElementById('lot-close').style.display='block';
+    return;
+  }
+
+  const bossBtn=document.getElementById('lot-boss-btn');
+  bossBtn.style.display='block';
+  bossBtn.onclick=()=>startBossChallenge(item,bossPool);
+  document.getElementById('lot-close').style.display='block';
+}
+
+function getBossPool(){
+  if(!CFG.bossTopicId)return[];
+  const t=TOPICS.find(x=>x.id===CFG.bossTopicId);
+  return (t&&t.questions)?t.questions:[];
+}
+
+// bossAttempted=是否有進行魔王關卡；bossWon=魔王關卡是否答對
+function applyMiaoScore(item,bossWon,bossAttempted){
+  let delta=0;
+  if(item.type==='reward'){
+    delta = bossAttempted ? (bossWon?item.points*2:item.points) : item.points;
+  }else if(item.type==='punishment'){
+    delta = bossAttempted ? (bossWon?0:-item.points*2) : -item.points;
+  }
+  SCORE+=delta;saveScore();
+  return delta;
+}
+
+function startBossChallenge(item,bossPool){
+  document.getElementById('lot-stage-main').style.display='none';
+  document.getElementById('lot-stage-boss').style.display='block';
+  const q=bossPool[Math.floor(Math.random()*bossPool.length)];
+  document.getElementById('boss-q-hint').textContent=q.h;
+  document.getElementById('boss-q-txt').textContent=q.t;
+  document.getElementById('boss-result').textContent='';
+  document.getElementById('boss-close').style.display='none';
+  const box=document.getElementById('boss-choices');box.innerHTML='';
+  q.c.forEach((c,i)=>{
+    const b=document.createElement('button');b.className='cb';b.textContent=c;
+    b.onclick=()=>pickBoss(i,q.a,item);
+    box.appendChild(b);
+  });
+}
+
+function pickBoss(idx,ans,item){
+  document.querySelectorAll('#boss-choices .cb').forEach(b=>b.onclick=null);
+  const won=(idx===ans);
+  document.querySelectorAll('#boss-choices .cb').forEach((b,i)=>{
+    if(i===ans)b.classList.add('correct');else if(i===idx)b.classList.add('wrong');
+  });
+  const delta=applyMiaoScore(item,won,true);
+  let msg;
+  if(item.type==='reward'){
+    msg = won ? `✅ 答對了！雙倍獎勵：+${delta} 分` : `❌ 答錯了，維持原本：+${delta} 分`;
+  }else{
+    msg = won ? `✅ 答對了！成功翻盤，分數不扣！` : `❌ 答錯了，扣掉雙倍：${delta} 分`;
+  }
+  if(won)spawnConfetti();
+  document.getElementById('boss-result').textContent=msg;
+  document.getElementById('boss-close').style.display='block';
 }
 
 function closeLottery(){document.getElementById('ov-lottery').classList.remove('show');}
@@ -2415,7 +2565,7 @@ function renderTopicAdmin(){
       </label>
       <div class="topic-admin-info">
         <input class="topic-admin-name-inp" value="${t.name}" onchange="renameTopic('${t.id}',this)">
-        <div class="topic-admin-meta">${(t.questions||[]).length} 題・每次出 ${t.qPerRound||6} 題${t.img?' ・已設定圖示':''}</div>
+        <div class="topic-admin-meta">${(t.questions||[]).length} 題・每次出 ${t.qPerRound||6} 題${t.img?' ・已設定圖示':''}${CFG.bossTopicId===t.id?' ・🔥 魔王關卡題庫':''}</div>
         <div style="display:flex;gap:.4rem;align-items:center;margin-top:.4rem">
           <span style="font-size:.72rem;color:#a0a0a0">Emoji圖示</span>
           <input class="icon-emoji-inp" value="${t.img?'':(t.icon||'')}" maxlength="2" onchange="setTopicEmoji('${t.id}',this)">
@@ -2423,6 +2573,7 @@ function renderTopicAdmin(){
         </div>
       </div>
       <div class="topic-admin-btns">
+        <button class="tab-btn-sm${CFG.bossTopicId===t.id?' boss-selected':''}" onclick="setBossTopic('${t.id}')" title="設為魔王關卡題庫">🔥</button>
         <button class="tab-btn-sm" onclick="moveTopic('${t.id}',-1)" ${i===0?'disabled style="opacity:.3"':''}>↑</button>
         <button class="tab-btn-sm" onclick="moveTopic('${t.id}',1)" ${i===TOPICS.length-1?'disabled style="opacity:.3"':''}>↓</button>
         <button class="tab-btn-sm danger" onclick="deleteTopic('${t.id}')">🗑</button>
@@ -2430,6 +2581,11 @@ function renderTopicAdmin(){
     `;
     box.appendChild(row);
   });
+}
+
+function setBossTopic(id){
+  CFG.bossTopicId=(CFG.bossTopicId===id)?null:id;
+  saveCFG();renderTopicAdmin();
 }
 
 function addTopicFromInput(){
@@ -2521,36 +2677,60 @@ function saveTxt(){
 // ════════════════════════════════════
 // 妙不妙轉盤設定
 // ════════════════════════════════════
-function renderRewardAdmin(){renderMiaoList();}
+let miaoType='reward', miaoEditIdx=-1;
+
+function renderRewardAdmin(){cancelMiaoEdit();renderMiaoList();}
+
+function selMiaoType(t){
+  miaoType=t;
+  ['reward','punishment','flavor'].forEach(x=>document.getElementById('mt-'+x).classList.toggle('sel',x===t));
+  document.getElementById('miao-points-row').style.display = t==='flavor' ? 'none' : 'block';
+}
 
 function renderMiaoList(){
   const list=document.getElementById('miao-list');
   if(!list)return;
   list.innerHTML='';
-  const all=[...CFG.rewards,...CFG.punishments];
-  if(!all.length){list.innerHTML='<div style="color:#bbb;font-size:.85rem;padding:.4rem">尚未設定任何項目</div>';return;}
-  all.forEach((item,i)=>{
+  if(!CFG.miao||!CFG.miao.length){list.innerHTML='<div style="color:#bbb;font-size:.85rem;padding:.4rem">尚未設定任何項目</div>';return;}
+  CFG.miao.forEach((item,i)=>{
+    const badge = item.type==='reward'?`🎁 +${item.points} 分`:item.type==='punishment'?`💥 -${item.points} 分`:'✨ 純效果';
     const el=document.createElement('div');el.className='reward-item';
-    el.innerHTML=`<div class="reward-text">${item}</div><button class="reward-del" onclick="delMiao(${i})">刪除</button>`;
+    el.innerHTML=`<div class="reward-text">${item.text}<br><span style="font-size:.75rem;color:#a0a0a0">${badge}</span></div><button class="editbtn" onclick="editMiao(${i})">編輯</button><button class="reward-del" onclick="delMiao(${i})">刪除</button>`;
     list.appendChild(el);
   });
 }
 
-function addMiao(){
-  const inp=document.getElementById('miao-input');
-  const val=inp.value.trim();
-  if(!val){alert('請輸入項目內容');return;}
-  CFG.rewards.push(val);
-  inp.value='';saveCFG();renderMiaoList();
+function editMiao(i){
+  const item=CFG.miao[i];
+  miaoEditIdx=i;
+  document.getElementById('miao-text').value=item.text;
+  selMiaoType(item.type);
+  document.getElementById('miao-points').value=item.points||1;
+  document.getElementById('miao-cancel-btn').style.display='inline-block';
+  document.getElementById('apanel-r').scrollIntoView({behavior:'smooth'});
+}
+
+function cancelMiaoEdit(){
+  miaoEditIdx=-1;
+  const t=document.getElementById('miao-text');if(t)t.value='';
+  selMiaoType('reward');
+  const p=document.getElementById('miao-points');if(p)p.value=1;
+  const c=document.getElementById('miao-cancel-btn');if(c)c.style.display='none';
+}
+
+function saveMiao(){
+  const text=document.getElementById('miao-text').value.trim();
+  if(!text){alert('請輸入項目文字');return;}
+  const points = miaoType==='flavor' ? 0 : Math.max(1,parseInt(document.getElementById('miao-points').value)||1);
+  const entry={text,type:miaoType,points};
+  if(!CFG.miao)CFG.miao=[];
+  if(miaoEditIdx>=0)CFG.miao[miaoEditIdx]=entry;else CFG.miao.push(entry);
+  saveCFG();cancelMiaoEdit();renderMiaoList();
 }
 
 function delMiao(i){
-  const all=[...CFG.rewards,...CFG.punishments];
-  const item=all[i];
-  const ri=CFG.rewards.indexOf(item);
-  if(ri!==-1)CFG.rewards.splice(ri,1);
-  else{const pi=CFG.punishments.indexOf(item);if(pi!==-1)CFG.punishments.splice(pi,1);}
-  saveCFG();renderMiaoList();
+  if(!confirm('確定刪除這個項目？'))return;
+  CFG.miao.splice(i,1);saveCFG();renderMiaoList();
 }
 
 // ════════════════════════════════════
@@ -2614,7 +2794,7 @@ function saveFolderMeta(meta){localStorage.setItem('cy_folders',JSON.stringify(m
 function closeResult(){document.getElementById('ovResult').classList.remove('show');goTopics();}
 function showResetProgress(){document.getElementById('ovReset').classList.add('show');}
 function closeResetProgress(){document.getElementById('ovReset').classList.remove('show');}
-function doResetProgress(){CLEARED=[];saveCleared();closeResetProgress();}
+function doResetProgress(){CLEARED=[];saveCleared();resetScore();closeResetProgress();}
 function showPw(){document.getElementById('pwIn').value='';document.getElementById('pwErr').textContent='';document.getElementById('ovPw').classList.add('show');setTimeout(()=>document.getElementById('pwIn').focus(),300);}
 function closePw(){document.getElementById('ovPw').classList.remove('show');}
 function checkPw(){if(document.getElementById('pwIn').value===ADMIN_PW){closePw();goAdmin();}else{document.getElementById('pwErr').textContent='密碼錯誤，請再試一次';document.getElementById('pwIn').value='';}}
@@ -2716,6 +2896,7 @@ function upUI(){
 // ════════════════════════════════════
 seedDefaultFoldersIfNeeded();
 loadFolderData();
+loadScore();
 applyTxt();
 upUI();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
