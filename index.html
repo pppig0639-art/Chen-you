@@ -48,6 +48,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
 .qbody{padding:1.2rem;max-width:700px;margin:0 auto}
 .qcard{background:white;border-radius:22px;padding:2rem 1.8rem;box-shadow:0 6px 24px rgba(0,0,0,.08);margin-bottom:1rem;text-align:center;animation:ci .35s cubic-bezier(.34,1.56,.64,1)}
 .qnum{font-size:.9rem;color:#bbb;letter-spacing:.15em;margin-bottom:.6rem}
+.timer-wrap{background:#f0e0e5;border-radius:20px;height:8px;overflow:hidden;margin-bottom:.35rem}
+.timer-bar{background:linear-gradient(90deg,#66bb6a,#ffd54f,#ef5350);height:100%;width:100%;transition:width 1s linear}
+.qtimer{font-size:.85rem;color:#c98a1f;font-weight:700;margin-bottom:.5rem}
 .qtxt{font-family:'Noto Serif TC',serif;font-size:clamp(1.6rem,5vw,3rem);font-weight:900;color:var(--br);letter-spacing:.1em;margin:.4rem 0 .8rem;line-height:1.5}
 .qhint{font-size:1rem;color:#a0a0a0}
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.2rem}
@@ -181,8 +184,11 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
   <div class="qbody">
     <div class="qcard">
       <div class="qnum" id="qNum">第 1 題 ／ 共 6 題</div>
+      <div class="timer-wrap"><div class="timer-bar" id="qTimerBar"></div></div>
+      <div class="qtimer" id="qTimer">⏱️ 15 秒</div>
       <div class="qtxt" id="qTxt"></div>
       <div class="qhint" id="qHint"></div>
+      <div id="qTimeUpMsg" style="display:none;color:#ef5350;font-weight:700;margin-top:.5rem">⏰ 時間到！</div>
     </div>
     <div class="choices" id="choices"></div>
     <div class="nwrap"><button id="nextBtn" onclick="nextQ()">下一題 →</button></div>
@@ -257,6 +263,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--pl);min-height:100vh
         <div class="fl"><label>後台管理按鈕</label><input class="fi" id="txt-admin" type="text" placeholder="⚙️ 後台管理"></div>
         <div class="fl"><label>下一題按鈕</label><input class="fi" id="txt-next" type="text" placeholder="下一題 →"></div>
         <div class="fl"><label>完成關卡後返回按鈕</label><input class="fi" id="txt-back" type="text" placeholder="回主題選單"></div>
+        <div class="fl"><label>每題作答時間（秒）</label><input class="fi" id="txt-timeLimit" type="number" min="5" value="15"></div>
         <button class="bm" style="margin-top:.5rem" onclick="saveTxt()">儲存文字設定</button>
       </div>
     </div>
@@ -2155,6 +2162,7 @@ function loadFolderData(){
   if(!CFG.txt)CFG.txt={};
   CFG.txt.resetProgress=CFG.txt.resetProgress||'🔄 重置本回合進度';
   CFG.txt.back=CFG.txt.back||'回主題選單';
+  CFG.timeLimit=CFG.timeLimit||15;
 
   migrateMiao();
   if(!CFG.bossTopicId){
@@ -2192,11 +2200,12 @@ function saveCleared(){localStorage.setItem('cy_cleared_'+_fid(),JSON.stringify(
 // ════════════════════════════════════
 function buildTopics(){
   const g=document.getElementById('topicGrid');g.innerHTML='';
-  if(!TOPICS.length){
+  const visible=TOPICS.filter(t=>t.id!==CFG.bossTopicId);
+  if(!visible.length){
     g.innerHTML='<div class="topic-empty">這個資料夾還沒有任何主題喔<br>請到「⚙️ 後台管理 → 主題管理」新增一個吧！</div>';
     return;
   }
-  TOPICS.forEach(t=>{
+  visible.forEach(t=>{
     const card=document.createElement('div');
     card.className='topic-card'+(CLEARED.includes(t.id)?' cleared':'');
     card.innerHTML=`
@@ -2227,8 +2236,8 @@ function showScreen(id){
     }
   });
 }
-function goTitle(){showScreen('s-title');upUI();}
-function goTopics(){showScreen('s-topics');buildTopics();}
+function goTitle(){clearInterval(qTimer);showScreen('s-title');upUI();}
+function goTopics(){clearInterval(qTimer);showScreen('s-topics');buildTopics();}
 function goAdmin(){showScreen('s-admin');switchAtab(curAtab);renderAdmin();}
 
 // ════════════════════════════════════
@@ -2248,27 +2257,76 @@ function startQ(id){
   rQ();
 }
 
+// 把四個選項的顯示順序打亂，回傳打亂後的選項與正確答案的新位置
+function shuffledChoices(q){
+  const idx=[0,1,2,3];
+  shuf(idx);
+  const choices=idx.map(i=>q.c[i]);
+  const correctPos=idx.indexOf(q.a);
+  return {choices,correctPos};
+}
+
+let qTimer=null, qTimeLeft=0, qTimeLimit=15, curCorrectPos=-1;
+
 function rQ(){
   answered=false;
   const q=Ql[Qi];
   document.getElementById('qNum').textContent=`第 ${Qi+1} 題 ／ 共 ${Ql.length} 題`;
   document.getElementById('qTxt').textContent=q.t;
   document.getElementById('qHint').textContent=q.h;
+  document.getElementById('qTimeUpMsg').style.display='none';
   document.getElementById('nextBtn').style.display='none';
+  const {choices,correctPos}=shuffledChoices(q);
+  curCorrectPos=correctPos;
   const box=document.getElementById('choices');box.innerHTML='';
-  q.c.forEach((c,i)=>{
+  choices.forEach((c,i)=>{
     const b=document.createElement('button');b.className='cb';b.textContent=c;
-    b.onclick=()=>pick(i,q.a);box.appendChild(b);
+    b.onclick=()=>pick(i,correctPos);box.appendChild(b);
   });
+  startTimer();
+}
+
+function startTimer(){
+  clearInterval(qTimer);
+  qTimeLimit=CFG.timeLimit||15;
+  qTimeLeft=qTimeLimit;
+  updateTimerUI();
+  qTimer=setInterval(()=>{
+    qTimeLeft--;
+    updateTimerUI();
+    if(qTimeLeft<=0){clearInterval(qTimer);timeUp();}
+  },1000);
+}
+function updateTimerUI(){
+  const bar=document.getElementById('qTimerBar');
+  if(bar)bar.style.width=Math.max(0,(qTimeLeft/qTimeLimit*100))+'%';
+  const t=document.getElementById('qTimer');
+  if(t)t.textContent='⏱️ '+Math.max(0,qTimeLeft)+' 秒';
+}
+function timeUp(){
+  if(answered)return;answered=true;
+  document.querySelectorAll('#choices .cb').forEach((b,i)=>{
+    b.onclick=null;
+    if(i===curCorrectPos)b.classList.add('correct');
+  });
+  SCORE-=1;saveScore();
+  document.getElementById('qTimeUpMsg').style.display='block';
+  document.getElementById('nextBtn').style.display='inline-block';
 }
 
 function pick(idx,ans){
   if(answered)return;answered=true;
+  clearInterval(qTimer);
   lastWasCorrect=(idx===ans);
-  document.querySelectorAll('.cb').forEach((b,i)=>{
+  document.querySelectorAll('#choices .cb').forEach((b,i)=>{
     if(i===ans)b.classList.add('correct');else if(i===idx)b.classList.add('wrong');
   });
-  SCORE += lastWasCorrect ? 1 : -1;
+  if(lastWasCorrect){
+    const bonus=Math.round((qTimeLeft/qTimeLimit)*2); // 剩餘時間比例越高，加成越多（最多 +2）
+    SCORE += 1+bonus;
+  }else{
+    SCORE -= 1;
+  }
   saveScore();
   document.getElementById('nextBtn').style.display='inline-block';
   maybeTriggerLottery();
@@ -2393,10 +2451,11 @@ function startBossChallenge(item,bossPool){
   document.getElementById('boss-q-txt').textContent=q.t;
   document.getElementById('boss-result').textContent='';
   document.getElementById('boss-close').style.display='none';
+  const {choices,correctPos}=shuffledChoices(q);
   const box=document.getElementById('boss-choices');box.innerHTML='';
-  q.c.forEach((c,i)=>{
+  choices.forEach((c,i)=>{
     const b=document.createElement('button');b.className='cb';b.textContent=c;
-    b.onclick=()=>pickBoss(i,q.a,item);
+    b.onclick=()=>pickBoss(i,correctPos,item);
     box.appendChild(b);
   });
 }
@@ -2662,6 +2721,8 @@ function renderTxtAdmin(){
     const el=document.getElementById('txt-'+k);
     if(el)el.value=t[k]||'';
   });
+  const tl=document.getElementById('txt-timeLimit');
+  if(tl)tl.value=CFG.timeLimit||15;
 }
 
 function saveTxt(){
@@ -2670,6 +2731,8 @@ function saveTxt(){
     const el=document.getElementById('txt-'+k);
     if(el&&el.value.trim())CFG.txt[k]=el.value.trim();
   });
+  const tl=document.getElementById('txt-timeLimit');
+  if(tl&&tl.value)CFG.timeLimit=Math.max(5,parseInt(tl.value)||15);
   saveCFG();applyTxt();
   alert('✅ 文字設定已儲存！');
 }
